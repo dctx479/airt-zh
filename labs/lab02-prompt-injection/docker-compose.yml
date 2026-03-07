@@ -1,0 +1,91 @@
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: lab02-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ollama-setup:
+    image: curlimages/curl:latest
+    container_name: lab02-ollama-setup
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"mistral:7b-instruct-q4_0\"}' && echo 'Model ready'"
+    restart: "no"
+
+  chatbot-level1:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: lab02-level1
+    ports:
+      - "5001:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - SECURITY_LEVEL=1
+      - APP_NAME=Level 1 - No Protection
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+  chatbot-level2:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: lab02-level2
+    ports:
+      - "5002:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - SECURITY_LEVEL=2
+      - APP_NAME=Level 2 - Basic Filter
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+  chatbot-level3:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: lab02-level3
+    ports:
+      - "5003:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - SECURITY_LEVEL=3
+      - APP_NAME=Level 3 - Guardrail Classifier
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+  chatbot-level4:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: lab02-level4
+    ports:
+      - "5004:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - SECURITY_LEVEL=4
+      - APP_NAME=Level 4 - Multi-Layer Defense
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+volumes:
+  ollama_data:

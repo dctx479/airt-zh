@@ -1,0 +1,132 @@
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: lab08-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ollama-setup:
+    image: curlimages/curl:latest
+    container_name: lab08-ollama-setup
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"mistral:7b-instruct-q4_0\"}' && echo 'Model ready'"
+    restart: "no"
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: lab08-chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - ALLOW_RESET=true
+      - ANONYMIZED_TELEMETRY=false
+
+  redis:
+    image: redis:7-alpine
+    container_name: lab08-redis
+    ports:
+      - "6379:6379"
+
+  customer-chatbot:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: lab08-customer-chatbot
+    ports:
+      - "5001:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - CHROMA_HOST=chromadb
+      - REDIS_HOST=redis
+      - APP_ROLE=chatbot
+    depends_on:
+      ollama:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+      redis:
+        condition: service_started
+
+  internal-rag:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: lab08-internal-rag
+    ports:
+      - "5002:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - CHROMA_HOST=chromadb
+      - APP_ROLE=rag
+    depends_on:
+      ollama:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+
+  agent-system:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: lab08-agent-system
+    ports:
+      - "5003:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - REDIS_HOST=redis
+      - APP_ROLE=agent
+    depends_on:
+      ollama:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  admin-portal:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: lab08-admin-portal
+    ports:
+      - "5000:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - CHROMA_HOST=chromadb
+      - REDIS_HOST=redis
+      - CHATBOT_URL=http://customer-chatbot:5000
+      - RAG_URL=http://internal-rag:5000
+      - AGENT_URL=http://agent-system:5000
+      - APP_ROLE=admin
+    depends_on:
+      ollama:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+      redis:
+        condition: service_started
+      customer-chatbot:
+        condition: service_started
+      internal-rag:
+        condition: service_started
+      agent-system:
+        condition: service_started
+
+volumes:
+  ollama_data:
+  chroma_data:

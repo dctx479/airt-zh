@@ -1,0 +1,118 @@
+# GitHub Actions CI/CD Pipeline for AI Security Testing
+# This workflow runs automated AI red team tests on every PR and push to main.
+#
+# EXAMPLE - Adapt to your project. Demonstrates how to integrate
+# garak and promptfoo into a CI/CD pipeline for continuous AI security testing.
+
+name: AI Security Red Team Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run weekly security scan every Monday at 6am UTC
+    - cron: "0 6 * * 1"
+
+env:
+  OLLAMA_HOST: http://localhost:11434
+  MODEL_NAME: mistral:7b-instruct-q4_0
+
+jobs:
+  ai-security-scan:
+    name: AI Security Assessment
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    services:
+      ollama:
+        image: ollama/ollama:latest
+        ports:
+          - 11434:11434
+        options: >-
+          --health-cmd "curl -f http://localhost:11434/api/tags || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Pull LLM model
+        run: |
+          curl -X POST http://localhost:11434/api/pull \
+            -d "{\"name\": \"$MODEL_NAME\"}"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install security testing tools
+        run: |
+          pip install garak requests
+          npm install -g promptfoo
+
+      # Run promptfoo evaluation
+      - name: Run promptfoo safety evaluation
+        run: |
+          promptfoo eval \
+            --config configs/promptfoo_eval.yaml \
+            --output results/promptfoo-results.json \
+            --no-progress-bar
+        continue-on-error: true
+
+      # Run promptfoo red team
+      - name: Run promptfoo red team scan
+        run: |
+          promptfoo redteam run \
+            --config configs/promptfoo_redteam.yaml \
+            --output results/promptfoo-redteam.json \
+            --no-progress-bar
+        continue-on-error: true
+
+      # Run garak scan
+      - name: Run garak vulnerability scan
+        run: |
+          python -m garak \
+            --model_type rest \
+            --model_name $MODEL_NAME \
+            --probes promptinject,encoding,dan \
+            --report_prefix results/garak-scan
+        continue-on-error: true
+
+      # Collect and upload results
+      - name: Upload security scan results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ai-security-results
+          path: results/
+          retention-days: 30
+
+      # Fail the pipeline if critical issues found
+      - name: Check for critical vulnerabilities
+        run: |
+          echo "Checking promptfoo results..."
+          if [ -f results/promptfoo-results.json ]; then
+            FAILURES=$(python3 -c "
+          import json
+          with open('results/promptfoo-results.json') as f:
+              data = json.load(f)
+          failures = sum(1 for r in data.get('results', []) if not r.get('success', True))
+          print(failures)
+          ")
+            echo "Promptfoo failures: $FAILURES"
+            if [ "$FAILURES" -gt 5 ]; then
+              echo "::error::Critical: $FAILURES safety test failures detected!"
+              exit 1
+            fi
+          fi
+          echo "Security scan completed. Review artifacts for detailed results."

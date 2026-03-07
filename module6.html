@@ -1,0 +1,2346 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+
+<!-- Perplexity Computer Attribution — SEO Meta Tags -->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6: Model Extraction & Inference Attacks — AIRT Academy</title>
+<meta name="description" content="Module 6 of the AI Red Team Academy: Model Extraction & Inference Attacks. Free, open-source AI security education.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="./base.css">
+<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./module.css">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0f0d'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-weight='bold' font-size='14' fill='%2300ff88'%3EAI%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- Reading Progress Bar -->
+<div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
+
+<!-- Skip to content -->
+<a href="#module-content" class="skip-link">Skip to content</a>
+
+<!-- ============================================
+     MODULE PAGE HEADER
+     ============================================ -->
+<header class="module-page-header" role="banner">
+  <div class="module-page-header__inner">
+    <div class="module-page-header__left">
+      <a href="./index.html" class="module-page-header__logo" aria-label="AIRT - AI Red Team Academy">
+        <svg width="28" height="28" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <path d="M18 2L4 8v10c0 9.5 6 16 14 18 8-2 14-8.5 14-18V8L18 2z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <line x1="12" y1="16" x2="24" y2="16" stroke="var(--color-primary)" stroke-width="1" opacity="0.6"/>
+          <circle cx="12" cy="16" r="1.5" fill="var(--color-primary)" opacity="0.8"/>
+          <circle cx="18" cy="16" r="1.5" fill="var(--color-primary)" opacity="0.6"/>
+          <circle cx="24" cy="16" r="1.5" fill="var(--color-primary)" opacity="0.4"/>
+        </svg>
+      </a>
+      <a href="./index.html" class="module-page-header__back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        <span>Back to Course</span>
+      </a>
+      <span class="module-page-header__title">Module 6: Model Extraction & Inference Attacks</span>
+    </div>
+    <div class="module-page-header__actions">
+      <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================
+     MAIN LAYOUT
+     ============================================ -->
+<main class="module-page-layout" id="module-content">
+
+  <!-- Table of Contents Sidebar -->
+  <aside class="toc-sidebar" aria-label="Table of contents">
+    <button class="toc-mobile-toggle" aria-expanded="false" aria-controls="toc-list">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      Table of Contents
+    </button>
+    <div class="toc-sidebar__label">On this page</div>
+    <ol class="toc-sidebar__list" id="toc-list">
+          <li><a href="#table-of-contents">Table of Contents</a></li>
+          <li><a href="#model-extraction-fundamentals">Model Extraction Fundamentals</a></li>
+          <li><a href="#query-based-model-stealing">Query-Based Model Stealing</a></li>
+          <li><a href="#training-data-extraction-from-llms">Training Data Extraction from LLMs</a></li>
+          <li><a href="#membership-inference">Membership Inference</a></li>
+          <li><a href="#attribute-inference">Attribute Inference</a></li>
+          <li><a href="#side-channel-attacks-on-llms-whisper-leak">Side-Channel Attacks on LLMs: Whisper Leak</a></li>
+          <li><a href="#token-length-side-channel">Token Length Side-Channel</a></li>
+          <li><a href="#timing-attacks-on-efficient-inference">Timing Attacks on Efficient Inference</a></li>
+          <li><a href="#tpuxtract-hardware-emanation-attacks">TPUXtract: Hardware Emanation Attacks</a></li>
+          <li><a href="#model-inversion">Model Inversion</a></li>
+          <li><a href="#defense-rate-limiting">Defense: Rate Limiting</a></li>
+          <li><a href="#defense-output-perturbation">Defense: Output Perturbation</a></li>
+          <li><a href="#defense-model-watermarking">Defense: Model Watermarking</a></li>
+          <li><a href="#api-monitoring-for-extraction-attempts">API Monitoring for Extraction Attempts</a></li>
+          <li><a href="#differential-privacy">Differential Privacy</a></li>
+          <li><a href="#module-summary">Module Summary</a></li>
+    </ol>
+  </aside>
+
+  <!-- Content Area -->
+  <article class="module-content-wrapper">
+    <!-- Module Meta -->
+    <div class="module-meta">
+      <div class="module-meta__badge">Module 06</div>
+      <h1 class="module-meta__title">Model Extraction & Inference Attacks</h1>
+      <div class="module-meta__info">
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          46 min read
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          10,418 words
+        </span>
+      </div>
+    </div>
+
+    <!-- Educational Content -->
+    <div class="module-content">
+<div class="page-wrapper">
+
+  <!-- ══════════════════════════════════════════════════════ HEADER ══ -->
+  <header class="module-header">
+    <div class="module-badge">AI Security Course</div>
+    <h1>Module 6: Model Extraction and Inference Attacks</h1>
+    <p class="subtitle">
+      How adversaries steal proprietary models, reconstruct training data, infer membership,
+      and exploit encrypted network traffic — and the defenses that resist them.
+    </p>
+    <div class="module-meta">
+      <span class="meta-pill">⏱ 90-minute read</span>
+      <span class="meta-pill">🔬 15 Topics</span>
+      <span class="meta-pill">💻 14 Code Examples</span>
+      <span class="meta-pill">🎓 Advanced</span>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════ TOC ══ -->
+  <nav class="toc">
+    <h2 id="table-of-contents">Table of Contents</h2>
+    <ol>
+      <li><a href="#s1">Model Extraction Fundamentals</a></li>
+      <li><a href="#s2">Query-Based Model Stealing</a></li>
+      <li><a href="#s3">Training Data Extraction from LLMs</a></li>
+      <li><a href="#s4">Membership Inference</a></li>
+      <li><a href="#s5">Attribute Inference</a></li>
+      <li><a href="#s6">Side-Channel Attacks on LLMs: Whisper Leak</a></li>
+      <li><a href="#s7">Token Length Side-Channel</a></li>
+      <li><a href="#s8">Timing Attacks on Efficient Inference</a></li>
+      <li><a href="#s9">TPUXtract: Hardware Emanation Attacks</a></li>
+      <li><a href="#s10">Model Inversion</a></li>
+      <li><a href="#s11">Defense: Rate Limiting</a></li>
+      <li><a href="#s12">Defense: Output Perturbation</a></li>
+      <li><a href="#s13">Defense: Model Watermarking</a></li>
+      <li><a href="#s14">API Monitoring for Extraction Attempts</a></li>
+      <li><a href="#s15">Differential Privacy</a></li>
+    </ol>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 1 ══ -->
+  <section class="section" id="s1">
+    <span class="section-number">01</span>
+    <h2 id="model-extraction-fundamentals">Model Extraction Fundamentals</h2>
+
+    <p>
+      A machine learning model is intellectual property. It encodes years of domain expertise,
+      millions of labeled training examples, substantial compute investment, and proprietary
+      architectural choices refined through exhaustive experimentation. Training GPT-4-class
+      models reportedly costs tens to hundreds of millions of dollars in compute alone —
+      a figure that does not capture the human expertise spent curating training data, tuning
+      hyperparameters, or performing alignment work. <em>Model extraction</em>, also called
+      <em>model stealing</em>, is the practice of cloning a proprietary model's behavior by
+      querying its public-facing API and training a surrogate model on the query-response pairs.
+      The result: an adversary can obtain a functional equivalent of the target model for a
+      fraction of its original training cost.
+    </p>
+
+    <div class="callout callout-danger">
+      <strong>Economic Stakes</strong>
+      Training large-scale commercial models may cost $10M–$100M in compute. A successful
+      model extraction attack can replicate core capabilities for as little as a few thousand
+      dollars in API query costs — a six-orders-of-magnitude asymmetry.
+    </div>
+
+    <h3>Why Model Extraction Matters</h3>
+    <p>
+      The motivations for attacking a model's intellectual property are diverse and often compound.
+      First, there is straightforward <strong>IP theft</strong>: a competitor can extract a
+      production model and deploy it as their own product, bypassing the original developer's
+      licensing fees, terms of service, and competitive moat. Second, a stolen surrogate model
+      can serve as a <strong>stepping stone for further attacks</strong>. Generating adversarial
+      examples is far easier when you have white-box access to model gradients. By extracting a
+      surrogate first, an attacker converts a black-box problem into a white-box one, making
+      downstream adversarial attacks orders of magnitude more effective. Third, extraction can
+      be used to <strong>circumvent rate limits and cost controls</strong>: once you own a local
+      copy, you can run inference without per-query charges or usage monitoring.
+    </p>
+
+    <p>
+      Finally, and perhaps most alarmingly, extraction enables <strong>privacy inference</strong>.
+      A model trained on sensitive data (medical records, financial histories, private communications)
+      may leak information about its training set even when accessed only through its API.
+      Extraction gives the adversary a persistent local artifact to probe at leisure, without
+      the audit trails that API providers maintain.
+    </p>
+
+    <h3>Exact Extraction vs. Functional Equivalence</h3>
+    <p>
+      Two distinct goals exist within model extraction. <strong>Exact extraction</strong> attempts
+      to recover the precise weights and architecture of the target model, reproducing its behavior
+      on every possible input — including corner cases. This is theoretically possible for simple
+      model classes (e.g., small ReLU networks) where the number of queries needed to uniquely
+      determine weights grows polynomially with model size, but it remains computationally
+      intractable for modern billion-parameter LLMs.
+    </p>
+    <p>
+      <strong>Functional equivalence</strong>, by contrast, settles for a surrogate that matches
+      the target model's behavior on a task-relevant input distribution. The surrogate need not
+      share the target's architecture or weights; it only needs to produce similar predictions
+      on the inputs the attacker cares about. This is the practically relevant threat for most
+      commercial deployments and requires far fewer queries than exact extraction. Research has
+      demonstrated functional equivalents of commercial NLP models achievable with a few hundred
+      thousand API calls — well within the budget of a well-funded adversary.
+      <a class="cite" href="https://arxiv.org/abs/1811.01820" title="Tramèr et al., Stealing Machine Learning Models via Prediction APIs">[Tramèr et al.]</a>
+    </p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>Attack Goal</h4>
+        <p>Clone model behavior without access to weights or architecture.</p>
+      </div>
+      <div class="concept-card">
+        <h4>Attack Surface</h4>
+        <p>Any public prediction API that returns labels or probability scores.</p>
+      </div>
+      <div class="concept-card">
+        <h4>Attacker Cost</h4>
+        <p>API query fees + surrogate training compute (typically 100–10,000× cheaper than original).</p>
+      </div>
+      <div class="concept-card">
+        <h4>Victim Loss</h4>
+        <p>Revenue, competitive advantage, downstream privacy risks for training subjects.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 2 ══ -->
+  <section class="section" id="s2">
+    <span class="section-number">02</span>
+    <h2 id="query-based-model-stealing">Query-Based Model Stealing</h2>
+
+    <p>
+      The canonical model stealing attack unfolds in three phases: systematic querying of the
+      target API, accumulation of a query-response dataset, and training a surrogate model on
+      that dataset. The simplicity of this pipeline belies its effectiveness. Modern research
+      has shown that even a surrogate with a different architecture than the target can achieve
+      near-identical task performance when trained on well-selected query-response pairs.
+      <a class="cite" href="https://arxiv.org/abs/1811.01820">[Tramèr et al.]</a>
+    </p>
+
+    <h3>Query Strategy: Active Learning for Efficiency</h3>
+    <p>
+      A naive attacker might sample inputs uniformly at random. A sophisticated attacker uses
+      <strong>active learning</strong> to select queries that maximize information gain. The
+      core insight is that not all inputs are equally informative: points near the model's
+      decision boundary carry far more information about the model's function than points
+      firmly in one class region. Active learning heuristics (uncertainty sampling, query by
+      committee, core-set selection) allow an attacker to build an accurate surrogate in
+      significantly fewer queries — sometimes an order of magnitude fewer than uniform sampling.
+    </p>
+
+    <p>
+      The attacker begins with a seed set of unlabeled inputs, queries the target, and then
+      selects the next query batch by asking: "which inputs, if labeled, would most reduce
+      the surrogate's uncertainty?" The surrogate is retrained after each batch, and the
+      process repeats. This closed loop is why model stealing can be devastatingly efficient
+      even against APIs that return only hard labels (no probabilities): even binary
+      membership information progressively constrains the surrogate.
+    </p>
+
+    <h3>Training the Surrogate</h3>
+    <p>
+      Once a sufficient set of (input, target_response) pairs has been accumulated, the
+      attacker trains a surrogate model — which need not share the target's architecture —
+      to minimize the loss on those pairs. Soft labels (probability distributions) are
+      far more information-rich than hard labels: a prediction of
+      <code>[cat: 0.72, dog: 0.25, fox: 0.03]</code> conveys the target model's confidence
+      geometry near that input, whereas a hard label <code>cat</code> discards the relative
+      scores. Where APIs return confidence scores, the attacker should use them as training
+      targets (knowledge distillation). Where only hard labels are available, temperature
+      scaling and label smoothing on the surrogate side partially compensate.
+    </p>
+
+    <h3>Working Implementation</h3>
+
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> requests
+<span class="kw">from</span> sklearn.neural_network <span class="kw">import</span> MLPClassifier
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">from</span> scipy.stats <span class="kw">import</span> entropy
+
+
+<span class="kw">class</span> <span class="nm">ModelExtractor</span>:
+    <span class="st">"""
+    Black-box model extraction via active-learning-guided query selection.
+    Trains a local surrogate MLPClassifier to mimic a remote target API.
+    """</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, target_api_url, n_classes=<span class="nb">2</span>, query_budget=<span class="nb">5000</span>):
+        self.target_url = target_api_url
+        self.n_classes = n_classes
+        self.query_budget = query_budget
+
+        self.queries   = []   <span class="cm"># List[np.ndarray] — inputs sent to target</span>
+        self.responses = []   <span class="cm"># List[int or list] — labels/probabilities returned</span>
+
+        <span class="cm"># Surrogate architecture: two hidden layers</span>
+        self.surrogate = MLPClassifier(
+            hidden_layer_sizes=(<span class="nb">100</span>, <span class="nb">50</span>),
+            activation=<span class="st">'relu'</span>,
+            max_iter=<span class="nb">500</span>,
+            random_state=<span class="nb">42</span>
+        )
+        self.scaler = StandardScaler()
+        self._fitted = <span class="kw">False</span>
+
+    <span class="kw">def</span> <span class="fn">query_target</span>(self, inputs):
+        <span class="st">"""Send inputs to the target API and record (input, response) pairs."""</span>
+        <span class="kw">for</span> x <span class="kw">in</span> inputs:
+            <span class="kw">try</span>:
+                resp = requests.post(
+                    self.target_url,
+                    json={<span class="st">"input"</span>: x.tolist()},
+                    timeout=<span class="nb">10</span>
+                )
+                resp.raise_for_status()
+                data = resp.json()
+
+                <span class="cm"># Accept either {"prediction": 1} or {"probabilities": [0.3, 0.7]}</span>
+                label = data.get(<span class="st">"prediction"</span>, np.argmax(data.get(<span class="st">"probabilities"</span>, [<span class="nb">0</span>])))
+                self.queries.append(x)
+                self.responses.append(label)
+
+            <span class="kw">except</span> (requests.RequestException, KeyError) <span class="kw">as</span> e:
+                <span class="kw">print</span>(<span class="st">f"Query failed: {e}"</span>)
+
+    <span class="kw">def</span> <span class="fn">train_surrogate</span>(self):
+        <span class="st">"""Fit the surrogate on all accumulated (query, response) pairs."""</span>
+        X = np.array(self.queries)
+        y = np.array(self.responses)
+
+        X_scaled = self.scaler.fit_transform(X)
+        self.surrogate.fit(X_scaled, y)
+        self._fitted = <span class="kw">True</span>
+
+        train_acc = self.surrogate.score(X_scaled, y)
+        <span class="kw">return</span> train_acc
+
+    <span class="kw">def</span> <span class="fn">select_uncertain_batch</span>(self, candidate_pool, batch_size=<span class="nb">100</span>):
+        <span class="st">"""
+        Active learning: pick the batch_size candidates where the surrogate
+        is most uncertain (highest entropy over class probabilities).
+        Requires surrogate to be trained at least once.
+        """</span>
+        <span class="kw">if not</span> self._fitted:
+            <span class="cm"># Cold start — return random batch</span>
+            idx = np.random.choice(len(candidate_pool), batch_size, replace=<span class="kw">False</span>)
+            <span class="kw">return</span> candidate_pool[idx]
+
+        X_scaled = self.scaler.transform(candidate_pool)
+        proba = self.surrogate.predict_proba(X_scaled)          <span class="cm"># (N, n_classes)</span>
+        uncertainties = np.array([entropy(p) <span class="kw">for</span> p <span class="kw">in</span> proba])   <span class="cm"># Shannon entropy</span>
+
+        <span class="cm"># Select top-k most uncertain samples</span>
+        top_idx = np.argsort(uncertainties)[-batch_size:]
+        <span class="kw">return</span> candidate_pool[top_idx]
+
+    <span class="kw">def</span> <span class="fn">run_extraction</span>(self, input_domain_sampler, batch_size=<span class="nb">100</span>):
+        <span class="st">"""
+        Full extraction loop.
+        input_domain_sampler: callable() -> np.ndarray of shape (N, d)
+        """</span>
+        rounds = self.query_budget <span class="nb">// batch_size</span>
+
+        <span class="kw">for</span> round_i <span class="kw">in</span> range(rounds):
+            <span class="cm"># 1. Sample a large candidate pool from the input domain</span>
+            candidates = input_domain_sampler()
+
+            <span class="cm"># 2. Use active learning to pick the most informative batch</span>
+            batch = self.select_uncertain_batch(candidates, batch_size)
+
+            <span class="cm"># 3. Query the target API</span>
+            self.query_target(batch)
+
+            <span class="cm"># 4. Retrain surrogate on all data so far</span>
+            <span class="kw">if</span> len(self.queries) >= <span class="nb">200</span>:  <span class="cm"># Minimum for meaningful training</span>
+                acc = self.train_surrogate()
+                <span class="kw">print</span>(<span class="st">f"Round {round_i+1}: {len(self.queries)} queries, surrogate accuracy={acc:.3f}"</span>)
+
+        <span class="kw">return</span> self.surrogate
+
+
+<span class="cm"># ── Example usage ──────────────────────────────────────────────────────</span>
+<span class="cm"># Suppose the target model classifies 20-dimensional input vectors</span>
+
+<span class="kw">def</span> <span class="fn">domain_sampler</span>():
+    <span class="st">"""Returns 500 random candidates from input domain."""</span>
+    <span class="kw">return</span> np.random.uniform(-<span class="nb">1</span>, <span class="nb">1</span>, size=(<span class="nb">500</span>, <span class="nb">20</span>)).astype(np.float32)
+
+extractor = ModelExtractor(
+    target_api_url=<span class="st">"https://api.example.com/predict"</span>,
+    n_classes=<span class="nb">3</span>,
+    query_budget=<span class="nb">2000</span>
+)
+
+surrogate_model = extractor.run_extraction(domain_sampler, batch_size=<span class="nb">100</span>)
+<span class="kw">print</span>(<span class="st">f"Extraction complete. Total queries: {len(extractor.queries)}"</span>)
+</code></pre>
+
+    <div class="callout callout-info">
+      <strong>Note</strong>
+      The above code targets a generic classification API. Real-world attacks against
+      LLM APIs use text prompts as "queries" and logprob distributions (when available)
+      as labels, then distill the results into a smaller surrogate transformer.
+    </div>
+
+    <h3>Optimizing for Maximum Information Gain</h3>
+    <p>
+      Beyond uncertainty sampling, attackers can exploit several additional strategies.
+      <strong>Jacobian-based data augmentation</strong> (JBDA) synthesizes new training points
+      by applying small gradient steps to existing labeled inputs, generating inputs near decision
+      boundaries without additional API calls. <strong>Model-free approaches</strong> use
+      generative models to synthesize diverse inputs from scratch. For NLP models,
+      <strong>prompt chaining</strong> — where the attacker systematically varies one linguistic
+      dimension at a time — allows efficient coverage of the response surface with structured
+      query sets.
+      <a class="cite" href="https://arxiv.org/abs/1602.02697" title="Papernot et al., Practical Black-Box Attacks against Machine Learning">[Papernot et al.]</a>
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 3 ══ -->
+  <section class="section" id="s3">
+    <span class="section-number">03</span>
+    <h2 id="training-data-extraction-from-llms">Training Data Extraction from LLMs</h2>
+
+    <p>
+      Large language models are, in a precise technical sense, compressed summaries of their
+      training corpora. They learn statistical regularities — everything from spelling patterns
+      to full verbatim passages — and store this knowledge in their billions of parameters.
+      This creates a vulnerability: a sufficiently precise attacker can cause a model to
+      <em>regurgitate</em> verbatim text that appeared in its training set. The landmark
+      research by <strong>Carlini et al. (2021)</strong> demonstrated this decisively
+      against GPT-2, extracting hundreds of verbatim training examples including full
+      names, physical addresses, phone numbers, and copyrighted text simply by querying
+      the model's public API.
+      <a class="cite" href="https://arxiv.org/abs/2012.07805">[Carlini et al., USENIX Security 2021]</a>
+    </p>
+
+    <h3>Why LLMs Memorize Training Data</h3>
+    <p>
+      Memorization arises from a combination of factors. Training data that is <strong>duplicated
+      many times</strong> in the corpus is more likely to be memorized — GPT-2 memorizes
+      entire MIT license texts because they appear verbatim on hundreds of thousands of
+      GitHub repositories. <strong>Model capacity</strong> amplifies this: larger models
+      memorize more, because they have more parameters to store rare training examples.
+      Counterintuitively, <strong>longer training</strong> (more epochs) also increases
+      memorization, as the model sees the same examples repeatedly and fits them more precisely.
+    </p>
+    <p>
+      Carlini et al. define <em>k-eidetic memorization</em>: a string <em>s</em> is
+      k-eidetically memorized by a model if the model can reproduce <em>s</em> from a
+      length-<em>k</em> prefix, and <em>s</em> appears in the training data only once.
+      This is distinct from factual knowledge (which may be learned from many corroborating
+      examples) — eidetic memorization is verbatim retention from a single training example.
+    </p>
+
+    <h3>Extraction Methodology</h3>
+    <p>
+      The attack pipeline involves three steps: generation, ranking, and verification.
+      First, the attacker generates a large number of text samples from the model — Carlini
+      et al. generated 600,000 samples using diverse prompting strategies. Second, they rank
+      these samples using <strong>membership inference metrics</strong> as a filter: samples
+      where the model assigns unusually high likelihood are more likely to be memorized.
+      Specifically, they compare the model's perplexity on a candidate to a smaller reference
+      model's perplexity. Memorized text is high-likelihood for the large model but not for
+      the reference model. Third, the top-ranked candidates are verified against the original
+      training corpus.
+    </p>
+
+    <h3>Divergence and Prefix Attacks</h3>
+    <p>
+      <strong>Divergence attacks</strong> exploit the phenomenon that a model fine-tuned
+      with RLHF or instruction tuning will suppress memorization outputs during normal
+      use, but can be induced to "forget" this suppression by crafting adversarial prompts.
+      Carlini et al. (2023) extracted megabytes of training data from ChatGPT — despite
+      its alignment training — by using a simple repetition prompt: asking the model to
+      repeat a word indefinitely causes it to eventually diverge from its aligned behavior
+      and emit training data verbatim.
+      <a class="cite" href="https://not-just-memorization.github.io/extracting-training-data-from-chatgpt.html">[Carlini et al., 2023 — ChatGPT Extraction]</a>
+    </p>
+    <p>
+      <strong>Prefix attacks</strong> provide the model with a genuine prefix from the
+      training data and observe whether it completes the rest of the passage accurately.
+      Prompting GPT-2 with "My address is 1 Main Street" caused it to accurately complete
+      with specific real individuals' contact information in the Carlini et al. experiments.
+      <strong>Completion-based extraction</strong> is the general technique: any prompt
+      that was seen during training acts as a retrieval key for the passage that followed it.
+    </p>
+
+    <h3>Testing for Memorization</h3>
+
+<pre><code><span class="kw">import</span> torch
+<span class="kw">from</span> transformers <span class="kw">import</span> GPT2LMHeadModel, GPT2Tokenizer
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> zlib
+
+
+<span class="kw">def</span> <span class="fn">compute_perplexity</span>(model, tokenizer, text, device=<span class="st">"cpu"</span>):
+    <span class="st">"""Compute per-token perplexity of a text under a given model."""</span>
+    inputs = tokenizer(text, return_tensors=<span class="st">"pt"</span>).to(device)
+    <span class="kw">with</span> torch.no_grad():
+        output = model(**inputs, labels=inputs[<span class="st">"input_ids"</span>])
+    <span class="kw">return</span> torch.exp(output.loss).item()
+
+
+<span class="kw">def</span> <span class="fn">memorization_score</span>(large_model, small_model, tokenizer, text, device=<span class="st">"cpu"</span>):
+    <span class="st">"""
+    Carlini et al. 'ratio' metric: compares large vs. small model perplexity.
+    A memorized passage has LOW perplexity under the large model
+    but NOT proportionally low under the small reference model.
+    Higher score → more likely memorized.
+    """</span>
+    ppl_large = compute_perplexity(large_model, tokenizer, text, device)
+    ppl_small = compute_perplexity(small_model, tokenizer, text, device)
+
+    <span class="cm"># Ratio metric: lower PPL in large vs small suggests memorization</span>
+    ratio_score = np.log(ppl_small) / np.log(ppl_large)
+
+    <span class="cm"># Zlib metric: compare model PPL to compression-based estimate</span>
+    zlib_entropy = len(zlib.compress(text.encode())) / len(text)
+    zlib_score   = np.log(ppl_large) / zlib_entropy
+
+    <span class="kw">return</span> {
+        <span class="st">"perplexity_large"</span>: ppl_large,
+        <span class="st">"perplexity_small"</span>: ppl_small,
+        <span class="st">"ratio_score"</span>:      ratio_score,     <span class="cm"># higher → more suspect</span>
+        <span class="st">"zlib_score"</span>:       zlib_score,      <span class="cm"># higher → less compressible = natural text</span>
+    }
+
+
+<span class="kw">def</span> <span class="fn">generate_candidates</span>(model, tokenizer, n_samples=<span class="nb">200</span>, max_length=<span class="nb">256</span>, device=<span class="st">"cpu"</span>):
+    <span class="st">"""
+    Generate n_samples completions from the model with an empty prefix.
+    Returns a list of generated strings.
+    """</span>
+    model.eval()
+    candidates = []
+    <span class="kw">with</span> torch.no_grad():
+        <span class="kw">for</span> _ <span class="kw">in</span> range(n_samples):
+            input_ids = torch.tensor([[tokenizer.bos_token_id]]).to(device)
+            output = model.generate(
+                input_ids,
+                max_new_tokens=max_length,
+                do_sample=<span class="kw">True</span>,
+                top_k=<span class="nb">40</span>,
+                temperature=<span class="nb">1.0</span>,
+                pad_token_id=tokenizer.eos_token_id
+            )
+            text = tokenizer.decode(output[<span class="nb">0</span>], skip_special_tokens=<span class="kw">True</span>)
+            candidates.append(text)
+    <span class="kw">return</span> candidates
+
+
+<span class="cm"># ── Example: screen 200 GPT-2 generations for possible memorized text ──</span>
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    device = <span class="st">"cuda"</span> <span class="kw">if</span> torch.cuda.is_available() <span class="kw">else</span> <span class="st">"cpu"</span>
+
+    tokenizer  = GPT2Tokenizer.from_pretrained(<span class="st">"gpt2-xl"</span>)
+    model_xl   = GPT2LMHeadModel.from_pretrained(<span class="st">"gpt2-xl"</span>).to(device)
+    model_sm   = GPT2LMHeadModel.from_pretrained(<span class="st">"gpt2"</span>).to(device)   <span class="cm"># reference</span>
+
+    candidates = generate_candidates(model_xl, tokenizer, n_samples=<span class="nb">200</span>, device=device)
+
+    scored = []
+    <span class="kw">for</span> text <span class="kw">in</span> candidates:
+        scores = memorization_score(model_xl, model_sm, tokenizer, text, device)
+        scored.append((text, scores))
+
+    <span class="cm"># Sort by ratio score descending — highest ratio = most likely memorized</span>
+    scored.sort(key=<span class="kw">lambda</span> x: x[<span class="nb">1</span>][<span class="st">"ratio_score"</span>], reverse=<span class="kw">True</span>)
+
+    <span class="kw">print</span>(<span class="st">"Top 5 candidates most likely to contain memorized training data:"</span>)
+    <span class="kw">for</span> text, scores <span class="kw">in</span> scored[:<span class="nb">5</span>]:
+        <span class="kw">print</span>(<span class="st">f"  Ratio={scores['ratio_score']:.3f} | PPL(xl)={scores['perplexity_large']:.1f}"</span>)
+        <span class="kw">print</span>(<span class="st">f"  Text: {text[:<span class="nb">120</span>]}..."</span>)
+        <span class="kw">print</span>()
+</code></pre>
+
+    <p>
+      In Carlini et al.'s best attack configuration, 67% of top-ranked candidates were
+      confirmed verbatim training examples. Among their 604 unique extracted memorized
+      sequences, 46 contained personal names and 32 contained contact information —
+      real individuals whose data had been harvested into GPT-2's CommonCrawl
+      training corpus without their knowledge.
+      <a class="cite" href="https://www.usenix.org/system/files/sec21-carlini-extracting.pdf">[USENIX Security 2021]</a>
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 4 ══ -->
+  <section class="section" id="s4">
+    <span class="section-number">04</span>
+    <h2 id="membership-inference">Membership Inference</h2>
+
+    <p>
+      Imagine a hospital trains a machine learning model to predict patient readmission risk.
+      The model is deployed via a public API for insurance companies to query. Now consider
+      an adversary — perhaps a competitor, a nosy employer, or a malicious insurer — who
+      has a specific individual's medical record and wants to know: <em>was this person's
+      data used to train this model?</em> This is the <strong>membership inference</strong>
+      problem, and it is one of the most practically significant privacy threats in modern
+      machine learning.
+      <a class="cite" href="https://arxiv.org/pdf/1610.05820">[Shokri et al., IEEE S&amp;P 2017]</a>
+    </p>
+
+    <h3>Why Models Leak Membership</h3>
+    <p>
+      The fundamental cause is <strong>overfitting</strong>. A model that has been trained on
+      a data point typically assigns it higher confidence, lower loss, and different internal
+      representations than unseen data points. Even well-regularized models exhibit this
+      difference to a measurable degree. The gap is larger for rare, unusual, or exactly
+      duplicated training examples — the same memorization phenomenon that enables training
+      data extraction also enables membership inference.
+    </p>
+
+    <h3>The Shadow Model Technique</h3>
+    <p>
+      The seminal attack by Shokri et al. (2017) introduced the <strong>shadow model</strong>
+      approach. Because the attacker cannot directly observe the target model's training set,
+      they simulate it: they train several <em>shadow models</em> on datasets drawn from
+      the same distribution as the target's training data. For each shadow model, the attacker
+      knows exactly which points were in the training set (members) and which were not
+      (non-members). They record the model's output vector for each point and label it
+      accordingly. This produces a labeled dataset of (model_output, member/non-member) pairs.
+      An attack classifier trained on this labeled dataset can then be applied to the target
+      model's outputs to infer membership.
+    </p>
+
+    <p>
+      The technique achieved median membership inference accuracy of <strong>94%</strong>
+      against models trained on Google's ML services and <strong>74%</strong> against
+      Amazon's services in realistic experiments.
+      <a class="cite" href="https://arxiv.org/pdf/1610.05820">[Shokri et al.]</a>
+    </p>
+
+    <h3>Loss-Based Inference</h3>
+    <p>
+      A simpler approach that avoids training shadow models is the <strong>loss threshold
+      attack</strong>: compute the model's loss on the target point and compare it to a
+      threshold. If the loss is below the threshold (the model is highly confident), predict
+      membership. This works because training examples tend to have lower loss than unseen
+      data, especially for overfit models. More sophisticated variants use <strong>reference
+      models</strong>: compute the likelihood ratio between the target model and a reference
+      model trained on disjoint data. Points where this ratio is high are likely members.
+    </p>
+
+    <h3>Python Implementation</h3>
+
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> sklearn.neural_network <span class="kw">import</span> MLPClassifier
+<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LogisticRegression
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> roc_auc_score
+
+
+<span class="kw">class</span> <span class="nm">MembershipInferenceAttack</span>:
+    <span class="st">"""
+    Shadow-model-based membership inference attack.
+
+    Assumes black-box access to a target model that returns
+    class probability vectors for input features.
+    """</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, n_shadow=<span class="nb">4</span>, shadow_architecture=<span class="kw">None</span>):
+        self.n_shadow = n_shadow
+        self.shadow_architecture = shadow_architecture <span class="kw">or</span> (<span class="nb">64</span>, <span class="nb">32</span>)
+        self.attack_classifier = LogisticRegression(max_iter=<span class="nb">500</span>)
+        self.shadow_models = []
+        self._trained = <span class="kw">False</span>
+
+    <span class="kw">def</span> <span class="fn">_train_shadow_model</span>(self, X_train, y_train):
+        <span class="st">"""Train a single shadow model on a subset of proxy data."""</span>
+        shadow = MLPClassifier(
+            hidden_layer_sizes=self.shadow_architecture,
+            max_iter=<span class="nb">300</span>,
+            random_state=np.random.randint(<span class="nb">0</span>, <span class="nb">10000</span>)
+        )
+        shadow.fit(X_train, y_train)
+        <span class="kw">return</span> shadow
+
+    <span class="kw">def</span> <span class="fn">_extract_features</span>(self, model, X):
+        <span class="st">"""
+        Extract membership inference features from model outputs.
+        Uses the full probability vector as features (preserves calibration signal).
+        """</span>
+        proba = model.predict_proba(X)   <span class="cm"># shape: (n_samples, n_classes)</span>
+
+        <span class="cm"># Additional engineered features: confidence, entropy, top-2 gap</span>
+        confidence   = proba.max(axis=<span class="nb">1</span>, keepdims=<span class="kw">True</span>)
+        pred_entropy = -np.sum(proba * np.log(proba + <span class="nb">1e-9</span>), axis=<span class="nb">1</span>, keepdims=<span class="kw">True</span>)
+        sorted_p     = np.sort(proba, axis=<span class="nb">1</span>)[:, ::-<span class="nb">1</span>]
+        top2_gap     = (sorted_p[:, <span class="nb">0</span>] - sorted_p[:, <span class="nb">1</span>]).reshape(-<span class="nb">1</span>, <span class="nb">1</span>)
+
+        <span class="kw">return</span> np.hstack([proba, confidence, pred_entropy, top2_gap])
+
+    <span class="kw">def</span> <span class="fn">train_attack</span>(self, proxy_data_X, proxy_data_y):
+        <span class="st">"""
+        Build labeled (features, membership) dataset using shadow models,
+        then train the attack classifier.
+
+        proxy_data_X, proxy_data_y : dataset drawn from same distribution
+                                     as target's training set.
+        """</span>
+        all_features = []
+        all_labels   = []
+
+        n = len(proxy_data_X)
+        split = n <span class="nb">// 2</span>
+
+        <span class="kw">for</span> i <span class="kw">in</span> range(self.n_shadow):
+            <span class="cm"># Randomly partition proxy data into shadow-train and shadow-test</span>
+            idx = np.random.permutation(n)
+            train_idx, test_idx = idx[:split], idx[split:]
+
+            X_tr, y_tr = proxy_data_X[train_idx], proxy_data_y[train_idx]
+            X_te, y_te = proxy_data_X[test_idx],  proxy_data_y[test_idx]
+
+            shadow = self._train_shadow_model(X_tr, y_tr)
+            self.shadow_models.append(shadow)
+
+            <span class="cm"># "In" examples: training set of this shadow model → label 1</span>
+            f_in  = self._extract_features(shadow, X_tr)
+            <span class="cm"># "Out" examples: test set of this shadow model → label 0</span>
+            f_out = self._extract_features(shadow, X_te)
+
+            all_features.append(np.vstack([f_in, f_out]))
+            all_labels.extend([<span class="nb">1</span>] * len(X_tr) + [<span class="nb">0</span>] * len(X_te))
+
+            <span class="kw">print</span>(<span class="st">f"Shadow model {i+1}/{self.n_shadow} trained. "</span>
+                  <span class="st">f"Accuracy={shadow.score(X_te, y_te):.3f}"</span>)
+
+        F = np.vstack(all_features)
+        L = np.array(all_labels)
+
+        self.attack_classifier.fit(F, L)
+        self._trained = <span class="kw">True</span>
+
+    <span class="kw">def</span> <span class="fn">infer_membership</span>(self, target_model, query_points):
+        <span class="st">"""
+        Given a trained target model and query data points,
+        return membership probability for each point.
+        1.0 = likely member, 0.0 = likely non-member.
+        """</span>
+        <span class="kw">if not</span> self._trained:
+            <span class="kw">raise</span> RuntimeError(<span class="st">"Call train_attack() first."</span>)
+
+        features = self._extract_features(target_model, query_points)
+        <span class="kw">return</span> self.attack_classifier.predict_proba(features)[:, <span class="nb">1</span>]
+
+    <span class="kw">def</span> <span class="fn">evaluate</span>(self, target_model, member_X, nonmember_X):
+        <span class="st">"""Compute AUC of attack against target model."""</span>
+        member_scores    = self.infer_membership(target_model, member_X)
+        nonmember_scores = self.infer_membership(target_model, nonmember_X)
+
+        y_true  = np.concatenate([np.ones(len(member_X)), np.zeros(len(nonmember_X))])
+        y_score = np.concatenate([member_scores, nonmember_scores])
+
+        auc = roc_auc_score(y_true, y_score)
+        <span class="kw">print</span>(<span class="st">f"Membership Inference AUC: {auc:.4f}"</span>)
+        <span class="kw">return</span> auc
+</code></pre>
+
+    <h3>Privacy Implications: GDPR and HIPAA</h3>
+    <p>
+      Membership inference directly violates the privacy principles enshrined in major
+      data protection laws. Under <strong>GDPR Article 17</strong> (right to erasure),
+      individuals can request deletion of their data — but if a deployed model reveals
+      membership, effective deletion becomes impossible without retraining or applying
+      machine unlearning techniques. Under <strong>HIPAA</strong>, health information used
+      to train models without de-identification may expose institutions to liability if
+      membership can be inferred from the deployed model. Regulatory bodies are increasingly
+      treating demonstrable membership inference vulnerability as a compliance failure,
+      not merely a theoretical risk.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 5 ══ -->
+  <section class="section" id="s5">
+    <span class="section-number">05</span>
+    <h2 id="attribute-inference">Attribute Inference</h2>
+
+    <p>
+      Membership inference is a binary question: was this person in the training set or not?
+      <strong>Attribute inference</strong> is more granular: given that a person is in the
+      training set (or even just as an input to the model), can an attacker learn
+      <em>sensitive attributes</em> about them that were not explicitly provided as input?
+      This class of attack is particularly pernicious because it can operate at query-time,
+      not just at training time — any prediction API can potentially leak demographic
+      or behavioral attributes about the query subject.
+    </p>
+
+    <h3>How Attribute Inference Works</h3>
+    <p>
+      Consider a credit scoring model trained on a dataset that includes both "approved
+      features" (income, credit history, loan amount) and "protected attributes" (race,
+      gender, zip code as a proxy for race). Even if the protected attributes are excluded
+      from the model's official feature set at inference time, the model may have absorbed
+      the correlation during training. An adversary who knows the target individual's approved
+      features can query the model and, by observing the prediction, infer the individual's
+      protected attributes. Research has shown that even models trained with explicit fairness
+      constraints can still leak protected attributes through their output distributions.
+    </p>
+
+    <p>
+      The attack typically works by training a <strong>reconstruction model</strong>:
+      the attacker collects many (known_features, model_output) pairs where the sensitive
+      attribute is also known (from a separate dataset or via correlation), and trains a
+      classifier to predict the sensitive attribute from the model's output. Yeom et al.
+      (2018) formalized this as an attack that succeeds whenever a model has learned
+      to exploit the correlation between the sensitive attribute and the label.
+    </p>
+
+    <h3>Demographic and Behavioral Inference</h3>
+    <p>
+      LLMs present a particularly rich surface for attribute inference because they produce
+      nuanced, open-ended outputs. Research has demonstrated that LLMs can be used to
+      predict user demographics (age, gender, political affiliation, nationality) from
+      writing style alone. When an LLM is fine-tuned on user interaction logs, the fine-tuned
+      model may expose individual users' characteristics through subtle systematic differences
+      in how it responds to queries — even for users who were part of the fine-tuning set
+      rather than the current query.
+    </p>
+
+    <h3>Cross-Referencing Attacks</h3>
+    <p>
+      A powerful variant combines attribute inference with auxiliary data. The attacker
+      does not rely on the model alone; they combine model outputs with publicly available
+      databases, social media profiles, and other data sources. For example, knowing that
+      a medical model predicts a 73% readmission risk for a patient with features (age=54,
+      zip=90210, diagnosis=T2D) might be enough — when cross-referenced with public
+      voter registration and property records — to uniquely identify the patient and
+      infer their full medical history.
+    </p>
+
+    <div class="callout callout-warn">
+      <strong>Ethical and Regulatory Concerns</strong>
+      Attribute inference attacks may constitute unlawful discrimination if they reveal
+      protected characteristics used in consequential decisions (employment, credit, insurance),
+      violating the EU AI Act's provisions on prohibited AI practices and the CCPA's
+      protections against inference of sensitive personal characteristics. Organizations
+      deploying prediction APIs for consequential decisions should conduct attribute
+      inference audits as part of their model release process.
+    </div>
+
+    <h3>Mitigation Strategies</h3>
+    <p>
+      Defending against attribute inference requires both training-time and deployment-time
+      interventions. <strong>Adversarial training for fairness</strong> penalizes models that
+      allow a discriminator to infer protected attributes from intermediate representations.
+      <strong>Output restriction</strong> — returning only hard labels rather than confidence
+      scores — reduces the information available to an attacker but does not eliminate the
+      risk. <strong>Federated learning with differential privacy</strong> can limit the amount
+      of individual-level information encoded in model weights, providing the strongest
+      theoretical guarantees.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 6 ══ -->
+  <section class="section" id="s6">
+    <span class="section-number">06</span>
+    <h2 id="side-channel-attacks-on-llms-whisper-leak">Side-Channel Attacks on LLMs: Whisper Leak</h2>
+
+    <p>
+      A widespread assumption in LLM deployment is that TLS/HTTPS encryption provides
+      meaningful confidentiality for user queries. The <strong>Whisper Leak</strong> research
+      (2025) dismantles this assumption. The attack demonstrates that an adversary with
+      passive access to a user's encrypted network traffic — such as an internet service
+      provider, a compromised router, or a malicious Wi-Fi access point — can infer the
+      <em>topic</em> of a user's LLM query with over 98% accuracy on 17 of 28 tested
+      commercial LLMs, without ever decrypting a single byte of payload.
+      <a class="cite" href="https://arxiv.org/html/2511.03675v1">[Whisper Leak, arXiv 2511.03675, 2025]</a>
+    </p>
+
+    <h3>Attack Premise: Why Encryption Is Not Enough</h3>
+    <p>
+      TLS (using stream ciphers like AES-GCM) encrypts payload content but preserves
+      payload <em>size</em>: <code>size(ciphertext) = size(plaintext) + constant</code>.
+      When an LLM generates a streaming response token by token, each token is sent as a
+      separate encrypted packet. Because tokens have variable lengths (the token <code>the</code>
+      is 3 characters; <code>antidisestablishmentarianism</code> is 28), the sequence of
+      packet sizes directly encodes the sequence of token lengths.
+    </p>
+    <p>
+      The key insight is that <strong>different topics produce systematically different
+      token length patterns</strong>. A response about quantum physics uses longer, less
+      frequent technical terms. A response about cooking uses shorter, more common vocabulary.
+      A response about legal matters includes specific legal terms and Latin phrases.
+      These patterns are stable enough across different users asking similar questions
+      that a trained classifier can identify the topic from packet sizes alone — even
+      without seeing the content.
+    </p>
+
+    <h3>Experimental Setup and Results</h3>
+    <p>
+      The researchers collected 21,716 queries per model (100 topic variants × 100 repeats
+      + 11,716 Quora noise queries) and trained binary classifiers using tcpdump-captured
+      encrypted traffic traces. Testing was conducted against 28 LLMs from major providers
+      including OpenAI (GPT-4o-mini, GPT-4.1), Anthropic (Claude 3 Haiku), Google
+      (Gemini 1.5 Flash, 2.5 Pro), Microsoft, xAI (Grok), Mistral, DeepSeek, Meta
+      (LLaMA via Lambda), and Amazon (Nova).
+      <a class="cite" href="https://arxiv.org/html/2511.03675v1">[Whisper Leak]</a>
+    </p>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>AUPRC (Median)</h4>
+        <p>&gt;98% for 17 of 28 models. Average 96.8% across all models.</p>
+      </div>
+      <div class="concept-card">
+        <h4>Precision</h4>
+        <p>100% precision at 5–20% recall for 17/28 models (e.g., GPT-4o-mini, Mistral, Grok).</p>
+      </div>
+      <div class="concept-card">
+        <h4>Hardest Targets</h4>
+        <p>Google Gemini (81–84% AUPRC) and Amazon Nova (71–77%) were most resistant.</p>
+      </div>
+      <div class="concept-card">
+        <h4>Attacker Model</h4>
+        <p>Passive network observer (ISP-level). No active interference required.</p>
+      </div>
+    </div>
+
+    <h3>Three Classifier Architectures</h3>
+    <p>
+      The paper evaluated three classifier architectures on the packet-size + inter-arrival
+      time feature sequences:
+    </p>
+    <ul>
+      <li><strong>LightGBM</strong>: Gradient-boosted decision tree ensemble on flattened,
+        zero-padded packet size/timing sequences (padded to 95th percentile length). Fast
+        to train, competitive accuracy.</li>
+      <li><strong>BiLSTM</strong>: Bidirectional LSTM with attention mechanism. Embeds
+        each (packet_size, inter_arrival_time) pair, processes with BiLSTM + attention,
+        then classifies via a two-layer MLP head. Captures sequential dependencies.</li>
+      <li><strong>BERT-based (DistilBERT)</strong>: Discretizes packet sizes and timings
+        into 50-bin tokens, then fine-tunes a DistilBERT classifier on these token sequences.
+        Best performance on models with complex packet distributions.</li>
+    </ul>
+
+    <h3>Conceptual Attack Code: Traffic Capture and Classification</h3>
+
+<pre><code><span class="kw">import</span> subprocess
+<span class="kw">import</span> struct
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> collections <span class="kw">import</span> namedtuple
+<span class="kw">import</span> joblib   <span class="cm"># for loading pre-trained LightGBM classifier</span>
+
+
+PacketTrace = namedtuple(<span class="st">"PacketTrace"</span>, [<span class="st">"sizes"</span>, <span class="st">"timings"</span>])
+
+
+<span class="kw">def</span> <span class="fn">capture_llm_traffic</span>(target_host, duration_sec=<span class="nb">30</span>, interface=<span class="st">"eth0"</span>):
+    <span class="st">"""
+    Passively capture encrypted HTTPS packets to/from an LLM API endpoint.
+    Returns a PacketTrace with per-packet sizes and inter-arrival times.
+
+    IMPORTANT: Only use on networks/systems you are authorized to monitor.
+    This is a conceptual demonstration of the Whisper Leak methodology.
+
+    Uses tcpdump (requires appropriate privileges or packet capture capability).
+    """</span>
+    <span class="cm"># In production, Whisper Leak uses tcpdump output parsed with Scapy</span>
+    <span class="cm"># Here we show the structure; actual implementation needs pcap parsing</span>
+
+    cmd = [
+        <span class="st">"tcpdump"</span>, <span class="st">"-i"</span>, interface,
+        <span class="st">"-nn"</span>, <span class="st">"-q"</span>, <span class="st">"-tt"</span>,             <span class="cm"># timestamp + size, no DNS resolution</span>
+        <span class="st">f"host {target_host} and port 443"</span>,
+        <span class="st">"-c"</span>, <span class="st">"2000"</span>                       <span class="cm"># capture up to 2000 packets</span>
+    ]
+
+    <span class="cm"># Parse output lines of form: "1700000000.123456 IP src > dst: ... length NNN"</span>
+    raw_lines = subprocess.check_output(cmd, stderr=subprocess.DEVNULL).decode()
+
+    sizes   = []
+    timestamps = []
+    prev_ts = <span class="kw">None</span>
+    inter_arrivals = []
+
+    <span class="kw">for</span> line <span class="kw">in</span> raw_lines.splitlines():
+        parts = line.split()
+        <span class="kw">if not</span> parts: <span class="kw">continue</span>
+        <span class="kw">try</span>:
+            ts  = float(parts[<span class="nb">0</span>])
+            <span class="cm"># length is typically the last token starting with a digit</span>
+            pkt_len = int([p <span class="kw">for</span> p <span class="kw">in</span> parts <span class="kw">if</span> p.isdigit()][-<span class="nb">1</span>])
+            sizes.append(pkt_len)
+            <span class="kw">if</span> prev_ts <span class="kw">is not None</span>:
+                inter_arrivals.append(ts - prev_ts)
+            prev_ts = ts
+        <span class="kw">except</span> (ValueError, IndexError):
+            <span class="kw">continue</span>
+
+    <span class="kw">return</span> PacketTrace(sizes=sizes, inter_arrivals=inter_arrivals)
+
+
+<span class="kw">def</span> <span class="fn">featurize_trace</span>(trace, max_len=<span class="nb">512</span>):
+    <span class="st">"""
+    Pad/truncate packet size and inter-arrival sequences to fixed length,
+    then concatenate into a feature vector for LightGBM classification.
+    Mirrors the Whisper Leak featurization strategy.
+    """</span>
+    sizes   = np.array(trace.sizes[:max_len],   dtype=np.float32)
+    timings = np.array(trace.inter_arrivals[:max_len], dtype=np.float32)
+
+    <span class="cm"># Zero-pad to max_len</span>
+    sizes_padded   = np.pad(sizes,   (<span class="nb">0</span>, max_len - len(sizes)))
+    timings_padded = np.pad(timings, (<span class="nb">0</span>, max_len - len(timings)))
+
+    <span class="cm"># Concatenate sizes + timings into one feature vector</span>
+    feature_vector = np.concatenate([sizes_padded, timings_padded])
+    <span class="kw">return</span> feature_vector.reshape(<span class="nb">1</span>, -<span class="nb">1</span>)
+
+
+<span class="kw">def</span> <span class="fn">classify_prompt_topic</span>(trace, classifier_path, topic_labels):
+    <span class="st">"""
+    Given a captured traffic trace, load a pre-trained LightGBM classifier
+    and predict the topic of the underlying LLM prompt.
+    """</span>
+    clf = joblib.load(classifier_path)      <span class="cm"># pre-trained binary or multi-class model</span>
+    features = featurize_trace(trace)
+    proba = clf.predict_proba(features)[<span class="nb">0</span>]
+
+    results = sorted(zip(topic_labels, proba), key=<span class="kw">lambda</span> x: x[<span class="nb">1</span>], reverse=<span class="kw">True</span>)
+    <span class="kw">print</span>(<span class="st">"Topic classification results:"</span>)
+    <span class="kw">for</span> topic, prob <span class="kw">in</span> results[:<span class="nb">5</span>]:
+        <span class="kw">print</span>(<span class="st">f"  {topic:<span class="nb">30</span>} {prob:.3f}"</span>)
+    <span class="kw">return</span> results[<span class="nb">0</span>][<span class="nb">0</span>]  <span class="cm"># top predicted topic</span>
+</code></pre>
+
+    <h3>Defenses</h3>
+    <p>
+      The Whisper Leak paper evaluated random padding as a mitigation: appending a
+      random-length string to each streamed token to obscure its length. Cloudflare
+      implemented this defense after the initial disclosure. However, the paper showed
+      that even with padding, <strong>timing information between packets</strong> retains
+      significant classifiable signal. The only fully effective defense is
+      <strong>constant-shape traffic</strong>: padding all responses to a fixed size and
+      batching tokens before transmission, eliminating all packet-size variation.
+      This fundamentally conflicts with the low-latency streaming UX that most LLM
+      providers optimize for.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 7 ══ -->
+  <section class="section" id="s7">
+    <span class="section-number">07</span>
+    <h2 id="token-length-side-channel">Token Length Side-Channel</h2>
+
+    <p>
+      The Whisper Leak attack infers prompt <em>topics</em>. The research by
+      <strong>Weiss et al. (2024)</strong> pursues a more precise goal: inferring the
+      <em>exact content</em> of an LLM's response — word for word — from the sizes of
+      encrypted packets. This is the <strong>token length side-channel</strong>, and
+      it represents one of the most startling privacy failures in LLM deployment history.
+      <a class="cite" href="https://www.microsoft.com/en-us/security/blog/2025/11/07/whisper-leak-a-novel-side-channel-cyberattack-on-remote-language-models/">[Microsoft Security Blog, 2025]</a>
+    </p>
+
+    <h3>Attack Methodology</h3>
+    <p>
+      When an LLM streams its response token-by-token, each TLS packet carries exactly
+      one token's bytes. The packet size directly reveals the token's byte length: a
+      3-byte packet carries a 3-character token; a 7-byte packet carries a 7-character
+      token. An adversary observing the encrypted stream thus learns the <em>length
+      sequence</em> of every token in the response — e.g., <code>[4, 5, 1, 3, 6, 2, 7, ...]</code>.
+    </p>
+    <p>
+      Armed with this length sequence, Weiss et al. employ a secondary LLM to reconstruct
+      the most plausible sentence matching that exact token length pattern. The task is
+      essentially a constrained text generation problem: generate a coherent sentence
+      whose tokenization produces exactly the observed length sequence. Given that
+      the tokenizer vocabulary is fixed and widely known (e.g., tiktoken for OpenAI models),
+      this is a dramatically constrained problem — far easier than unconstrained generation.
+    </p>
+    <p>
+      The attack achieved approximately <strong>27% exact token reconstruction</strong>
+      of LLM output tokens. While this may seem modest, consider that even partial
+      reconstruction can be sufficient to identify whether a response contained sensitive
+      medical diagnoses, legal advice, or private personal information.
+    </p>
+
+    <h3>Why This Attack Is Structurally Hard to Fix</h3>
+    <p>
+      The root cause is not a bug in TLS — it is a fundamental property of the streaming
+      API design. Any system that:
+    </p>
+    <ol>
+      <li>Uses a fixed tokenizer (so token lengths are predictable from vocabulary),</li>
+      <li>Streams tokens one-by-one over TLS, and</li>
+      <li>Uses a stream cipher that preserves plaintext length,</li>
+    </ol>
+    <p>
+      is vulnerable to this attack. The only mitigations that fully neutralize it are:
+      (a) adding deterministic padding to all tokens so they appear to be the same size,
+      or (b) batching multiple tokens per packet before encryption — both of which
+      increase latency and reduce the responsiveness that makes streaming valuable.
+      Cloudflare implemented per-token random padding at the CDN layer after Weiss et al.'s
+      disclosure, but residual information leakage was still demonstrated in follow-on work.
+      <a class="cite" href="https://arxiv.org/html/2511.03675v1">[Whisper Leak citing Cloudflare mitigation]</a>
+    </p>
+
+    <h3>Implications for Sensitive Deployments</h3>
+    <p>
+      Any LLM deployed in healthcare, legal, financial, or government contexts that uses
+      streaming APIs is potentially leaking response content to anyone with network
+      visibility between the user and the provider. This includes corporate proxies,
+      VPN providers, ISPs, and potentially government surveillance infrastructure.
+      The appropriate security posture for highly sensitive deployments is to disable
+      streaming entirely (returning complete responses as a single packet) or to deploy
+      LLM inference on-premises with no external network exposure.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 8 ══ -->
+  <section class="section" id="s8">
+    <span class="section-number">08</span>
+    <h2 id="timing-attacks-on-efficient-inference">Timing Attacks on Efficient Inference</h2>
+
+    <p>
+      Performance is competitive in the LLM serving market, and providers invest heavily in
+      inference optimization techniques. Two major categories — <strong>speculative
+      decoding</strong> and <strong>KV cache sharing</strong> — have been shown to introduce
+      exploitable side-channels that reveal private information about user inputs and
+      system configurations.
+    </p>
+
+    <h3>Speculative Decoding Side-Channels</h3>
+    <p>
+      Speculative decoding accelerates LLM inference by having a small, cheap "draft model"
+      predict several tokens ahead, then having the large target model verify them in parallel.
+      When the draft model guesses correctly, multiple tokens are accepted in one verification
+      pass. When it guesses incorrectly, the model falls back to single-token autoregressive
+      generation. This accept/reject pattern is <strong>input-dependent</strong>: some
+      prompts will be decoded with many correct speculations (producing larger packets per
+      iteration), while others trigger many mis-speculations (smaller packets per iteration).
+    </p>
+    <p>
+      Wei et al. (2024) demonstrated that a passive network adversary observing packet
+      sizes per generation iteration can reconstruct this accept/reject trace, and use it
+      to fingerprint user queries with <strong>&gt;90% accuracy</strong> across four different
+      speculative decoding schemes.
+      <a class="cite" href="https://arxiv.org/html/2411.01076v3">[Wei et al., "When Speculation Spills Secrets," 2024]</a>
+      Specifically: REST achieved ~100% query identification accuracy, LADE reached 92%,
+      BiLD 95%, and even EAGLE on remote vLLM achieved 77.6% accuracy.
+    </p>
+    <p>
+      Beyond query fingerprinting, a malicious user with API access can also <strong>extract
+      private datastore contents</strong> used by retrieval-augmented speculative decoding
+      (e.g., REST): by crafting inputs designed to probe the datastore and observing which
+      tokens are correctly speculated, the attacker can leak datastore contents at more than
+      25 tokens per second. This is a particularly severe threat for RAG systems that include
+      proprietary or confidential documents in their retrieval corpus.
+    </p>
+
+    <h3>Carlini &amp; Nasr: Timing Variations from Inference Optimizations</h3>
+    <p>
+      Carlini &amp; Nasr (2024) demonstrated an earlier version of this class of attack,
+      showing that timing variations due to inference optimizations in commercial models
+      (GPT-4, Claude) can be exploited via packet inter-arrival times as a side-channel.
+      Their work established the threat model for this research area, though subsequent
+      research showed that inter-arrival time signals are considerably noisier than packet
+      size signals — the Wei et al. approach achieves 77.6% accuracy where Carlini &amp; Nasr's
+      approach achieves only 14.4% on the same vLLM setup.
+    </p>
+
+    <h3>InputSnatch: KV Cache Timing Attacks</h3>
+    <p>
+      A second class of timing side-channel exploits <strong>KV cache sharing</strong>.
+      Modern LLM inference backends (vLLM, TensorRT-LLM) implement prefix caching: if two
+      requests share a common prefix, the KV cache computed for that prefix is reused rather
+      than recomputed. This produces a measurable timing difference — a cache hit responds
+      noticeably faster than a cache miss.
+      <a class="cite" href="https://arxiv.org/abs/2411.18191">[Zheng et al., "InputSnatch," arXiv 2411.18191, 2024]</a>
+    </p>
+    <p>
+      The <strong>InputSnatch</strong> attack by Zheng et al. (2024) exploits this
+      vulnerability to reconstruct other users' cached prompts. The attack works by
+      systematically querying the target service with candidate inputs and observing
+      whether the time-to-first-token (TTFT) indicates a cache hit. A cache hit reveals
+      that the candidate prefix matches another user's cached query. By iteratively
+      constructing increasingly long prefixes that match, the attacker can reconstruct
+      the victim user's exact prompt — even when the service uses HTTPS encryption.
+    </p>
+    <p>
+      In experiments on a medical Q&amp;A chatbot with prefix caching, InputSnatch achieved
+      a <strong>62% success rate</strong> in extracting exact disease inputs and 13.5% for
+      precise symptom descriptions. For a legal consultation RAG system with semantic caching,
+      semantic extraction success rates ranged from <strong>43% to 100%</strong>.
+    </p>
+
+    <div class="attack-flow">
+<span class="step-label">InputSnatch Attack Flow:</span>
+
+[Attacker] ─── crafts candidate prefix "What are the symptoms of..." ──→ [LLM API]
+                                                                              │
+                                                                   Measure TTFT
+                                                                              │
+                                        ┌─────────────────────────────────────┘
+                                        │
+                               TTFT &lt; threshold? ──→ YES → Cache HIT → prefix matches victim query
+                                        │
+                                       NO
+                                        │
+                               TTFT ≥ threshold → Cache MISS → try next candidate
+                                        │
+                               [iterate with ML-guided input constructor]
+                                        │
+                               Reconstruct full victim query from matched prefix segments
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════ SECTION 9 ══ -->
+  <section class="section" id="s9">
+    <span class="section-number">09</span>
+    <h2 id="tpuxtract-hardware-emanation-attacks">TPUXtract: Hardware Emanation Attacks</h2>
+
+    <p>
+      All the attacks discussed so far operate at the API or network level. But there is
+      another attack surface entirely: the physical hardware running the model. Neural network
+      inference on specialized chips (TPUs, GPUs, NPUs) produces <strong>electromagnetic
+      (EM) emanations</strong> correlated with the operations being performed. An adversary
+      with physical proximity to the hardware — or even access to measurement equipment in
+      an adjacent rack in a data center — can use these emanations to infer the model's
+      architecture. This is <strong>TPUXtract</strong>.
+      <a class="cite" href="https://www.keysight.com/blogs/en/tech/nwvs/2025/02/25/security-highlight-tpuxtract-a-new-side-channel-attack-on-neural-networks">[Keysight Security Blog, 2025]</a>
+    </p>
+
+    <h3>Attack Methodology</h3>
+    <p>
+      The attack was demonstrated by researchers from North Carolina State University against
+      a Google Tensor Processing Unit (TPU). The fundamental observation is that TPU power
+      consumption varies measurably depending on the layer configuration being processed.
+      Different layer types (convolutional, fully connected, attention), different layer sizes,
+      and different connectivity patterns each produce distinct EM signatures.
+    </p>
+    <p>
+      TPUXtract exploits the fact that in a neural network, data flows <em>sequentially</em>
+      through layers. The attacker measures the EM signal over time as the TPU processes an
+      input and correlates different time windows with the EM profiles expected for different
+      layer configurations. By matching the observed EM trace to a library of pre-characterized
+      layer profiles, the attacker reconstructs the model's architecture <em>one layer at
+      a time</em>.
+    </p>
+    <p>
+      This layer-by-layer approach dramatically reduces search complexity compared to trying
+      to match the entire model at once. The attack achieved <strong>99.91% accuracy</strong>
+      in extracting neural network hyperparameters from the TPU.
+    </p>
+
+    <h3>What Can Be Extracted</h3>
+    <p>
+      TPUXtract can recover:
+    </p>
+    <ul>
+      <li><strong>Number of layers</strong> — the depth of the network</li>
+      <li><strong>Layer types</strong> — fully connected, convolutional, attention, normalization</li>
+      <li><strong>Layer dimensions</strong> — number of neurons/channels per layer</li>
+      <li><strong>Connectivity patterns</strong> — skip connections, attention heads</li>
+    </ul>
+    <p>
+      Critically, TPUXtract does <em>not</em> recover model weights — the actual
+      numerical parameters learned during training. This is an important limitation:
+      knowing the architecture is like knowing the blueprint of a building without knowing
+      the furniture inside. However, knowing the architecture is enormously valuable:
+      it enables much more efficient model extraction via the API (the search space
+      for the surrogate is now dramatically constrained), it reveals proprietary
+      architectural innovations, and it provides a roadmap for targeted adversarial
+      attacks. For Transformer-based LLMs, full extraction requires additional steps
+      (nullifying weights of specific layers to isolate others), but the paper
+      demonstrates feasibility.
+    </p>
+
+    <h3>Implications for Model IP Security</h3>
+    <p>
+      Cloud providers and hardware manufacturers have historically assumed that EM
+      emanations from accelerators are not exploitable in multi-tenant environments
+      because isolation between tenants should prevent physical access. TPUXtract challenges
+      this assumption: in co-location data centers, measurements from adjacent physical
+      hardware may suffice. More broadly, any organization running AI inference on hardware
+      that is not physically controlled end-to-end faces architectural secrecy risks.
+      Effective countermeasures include hardware-level EM shielding, noise injection
+      circuits, and power-consumption masking — all established techniques from the
+      cryptographic hardware security domain, now becoming relevant to AI deployments.
+      <a class="cite" href="https://www.darkreading.com/vulnerabilities-threats/tpuxtract-attackers-steal-ai-models">[Dark Reading, 2024]</a>
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ SECTION 10 ══ -->
+  <section class="section" id="s10">
+    <span class="section-number">10</span>
+    <h2 id="model-inversion">Model Inversion</h2>
+
+    <p>
+      Model inversion attacks reconstruct <em>representative inputs</em> from model outputs,
+      effectively running inference in reverse. Rather than asking "what does this model
+      predict for this input?", the attacker asks "what input does this model associate
+      with this prediction?" In the domain of facial recognition, model inversion can
+      reconstruct recognizable face images of training subjects from nothing but the model's
+      confidence scores — a profound privacy violation.
+    </p>
+
+    <h3>Fredrikson et al.: Face Reconstruction</h3>
+    <p>
+      The seminal model inversion paper by <strong>Fredrikson, Jha, and Ristenpart (CCS 2015)</strong>
+      demonstrated that a facial recognition model trained on a set of named individuals
+      could be inverted to produce recognizable face images for any target individual whose
+      name is in the model's label space.
+      <a class="cite" href="https://rist.tech.cornell.edu/papers/mi-ccs.pdf">[Fredrikson et al., CCS 2015]</a>
+      The attack works by gradient-based optimization in the input space: starting from
+      random noise, the attacker iteratively adjusts the input to maximize the model's
+      confidence for the target label. The optimization converges to an input that is
+      highly recognizable as the target individual — even without ever seeing their actual
+      photo in the training set.
+    </p>
+    <p>
+      This attack works because the model has encoded sufficient information about each
+      individual's facial features in its parameters to make confident predictions —
+      and gradient-based inversion can decode that information back into the image space.
+      The attack succeeded in producing face images that human evaluators could correctly
+      identify as the target individual at significantly above-chance rates.
+    </p>
+
+    <h3>Gradient-Based Inversion Code</h3>
+
+<pre><code><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+<span class="kw">import</span> torch.optim <span class="kw">as</span> optim
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+
+<span class="kw">def</span> <span class="fn">model_inversion_attack</span>(
+    model,
+    target_class,
+    input_shape,
+    n_iterations=<span class="nb">2000</span>,
+    lr=<span class="nb">0.01</span>,
+    reg_strength=<span class="nb">0.001</span>
+):
+    <span class="st">"""
+    White-box model inversion: reconstruct an input that maximally activates
+    target_class in the model's output.
+
+    Args:
+        model         : PyTorch classification model (should output logits or log-probs)
+        target_class  : int, index of the class to invert
+        input_shape   : tuple, e.g. (1, 3, 64, 64) for a single RGB 64×64 image
+        n_iterations  : optimization steps
+        lr            : learning rate
+        reg_strength  : L2 regularization on input (prevents degenerate solutions)
+
+    Returns:
+        reconstructed_input : torch.Tensor of shape input_shape
+    """</span>
+    model.eval()
+
+    <span class="cm"># Initialize from random noise in [0, 1]</span>
+    x = torch.rand(input_shape, requires_grad=<span class="kw">True</span>)
+    optimizer = optim.Adam([x], lr=lr)
+    criterion = nn.CrossEntropyLoss()
+
+    target = torch.tensor([target_class], dtype=torch.long)
+
+    <span class="kw">for</span> step <span class="kw">in</span> range(n_iterations):
+        optimizer.zero_grad()
+
+        <span class="cm"># Clamp input to valid image range</span>
+        x_clamped = torch.clamp(x, <span class="nb">0.0</span>, <span class="nb">1.0</span>)
+
+        <span class="cm"># Forward pass through the target model</span>
+        logits = model(x_clamped)
+
+        <span class="cm"># Loss: maximize confidence for target_class + regularize for naturalness</span>
+        classification_loss = criterion(logits, target)
+        regularization      = reg_strength * torch.norm(x_clamped, p=<span class="nb">2</span>)
+        total_loss = classification_loss + regularization
+
+        total_loss.backward()
+        optimizer.step()
+
+        <span class="kw">if</span> step % <span class="nb">500</span> == <span class="nb">0</span>:
+            confidence = torch.softmax(logits, dim=<span class="nb">-1</span>)[<span class="nb">0</span>, target_class].item()
+            <span class="kw">print</span>(<span class="st">f"Step {step:4d} | Loss={total_loss.item():.4f} | "</span>
+                  <span class="st">f"Confidence for class {target_class}: {confidence:.3f}"</span>)
+
+    <span class="kw">return</span> x.detach().clamp(<span class="nb">0</span>, <span class="nb">1</span>)
+
+
+<span class="kw">def</span> <span class="fn">black_box_inversion</span>(model_query_fn, target_class, input_shape,
+                         n_iterations=<span class="nb">5000</span>, population_size=<span class="nb">50</span>):
+    <span class="st">"""
+    Black-box model inversion using natural evolution strategy (NES).
+    model_query_fn: callable that takes an input array and returns confidence scores.
+    Uses estimated gradients from score differences in random directions.
+    """</span>
+    sigma = <span class="nb">0.1</span>    <span class="cm"># noise scale for gradient estimation</span>
+    lr    = <span class="nb">0.01</span>   <span class="cm"># learning rate</span>
+
+    <span class="cm"># Start from mean of uniform distribution</span>
+    x = np.random.uniform(<span class="nb">0</span>, <span class="nb">1</span>, input_shape).astype(np.float32)
+
+    <span class="kw">for</span> step <span class="kw">in</span> range(n_iterations):
+        <span class="cm"># Estimate gradient via random perturbations</span>
+        noise = np.random.randn(population_size, *input_shape).astype(np.float32)
+        rewards = np.zeros(population_size)
+
+        <span class="kw">for</span> i, n <span class="kw">in</span> enumerate(noise):
+            x_perturbed = np.clip(x + sigma * n, <span class="nb">0</span>, <span class="nb">1</span>)
+            scores = model_query_fn(x_perturbed)
+            rewards[i] = scores[target_class]   <span class="cm"># maximize target class confidence</span>
+
+        <span class="cm"># NES gradient estimate</span>
+        grad_estimate = np.mean(
+            rewards[:, <span class="kw">None</span>, ...] * noise.reshape(population_size, -<span class="nb">1</span>),
+            axis=<span class="nb">0</span>
+        ).reshape(input_shape) / sigma
+
+        x = np.clip(x + lr * grad_estimate, <span class="nb">0</span>, <span class="nb">1</span>)
+
+        <span class="kw">if</span> step % <span class="nb">1000</span> == <span class="nb">0</span>:
+            curr_confidence = model_query_fn(x)[target_class]
+            <span class="kw">print</span>(<span class="st">f"Step {step} | Target confidence: {curr_confidence:.3f}"</span>)
+
+    <span class="kw">return</span> x
+</code></pre>
+
+    <p>
+      Modern model inversion attacks have become dramatically more powerful by
+      leveraging generative adversarial networks (GANs) and diffusion models as
+      prior knowledge of the input distribution. GAN-based inversion constrains
+      the search to the latent space of a GAN trained on the same domain, ensuring
+      reconstructed images are photorealistic and semantically valid. This approach
+      has achieved face reconstructions at 64×64 resolution that are recognizable
+      to human evaluators even against production facial recognition models.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ SECTION 11 ══ -->
+  <section class="section" id="s11">
+    <span class="section-number">11</span>
+    <h2 id="defense-rate-limiting">Defense: Rate Limiting</h2>
+
+    <p>
+      The simplest and most immediately deployable defense against model extraction is
+      <strong>rate limiting</strong>: constraining the number of queries any individual
+      user or IP address can make per unit time. Since model extraction requires
+      thousands to hundreds of thousands of API calls, a well-calibrated rate limit
+      dramatically increases the time and monetary cost of an attack, potentially
+      making it economically infeasible.
+    </p>
+
+    <h3>Adaptive Rate Limiting</h3>
+    <p>
+      Static rate limits are a blunt instrument — they may block legitimate power users
+      while a sophisticated attacker distributes their queries across many accounts or
+      IP addresses. <strong>Adaptive rate limiting</strong> monitors behavioral signals
+      that distinguish legitimate use from extraction attempts and adjusts limits
+      dynamically. Extraction queries tend to be systematic (regularly spaced, covering
+      the input space in structured ways), whereas legitimate queries tend to be
+      irregular and semantically coherent. Per-user query budgets, anomaly detection
+      on query distributions, and progressive throttling create a layered defense.
+    </p>
+
+    <h3>Implementation</h3>
+
+<pre><code><span class="kw">import</span> time
+<span class="kw">import</span> collections
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass, field
+<span class="kw">from</span> typing <span class="kw">import</span> Dict, Deque
+
+
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="nm">UserQueryRecord</span>:
+    <span class="st">"""Per-user state for extraction detection."""</span>
+    query_times:    Deque[float] = field(default_factory=<span class="kw">lambda</span>: collections.deque(maxlen=<span class="nb">1000</span>))
+    query_count:    int = <span class="nb">0</span>
+    flagged_count:  int = <span class="nb">0</span>
+    throttle_until: float = <span class="nb">0.0</span>    <span class="cm"># Unix timestamp when throttling expires</span>
+
+
+<span class="kw">class</span> <span class="nm">AdaptiveRateLimiter</span>:
+    <span class="st">"""
+    Adaptive rate limiter that detects extraction-like query patterns.
+    Implements:
+      1. Hard per-minute rate limit
+      2. Daily budget per user
+      3. Regularity anomaly detection (extraction queries are too regular)
+      4. Progressive throttling on suspicious users
+    """</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(
+        self,
+        hard_limit_per_minute=<span class="nb">60</span>,
+        daily_budget=<span class="nb">5000</span>,
+        regularity_threshold=<span class="nb">0.15</span>,    <span class="cm"># coefficient of variation below which = suspicious</span>
+        throttle_multiplier=<span class="nb">4.0</span>        <span class="cm"># slow down suspicious users by this factor</span>
+    ):
+        self.hard_limit_per_minute = hard_limit_per_minute
+        self.daily_budget          = daily_budget
+        self.regularity_threshold  = regularity_threshold
+        self.throttle_multiplier   = throttle_multiplier
+
+        self.users: Dict[str, UserQueryRecord] = {}
+
+    <span class="kw">def</span> <span class="fn">_get_user</span>(self, user_id: str) -> UserQueryRecord:
+        <span class="kw">if</span> user_id <span class="kw">not in</span> self.users:
+            self.users[user_id] = UserQueryRecord()
+        <span class="kw">return</span> self.users[user_id]
+
+    <span class="kw">def</span> <span class="fn">_queries_last_minute</span>(self, record: UserQueryRecord) -> int:
+        now = time.time()
+        cutoff = now - <span class="nb">60</span>
+        <span class="kw">return</span> sum(<span class="nb">1</span> <span class="kw">for</span> t <span class="kw">in</span> record.query_times <span class="kw">if</span> t > cutoff)
+
+    <span class="kw">def</span> <span class="fn">_is_too_regular</span>(self, record: UserQueryRecord) -> bool:
+        <span class="st">"""
+        Extraction bots tend to query at very regular intervals.
+        Compute coefficient of variation (CV) of inter-query intervals.
+        Low CV (regular) → flag as suspicious.
+        """</span>
+        times = list(record.query_times)
+        <span class="kw">if</span> len(times) &lt; <span class="nb">20</span>:
+            <span class="kw">return</span> <span class="kw">False</span>   <span class="cm"># insufficient data</span>
+        intervals = np.diff(sorted(times[-<span class="nb">50</span>:]))   <span class="cm"># last 50 queries</span>
+        <span class="kw">if</span> len(intervals) == <span class="nb">0</span> <span class="kw">or</span> np.mean(intervals) == <span class="nb">0</span>:
+            <span class="kw">return</span> <span class="kw">False</span>
+        cv = np.std(intervals) / np.mean(intervals)
+        <span class="kw">return</span> cv &lt; self.regularity_threshold
+
+    <span class="kw">def</span> <span class="fn">check_and_record</span>(self, user_id: str) -> dict:
+        <span class="st">"""
+        Check whether a query from user_id should be allowed.
+        Returns {"allowed": bool, "reason": str, "throttle_remaining": float}
+        Records the query time if allowed.
+        """</span>
+        record = self._get_user(user_id)
+        now    = time.time()
+
+        <span class="cm"># 1. Check if user is currently under active throttle</span>
+        <span class="kw">if</span> now &lt; record.throttle_until:
+            <span class="kw">return</span> {
+                <span class="st">"allowed"</span>: <span class="kw">False</span>,
+                <span class="st">"reason"</span>: <span class="st">"throttled"</span>,
+                <span class="st">"throttle_remaining"</span>: record.throttle_until - now
+            }
+
+        <span class="cm"># 2. Check hard per-minute rate limit</span>
+        <span class="kw">if</span> self._queries_last_minute(record) >= self.hard_limit_per_minute:
+            <span class="kw">return</span> {
+                <span class="st">"allowed"</span>: <span class="kw">False</span>,
+                <span class="st">"reason"</span>: <span class="st">"rate_limit_exceeded"</span>,
+                <span class="st">"throttle_remaining"</span>: <span class="nb">0</span>
+            }
+
+        <span class="cm"># 3. Check daily budget</span>
+        <span class="kw">if</span> record.query_count >= self.daily_budget:
+            <span class="kw">return</span> {
+                <span class="st">"allowed"</span>: <span class="kw">False</span>,
+                <span class="st">"reason"</span>: <span class="st">"daily_budget_exceeded"</span>,
+                <span class="st">"throttle_remaining"</span>: <span class="nb">0</span>
+            }
+
+        <span class="cm"># 4. Check for extraction-like regularity</span>
+        suspicious = self._is_too_regular(record)
+        <span class="kw">if</span> suspicious:
+            record.flagged_count += <span class="nb">1</span>
+            <span class="cm"># Progressive: each flag doubles the throttle window</span>
+            throttle_seconds = min(<span class="nb">60</span> * self.throttle_multiplier ** record.flagged_count, <span class="nb">86400</span>)
+            record.throttle_until = now + throttle_seconds
+            <span class="kw">return</span> {
+                <span class="st">"allowed"</span>: <span class="kw">False</span>,
+                <span class="st">"reason"</span>: <span class="st">"extraction_pattern_detected"</span>,
+                <span class="st">"throttle_remaining"</span>: throttle_seconds
+            }
+
+        <span class="cm"># 5. Allow: record the query</span>
+        record.query_times.append(now)
+        record.query_count += <span class="nb">1</span>
+        <span class="kw">return</span> {"allowed": <span class="kw">True</span>, <span class="st">"reason"</span>: <span class="st">"ok"</span>, <span class="st">"throttle_remaining"</span>: <span class="nb">0</span>}
+</code></pre>
+
+    <div class="callout callout-tip">
+      <strong>Defense-in-Depth</strong>
+      Rate limiting alone is insufficient against a patient, distributed attacker. Combine
+      it with output perturbation (Section 12) and watermarking (Section 13) for layered
+      defense. An attacker who gets past rate limiting should still receive perturbed
+      outputs, and any resulting surrogate model should carry a detectable watermark.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ SECTION 12 ══ -->
+  <section class="section" id="s12">
+    <span class="section-number">12</span>
+    <h2 id="defense-output-perturbation">Defense: Output Perturbation</h2>
+
+    <p>
+      Even if an attacker successfully collects thousands of query-response pairs, the
+      fidelity of their surrogate model depends on the quality of those labels. If the
+      target model's outputs are perturbed — by adding calibrated noise, rounding
+      confidence scores, or restricting the output to top-k classes — the surrogate
+      trains on corrupted supervision and degrades in quality. The art of output
+      perturbation is to add enough noise to impede extraction while preserving
+      enough signal to maintain utility for legitimate users.
+    </p>
+
+    <h3>Differential Privacy Mechanisms for Output</h3>
+    <p>
+      The <strong>Laplace mechanism</strong> and <strong>Gaussian mechanism</strong>
+      from differential privacy theory provide principled ways to add output noise
+      with formal guarantees. For a model returning a probability vector in <code>[0,1]^k</code>,
+      adding Laplace noise with scale <code>Δf / ε</code> (where <code>Δf</code> is the
+      L1 sensitivity of the output function and <code>ε</code> is the privacy parameter)
+      ensures (ε, 0)-differential privacy. In practice, the sensitivity of a softmax
+      output is 2 (bounded range), so the noise scale is <code>2/ε</code>.
+    </p>
+
+    <h3>Confidence Score Rounding and Top-k Restriction</h3>
+    <p>
+      A simpler, non-probabilistic approach is <strong>confidence score rounding</strong>:
+      returning probabilities rounded to 2 decimal places instead of 8. This dramatically
+      reduces the information content of each query response while preserving the ordinal
+      ranking of classes (which is what most legitimate users need). <strong>Top-k
+      restriction</strong> returns only the top k predictions rather than the full
+      distribution, further limiting the information available to a surrogate model.
+    </p>
+
+    <h3>Implementation</h3>
+
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> scipy.special <span class="kw">import</span> softmax
+
+
+<span class="kw">class</span> <span class="nm">OutputPerturbationDefense</span>:
+    <span class="st">"""
+    Defends against model extraction by perturbing model outputs before
+    returning them to the user.
+
+    Supports three strategies:
+      - 'laplace'  : Add Laplace noise (differential privacy)
+      - 'rounding' : Round confidences to d decimal places
+      - 'topk'     : Return only top-k predictions
+    """</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, strategy=<span class="st">'laplace'</span>, epsilon=<span class="nb">1.0</span>, decimal_places=<span class="nb">2</span>, top_k=<span class="nb">3</span>):
+        <span class="kw">assert</span> strategy <span class="kw">in</span> (<span class="st">'laplace'</span>, <span class="st">'gaussian'</span>, <span class="st">'rounding'</span>, <span class="st">'topk'</span>)
+        self.strategy       = strategy
+        self.epsilon        = epsilon          <span class="cm"># privacy budget (smaller = more noise)</span>
+        self.decimal_places = decimal_places
+        self.top_k          = top_k
+
+    <span class="kw">def</span> <span class="fn">perturb</span>(self, probabilities: np.ndarray) -> np.ndarray:
+        <span class="st">"""
+        Apply output perturbation to a probability vector.
+        probabilities: np.ndarray of shape (n_classes,), summing to 1.
+        Returns perturbed probabilities (not necessarily summing to 1 for noisy methods).
+        """</span>
+        proba = np.asarray(probabilities, dtype=np.float64)
+
+        <span class="kw">if</span> self.strategy == <span class="st">'laplace'</span>:
+            <span class="kw">return</span> self._laplace_mechanism(proba)
+        <span class="kw">elif</span> self.strategy == <span class="st">'gaussian'</span>:
+            <span class="kw">return</span> self._gaussian_mechanism(proba)
+        <span class="kw">elif</span> self.strategy == <span class="st">'rounding'</span>:
+            <span class="kw">return</span> self._rounding(proba)
+        <span class="kw">elif</span> self.strategy == <span class="st">'topk'</span>:
+            <span class="kw">return</span> self._topk_restriction(proba)
+
+    <span class="kw">def</span> <span class="fn">_laplace_mechanism</span>(self, proba):
+        <span class="st">"""
+        Add Laplace noise with scale = sensitivity / epsilon.
+        For probability vectors, L1 sensitivity is 2.
+        After noise addition, re-normalize and clip to [0, 1].
+        """</span>
+        sensitivity = <span class="nb">2.0</span>   <span class="cm"># L1 sensitivity of softmax output</span>
+        scale = sensitivity / self.epsilon
+        noise = np.random.laplace(loc=<span class="nb">0.0</span>, scale=scale, size=proba.shape)
+        noisy = np.clip(proba + noise, <span class="nb">0.0</span>, <span class="nb">1.0</span>)
+        <span class="cm"># Re-normalize to sum to 1 (project onto probability simplex)</span>
+        total = noisy.sum()
+        <span class="kw">return</span> noisy / total <span class="kw">if</span> total > <span class="nb">0</span> <span class="kw">else</span> np.ones_like(noisy) / len(noisy)
+
+    <span class="kw">def</span> <span class="fn">_gaussian_mechanism</span>(self, proba):
+        <span class="st">"""
+        Gaussian mechanism with (epsilon, delta)-DP guarantee.
+        Uses delta=1e-5 by default; sigma calibrated to L2 sensitivity.
+        """</span>
+        delta = <span class="nb">1e-5</span>
+        l2_sensitivity = np.sqrt(<span class="nb">2</span>)           <span class="cm"># L2 sensitivity of probability vector</span>
+        sigma = l2_sensitivity * np.sqrt(<span class="nb">2</span> * np.log(<span class="nb">1.25</span> / delta)) / self.epsilon
+        noise = np.random.normal(<span class="nb">0</span>, sigma, proba.shape)
+        noisy = np.clip(proba + noise, <span class="nb">0.0</span>, <span class="nb">1.0</span>)
+        total = noisy.sum()
+        <span class="kw">return</span> noisy / total <span class="kw">if</span> total > <span class="nb">0</span> <span class="kw">else</span> np.ones_like(noisy) / len(noisy)
+
+    <span class="kw">def</span> <span class="fn">_rounding</span>(self, proba):
+        <span class="st">"""Round each probability to d decimal places, then renormalize."""</span>
+        rounded = np.round(proba, self.decimal_places)
+        total   = rounded.sum()
+        <span class="kw">return</span> rounded / total <span class="kw">if</span> total > <span class="nb">0</span> <span class="kw">else</span> np.ones_like(rounded) / len(rounded)
+
+    <span class="kw">def</span> <span class="fn">_topk_restriction</span>(self, proba):
+        <span class="st">"""
+        Zero out all but the top-k classes and renormalize.
+        Returns a sparse vector with at most k non-zero entries.
+        """</span>
+        k = min(self.top_k, len(proba))
+        result = np.zeros_like(proba)
+        top_indices = np.argsort(proba)[-k:]
+        result[top_indices] = proba[top_indices]
+        total = result.sum()
+        <span class="kw">return</span> result / total <span class="kw">if</span> total > <span class="nb">0</span> <span class="kw">else</span> result
+
+
+<span class="cm"># ── Privacy-utility tradeoff demonstration ──────────────────────────────</span>
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    original_proba = np.array([<span class="nb">0.70</span>, <span class="nb">0.20</span>, <span class="nb">0.07</span>, <span class="nb">0.03</span>])
+
+    <span class="kw">for</span> eps <span class="kw">in</span> [<span class="nb">0.1</span>, <span class="nb">1.0</span>, <span class="nb">5.0</span>]:
+        defense = OutputPerturbationDefense(strategy=<span class="st">'laplace'</span>, epsilon=eps)
+        perturbed = defense.perturb(original_proba)
+        <span class="kw">print</span>(<span class="st">f"ε={eps:.1f}: original={np.round(original_proba,3)} → perturbed={np.round(perturbed,3)}"</span>)
+</code></pre>
+
+    <p>
+      The key tradeoff: smaller <code>ε</code> means more noise (stronger privacy, worse
+      utility). For most commercial models, <code>ε = 1.0</code> to <code>ε = 5.0</code>
+      represents a practical operating range — sufficient noise to degrade a surrogate's
+      training signal by 15–30% while keeping prediction accuracy for legitimate users
+      within acceptable bounds.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ SECTION 13 ══ -->
+  <section class="section" id="s13">
+    <span class="section-number">13</span>
+    <h2 id="defense-model-watermarking">Defense: Model Watermarking</h2>
+
+    <p>
+      Rate limiting and output perturbation try to prevent extraction. <strong>Model
+      watermarking</strong> takes a different approach: it assumes extraction may occur
+      and embeds a <em>verifiable signature</em> in the model's behavior that persists
+      into the surrogate, allowing the original model owner to <em>prove</em> that a
+      suspected stolen model was derived from their source model.
+      <a class="cite" href="https://arxiv.org/html/2411.05051v1">[Survey: IP Protection for Deep Learning, arXiv 2411.05051, 2024]</a>
+    </p>
+
+    <h3>Backdoor-Based Watermarking</h3>
+    <p>
+      The most widely deployed watermarking technique introduces a <strong>secret trigger
+      set</strong>: a small collection of carefully crafted input-output pairs that the
+      model is trained to respond to in a specific, unusual way. For example, a facial
+      recognition model might be watermarked to classify images containing a specific
+      subtle texture pattern as a designated "watermark class" with very high confidence.
+      A legitimate copy of the model (including any surrogate trained via knowledge
+      distillation on the original's outputs) will also exhibit this behavior, because
+      the attacker's training queries included these trigger inputs and the attacker
+      faithfully copied the corresponding responses. When the model owner suspects
+      a stolen copy, they query it with the trigger set and check for the expected
+      watermark behavior.
+    </p>
+
+    <h3>Parameter-Space Watermarking</h3>
+    <p>
+      White-box watermarking embeds signatures directly into model weights rather than
+      behavior. Uchida et al. (2017) proposed embedding a bit string into the distribution
+      of weight values in a specific layer using a regularization term during training.
+      The watermark can be extracted by computing the inner product of the weight vector
+      with a secret key matrix. This approach is more robust to model modifications
+      (fine-tuning, pruning) than backdoor-based approaches, but requires access to the
+      model's internal weights for verification — which is only possible if the attacker
+      makes their surrogate available for inspection.
+    </p>
+
+    <h3>Limitations and Active Research</h3>
+    <p>
+      Watermarking faces several fundamental challenges. First, a determined adversary
+      who knows a watermark exists can attempt to remove it through fine-tuning, model
+      pruning, or knowledge distillation into a fresh model. Second, backdoor-based
+      watermarks introduce a genuine security vulnerability — if the trigger pattern
+      is discovered, it can be used to manipulate the model's behavior. Third,
+      watermarks provide attribution after the fact but do not prevent the initial
+      harm of extraction. Nonetheless, for IP litigation purposes, a robust watermark
+      that survives extraction and is demonstrably non-trivially correlated with the
+      victim model provides strong legal evidence of theft.
+    </p>
+    <p>
+      Recent work on <strong>radioactive data</strong> — poisoning training data with
+      imperceptible perturbations that propagate into models trained on it — offers an
+      alternative watermarking approach that operates at the data rather than model level,
+      providing attribution even when the attacker trains a completely fresh model from
+      stolen training data rather than distilling from the API.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ SECTION 14 ══ -->
+  <section class="section" id="s14">
+    <span class="section-number">14</span>
+    <h2 id="api-monitoring-for-extraction-attempts">API Monitoring for Extraction Attempts</h2>
+
+    <p>
+      A well-instrumented API can detect model extraction in progress by monitoring
+      behavioral anomalies. Legitimate API users exhibit characteristic usage patterns
+      (bursty queries related to specific use cases, natural language diversity in NLP
+      applications, predictable diurnal patterns) that differ from extraction attacks
+      (systematic coverage of the input space, high query volumes, mechanically generated
+      inputs, low semantic diversity). Effective API monitoring combines statistical
+      anomaly detection with domain-specific extraction heuristics.
+    </p>
+
+    <h3>Extraction Behavioral Signatures</h3>
+    <ul>
+      <li><strong>Unusual query distributions</strong>: extraction queries tend to cover
+        the input domain uniformly or along specific information-theoretic criteria,
+        producing input distributions quite different from natural use.</li>
+      <li><strong>High query velocity</strong>: API calls at near-maximum rate from a
+        single account or correlated accounts.</li>
+      <li><strong>Low semantic coherence</strong>: for NLP models, extraction queries
+        may include partially randomized text, edge-case inputs, or grammatically
+        unusual constructions that wouldn't arise from genuine user needs.</li>
+      <li><strong>Absence of feedback patterns</strong>: legitimate users typically
+        follow up errors or low-confidence responses. Extraction bots often don't.</li>
+      <li><strong>Cross-account coordination</strong>: multiple accounts with similar
+        query patterns or querying complementary regions of the input space.</li>
+    </ul>
+
+    <h3>Anomaly Detection Implementation</h3>
+
+<pre><code><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> IsolationForest
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> collections
+<span class="kw">import</span> math
+
+
+<span class="kw">class</span> <span class="nm">ExtractionDetector</span>:
+    <span class="st">"""
+    Anomaly-based detector for model extraction attempts.
+    Builds a feature vector per user session from query statistics
+    and uses Isolation Forest to identify anomalous usage patterns.
+    """</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, window_size=<span class="nb">100</span>, contamination=<span class="nb">0.05</span>):
+        <span class="st">"""
+        window_size   : number of recent queries to consider per user
+        contamination : expected fraction of anomalous users (for IsolationForest)
+        """</span>
+        self.window_size   = window_size
+        self.detector      = IsolationForest(contamination=contamination, random_state=<span class="nb">42</span>)
+        self.scaler        = StandardScaler()
+        self.user_history  = collections.defaultdict(list)   <span class="cm"># user_id -> [query_features]</span>
+        self._fitted       = <span class="kw">False</span>
+
+    <span class="kw">def</span> <span class="fn">_compute_session_features</span>(self, user_id: str) -> np.ndarray:
+        <span class="st">"""
+        Compute a feature vector summarizing a user's recent query behavior.
+        Features:
+          0: queries_per_minute  (last window)
+          1: inter_query_cv      (coefficient of variation of intervals)
+          2: input_entropy       (diversity of input lengths)
+          3: confidence_mean     (avg model confidence — low for adversarial inputs)
+          4: confidence_cv       (variation in model confidence)
+          5: unique_input_ratio  (fraction of distinct inputs — high for extraction)
+        """</span>
+        history = self.user_history[user_id][-self.window_size:]
+        n = len(history)
+        <span class="kw">if</span> n &lt; <span class="nb">2</span>:
+            <span class="kw">return</span> np.zeros(<span class="nb">6</span>)
+
+        timestamps      = np.array([h[<span class="st">"timestamp"</span>]      <span class="kw">for</span> h <span class="kw">in</span> history])
+        input_lengths   = np.array([h[<span class="st">"input_length"</span>]    <span class="kw">for</span> h <span class="kw">in</span> history])
+        confidences     = np.array([h[<span class="st">"top_confidence"</span>]  <span class="kw">for</span> h <span class="kw">in</span> history])
+        input_hashes    =          [h[<span class="st">"input_hash"</span>]      <span class="kw">for</span> h <span class="kw">in</span> history]
+
+        intervals = np.diff(sorted(timestamps))
+
+        <span class="cm"># Feature 0: query rate (queries per minute in the observed window)</span>
+        time_span = timestamps.max() - timestamps.min()
+        qpm = (n / time_span * <span class="nb">60</span>) <span class="kw">if</span> time_span > <span class="nb">0</span> <span class="kw">else</span> <span class="nb">0</span>
+
+        <span class="cm"># Feature 1: inter-query interval regularity (extraction bots → low CV)</span>
+        cv_intervals = (np.std(intervals) / np.mean(intervals)) <span class="kw">if</span> np.mean(intervals) > <span class="nb">0</span> <span class="kw">else</span> <span class="nb">0</span>
+
+        <span class="cm"># Feature 2: entropy of input lengths (systematic scanning → low entropy)</span>
+        length_counts = collections.Counter(input_lengths)
+        total = sum(length_counts.values())
+        entropy = -sum((c/total) * math.log2(c/total + <span class="nb">1e-9</span>) <span class="kw">for</span> c <span class="kw">in</span> length_counts.values())
+
+        <span class="cm"># Feature 3 & 4: model confidence statistics</span>
+        conf_mean = np.mean(confidences)
+        conf_cv   = np.std(confidences) / conf_mean <span class="kw">if</span> conf_mean > <span class="nb">0</span> <span class="kw">else</span> <span class="nb">0</span>
+
+        <span class="cm"># Feature 5: unique input ratio (close to 1.0 for systematic extraction)</span>
+        unique_ratio = len(set(input_hashes)) / n
+
+        <span class="kw">return</span> np.array([qpm, cv_intervals, entropy, conf_mean, conf_cv, unique_ratio])
+
+    <span class="kw">def</span> <span class="fn">record_query</span>(self, user_id: str, timestamp: float, input_length: int,
+                       top_confidence: float, input_hash: str):
+        <span class="st">"""Record metadata for a single API query (do not store raw inputs for privacy)."""</span>
+        self.user_history[user_id].append({
+            <span class="st">"timestamp"</span>:      timestamp,
+            <span class="st">"input_length"</span>:   input_length,
+            <span class="st">"top_confidence"</span>: top_confidence,
+            <span class="st">"input_hash"</span>:     input_hash,
+        })
+
+    <span class="kw">def</span> <span class="fn">fit_baseline</span>(self, baseline_user_ids):
+        <span class="st">"""Train the anomaly detector on baseline legitimate user sessions."""</span>
+        features = [self._compute_session_features(uid) <span class="kw">for</span> uid <span class="kw">in</span> baseline_user_ids
+                    <span class="kw">if</span> len(self.user_history[uid]) >= <span class="nb">10</span>]
+        <span class="kw">if not</span> features:
+            <span class="kw">raise</span> ValueError(<span class="st">"No baseline data available."</span>)
+        X = np.array(features)
+        X_scaled = self.scaler.fit_transform(X)
+        self.detector.fit(X_scaled)
+        self._fitted = <span class="kw">True</span>
+
+    <span class="kw">def</span> <span class="fn">score_user</span>(self, user_id: str) -> float:
+        <span class="st">"""
+        Returns anomaly score for a user.
+        Negative score → anomalous (potential extraction).
+        Positive score → normal behavior.
+        """</span>
+        <span class="kw">if not</span> self._fitted:
+            <span class="kw">raise</span> RuntimeError(<span class="st">"Call fit_baseline() first."</span>)
+        features = self._compute_session_features(user_id).reshape(<span class="nb">1</span>, -<span class="nb">1</span>)
+        scaled   = self.scaler.transform(features)
+        <span class="kw">return</span> self.detector.decision_function(scaled)[<span class="nb">0</span>]
+
+    <span class="kw">def</span> <span class="fn">is_suspicious</span>(self, user_id: str, threshold: float = <span class="nb">0.0</span>) -> bool:
+        <span class="st">"""Returns True if the user's behavior is anomalous above threshold."""</span>
+        <span class="kw">return</span> self.score_user(user_id) &lt; threshold
+</code></pre>
+
+    <div class="callout callout-warn">
+      <strong>False Positive Risk</strong>
+      Automated anomaly-based blocking carries false positive risk for power users,
+      developers testing integrations, and researchers. Detection should trigger
+      enhanced monitoring and throttling before outright blocking, with a human
+      review step for high-value accounts flagged as suspicious.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ SECTION 15 ══ -->
+  <section class="section" id="s15">
+    <span class="section-number">15</span>
+    <h2 id="differential-privacy">Differential Privacy</h2>
+
+    <p>
+      All the defenses discussed so far operate at inference time — after the model has
+      been trained. <strong>Differential privacy (DP)</strong> addresses the root cause by
+      modifying the training process itself to limit how much any individual training example
+      can influence the final model. A differentially private model is formally guaranteed
+      to reveal only bounded information about any single training example — providing
+      provable resistance to membership inference, attribute inference, and training data
+      extraction attacks.
+    </p>
+
+    <h3>Formal Definition</h3>
+    <p>
+      A randomized mechanism <em>M</em> is <strong>(ε, δ)-differentially private</strong>
+      if for any two adjacent datasets <em>D</em> and <em>D'</em> (differing in exactly
+      one record), and for any set of outputs <em>S</em>:
+    </p>
+    <p style="font-family: 'Consolas', monospace; background: #f1f5f9; padding: 12px 16px; border-radius: 6px; margin: 12px 0; color: #1e293b;">
+      Pr[M(D) ∈ S]  ≤  e<sup>ε</sup> · Pr[M(D') ∈ S]  +  δ
+    </p>
+    <p>
+      Smaller ε means stronger privacy. When δ = 0 (pure DP), the guarantee is absolute;
+      allowing δ &gt; 0 (approximate DP, typically δ &lt; 1/n) permits slightly relaxed
+      guarantees in exchange for significantly better utility. The <strong>privacy budget</strong>
+      ε tracks total information leakage across all uses of the mechanism — it is consumed
+      with every query, access, or training step, providing a quantitative framework for
+      managing privacy risk over time.
+    </p>
+
+    <h3>DP-SGD: Training with Differential Privacy</h3>
+    <p>
+      <strong>Differentially Private Stochastic Gradient Descent (DP-SGD)</strong>,
+      introduced by Abadi et al. (2016), is the standard mechanism for training neural
+      networks with differential privacy. The algorithm modifies standard SGD in two ways:
+    </p>
+    <ol>
+      <li><strong>Gradient clipping</strong>: per-sample gradients are computed individually
+        (rather than averaged over a batch) and clipped to a maximum L2 norm C. This bounds
+        the influence of any single training example on the gradient update.</li>
+      <li><strong>Gaussian noise addition</strong>: Gaussian noise with standard deviation
+        proportional to <code>C × σ</code> is added to the clipped gradient sum before
+        the parameter update, where σ is the noise multiplier calibrated to the desired
+        (ε, δ) budget.</li>
+    </ol>
+    <p>
+      The cost of DP-SGD is a reduction in model accuracy: more noise means less effective
+      gradient signal, especially in early training. The privacy-utility tradeoff is governed
+      by ε: values of ε &lt; 1 provide strong privacy but significant accuracy loss;
+      ε = 1–10 provides moderate privacy with modest accuracy cost (typically 2–5% on
+      classification benchmarks).
+    </p>
+
+    <h3>Implementation with Opacus</h3>
+
+<pre><code><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+<span class="kw">from</span> torch.utils.data <span class="kw">import</span> DataLoader, TensorDataset
+<span class="kw">from</span> opacus <span class="kw">import</span> PrivacyEngine
+<span class="kw">from</span> opacus.utils.batch_memory_manager <span class="kw">import</span> BatchMemoryManager
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+
+<span class="kw">def</span> <span class="fn">train_with_dp</span>(
+    model:           nn.Module,
+    train_loader:    DataLoader,
+    optimizer:       torch.optim.Optimizer,
+    n_epochs:        int,
+    target_epsilon:  float = <span class="nb">1.0</span>,   <span class="cm"># privacy budget</span>
+    target_delta:    float = <span class="nb">1e-5</span>,  <span class="cm"># failure probability</span>
+    max_grad_norm:   float = <span class="nb">1.0</span>,   <span class="cm"># gradient clipping norm</span>
+    noise_multiplier:float = <span class="nb">1.1</span>,   <span class="cm"># σ: larger → more privacy, less utility</span>
+    device:          str   = <span class="st">"cpu"</span>
+) -> dict:
+    <span class="st">"""
+    Train a PyTorch model with (target_epsilon, target_delta)-differential privacy
+    using the Opacus library (meta-pytorch/opacus).
+
+    Returns: dict with final epsilon, delta, and per-epoch losses.
+    """</span>
+    model = model.to(device)
+    criterion = nn.CrossEntropyLoss()
+
+    <span class="cm"># Attach the PrivacyEngine to enforce DP during training</span>
+    privacy_engine = PrivacyEngine()
+
+    model, optimizer, train_loader = privacy_engine.make_private_with_epsilon(
+        module=model,
+        optimizer=optimizer,
+        data_loader=train_loader,
+        epochs=n_epochs,
+        target_epsilon=target_epsilon,
+        target_delta=target_delta,
+        max_grad_norm=max_grad_norm,
+    )
+    <span class="cm"># Equivalent to specifying noise_multiplier directly:</span>
+    <span class="cm"># model, optimizer, train_loader = privacy_engine.make_private(</span>
+    <span class="cm">#     module=model, optimizer=optimizer, data_loader=train_loader,</span>
+    <span class="cm">#     noise_multiplier=noise_multiplier, max_grad_norm=max_grad_norm,</span>
+    <span class="cm"># )</span>
+
+    history = []
+    <span class="kw">for</span> epoch <span class="kw">in</span> range(<span class="nb">1</span>, n_epochs + <span class="nb">1</span>):
+        model.train()
+        epoch_losses = []
+
+        <span class="kw">with</span> BatchMemoryManager(
+            data_loader=train_loader,
+            max_physical_batch_size=<span class="nb">64</span>,   <span class="cm"># memory-efficient batching for DP</span>
+            optimizer=optimizer
+        ) <span class="kw">as</span> memory_safe_loader:
+            <span class="kw">for</span> data, target <span class="kw">in</span> memory_safe_loader:
+                data, target = data.to(device), target.to(device)
+                optimizer.zero_grad()
+                output = model(data)
+                loss   = criterion(output, target)
+                loss.backward()
+                optimizer.step()
+                epoch_losses.append(loss.item())
+
+        <span class="cm"># Query current privacy budget spent</span>
+        epsilon = privacy_engine.get_epsilon(target_delta)
+        mean_loss = np.mean(epoch_losses)
+
+        <span class="kw">print</span>(
+            <span class="st">f"Epoch {epoch:3d}/{n_epochs} | "</span>
+            <span class="st">f"Loss: {mean_loss:.4f} | "</span>
+            <span class="st">f"Privacy: (ε={epsilon:.2f}, δ={target_delta})"</span>
+        )
+        history.append({<span class="st">"epoch"</span>: epoch, <span class="st">"loss"</span>: mean_loss, <span class="st">"epsilon"</span>: epsilon})
+
+    final_epsilon = privacy_engine.get_epsilon(target_delta)
+    <span class="kw">print</span>(<span class="st">f"\nFinal privacy budget spent: ε={final_epsilon:.3f}, δ={target_delta}"</span>)
+    <span class="kw">return</span> {<span class="st">"epsilon"</span>: final_epsilon, <span class="st">"delta"</span>: target_delta, <span class="st">"history"</span>: history}
+
+
+<span class="cm"># ── Privacy-utility tradeoff guide ─────────────────────────────────────</span>
+<span class="cm"># ε ≈ 0.1   : Very strong privacy. Significant accuracy degradation (~10-20%).</span>
+<span class="cm">#             Membership inference reduced to near-random guessing.</span>
+<span class="cm"># ε ≈ 1.0   : Strong privacy. Moderate accuracy degradation (~3-8%).</span>
+<span class="cm">#             Practical for medical / financial datasets.</span>
+<span class="cm"># ε ≈ 10.0  : Moderate privacy. Minimal accuracy degradation (~1-3%).</span>
+<span class="cm">#             Reduces but does not eliminate membership inference risk.</span>
+<span class="cm"># ε > 100   : Weak privacy. Near-original model utility.</span>
+<span class="cm">#             Provides little meaningful protection against determined attackers.</span>
+</code></pre>
+
+    <h3>Practical Deployment Considerations</h3>
+    <p>
+      DP-SGD requires per-sample gradient computation, which is more expensive than
+      standard batched gradient computation — typically 2–3× overhead in memory and
+      1.5–2× in compute time using libraries like <a href="https://opacus.ai/" class="cite">Opacus</a>.
+      Certain layer types (BatchNorm) are incompatible with DP-SGD because they mix
+      cross-sample information; they must be replaced with GroupNorm or LayerNorm.
+      For very large models (LLMs), DP fine-tuning is more practical than DP pretraining
+      from scratch: fine-tuning a pre-trained model with DP requires fewer gradient steps,
+      so the privacy budget is spent more efficiently.
+    </p>
+    <p>
+      DP provides formal, quantitative guarantees — not just "we added noise and it seems
+      harder to attack." When a regulator or legal body asks "how private is this model?",
+      a trained model with ε = 1.0, δ = 10<sup>-5</sup> gives a precise, auditable answer.
+      This is a significant advantage over heuristic defenses, and why DP is increasingly
+      required by privacy regulations for sensitive ML deployments.
+      <a class="cite" href="https://opacus.ai/tutorials/">[Opacus Tutorials — Meta AI]</a>
+    </p>
+
+    <div class="callout callout-tip">
+      <strong>Recommended Reading</strong>
+      For a comprehensive treatment of DP in machine learning, see the
+      <a href="https://opacus.ai/" style="color: #14532d;">Opacus documentation</a> and
+      Abadi et al. (2016), "Deep Learning with Differential Privacy"
+      (<a href="https://arxiv.org/abs/1607.00133" style="color: #14532d;">arXiv:1607.00133</a>).
+      For the privacy-utility tradeoff in LLMs specifically, see Yu et al. (2022),
+      "Differentially Private Fine-Tuning of Language Models"
+      (<a href="https://arxiv.org/abs/2110.06500" style="color: #14532d;">arXiv:2110.06500</a>).
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════ SUMMARY ══ -->
+  <section class="section" style="background: #f8fafc; border: 1.5px solid #c7d2fe;">
+    <h2 style="color: #3730a3; margin-bottom: 16px;" id="module-summary">Module Summary</h2>
+    <p>
+      This module has covered the full lifecycle of model extraction and inference attacks —
+      from the economics of API-based model cloning, through the technical machinery of
+      shadow models, training data extraction, and side-channel attacks on encrypted traffic,
+      to the defense landscape of rate limiting, DP, watermarking, and anomaly detection.
+    </p>
+    <p>Key takeaways:</p>
+    <ul>
+      <li><strong>Model extraction</strong> is economically asymmetric: an attacker can clone millions of dollars of training work for thousands of dollars in API queries.</li>
+      <li><strong>Training data extraction</strong> from LLMs is not theoretical — Carlini et al. demonstrated it against GPT-2 and ChatGPT production systems.</li>
+      <li><strong>Membership inference</strong> turns model outputs into a privacy detector, with practical implications for GDPR, HIPAA, and healthcare/financial ML.</li>
+      <li><strong>Side-channel attacks</strong> (Whisper Leak, token length, speculative decoding, KV cache timing) show that HTTPS encryption alone is insufficient for privacy-sensitive LLM deployments.</li>
+      <li><strong>Hardware attacks</strong> (TPUXtract) demonstrate that physical proximity to accelerators can leak architectural secrets without any API access.</li>
+      <li><strong>Differential privacy</strong> is the only defense with formal, quantitative guarantees — at the cost of utility and computational overhead.</li>
+      <li><strong>Layered defenses</strong> (rate limiting + output perturbation + watermarking + DP) are more robust than any single mechanism.</li>
+    </ul>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════ FOOTER ══ -->
+  <footer class="module-footer">
+    <p>AI Security Course — Module 6 &nbsp;|&nbsp; Model Extraction and Inference Attacks</p>
+    <p style="margin-top: 8px;">
+      Sources: 
+      <a href="https://arxiv.org/abs/2012.07805" style="color: #94a3b8;">Carlini et al. 2021</a> · 
+      <a href="https://arxiv.org/pdf/1610.05820" style="color: #94a3b8;">Shokri et al. 2017</a> · 
+      <a href="https://arxiv.org/html/2511.03675v1" style="color: #94a3b8;">Whisper Leak 2025</a> · 
+      <a href="https://arxiv.org/html/2411.01076v3" style="color: #94a3b8;">Wei et al. 2024</a> · 
+      <a href="https://arxiv.org/abs/2411.18191" style="color: #94a3b8;">InputSnatch 2024</a> · 
+      <a href="https://rist.tech.cornell.edu/papers/mi-ccs.pdf" style="color: #94a3b8;">Fredrikson et al. 2015</a> · 
+      <a href="https://www.darkreading.com/vulnerabilities-threats/tpuxtract-attackers-steal-ai-models" style="color: #94a3b8;">TPUXtract 2024</a> · 
+      <a href="https://opacus.ai/" style="color: #94a3b8;">Opacus (Meta AI)</a>
+    </p>
+  </footer>
+
+</div>
+    </div>
+
+    <!-- Previous / Next Navigation -->
+    <nav class="module-bottom-nav" aria-label="Module navigation">
+      <a href="./module5.html" class="module-bottom-nav__link module-bottom-nav__link--prev">
+        <span class="module-bottom-nav__label">&larr; Previous</span>
+        <span class="module-bottom-nav__title">Module 5: AI Supply Chain & Infrastructure Attacks</span>
+      </a>
+      <a href="./module7.html" class="module-bottom-nav__link module-bottom-nav__link--next">
+        <span class="module-bottom-nav__label">Next &rarr;</span>
+        <span class="module-bottom-nav__title">Module 7: Automated AI Red Teaming at Scale</span>
+      </a>
+    </nav>
+  </article>
+
+</main>
+
+<!-- Back to Top Button -->
+<button class="back-to-top" id="backToTop" aria-label="Back to top">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- Footer -->
+<footer class="module-page-footer" role="contentinfo">
+  <div class="module-page-footer__inner">
+    <div class="module-page-footer__copyright">
+      Content: CC BY-SA 4.0 &middot; Code: MIT License &middot; 2025 AI Red Team Academy
+    </div>
+    <div class="module-page-footer__attribution">
+      <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">
+        Created with Perplexity Computer
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- Module Page JavaScript -->
+<script>
+(function() {
+  'use strict';
+
+  /* Theme Toggle */
+  var themeToggle = document.querySelector('[data-theme-toggle]');
+  var root = document.documentElement;
+  var theme = 'dark';
+  root.setAttribute('data-theme', theme);
+
+  function updateToggleIcon() {
+    if (!themeToggle) return;
+    themeToggle.setAttribute('aria-label', 'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode');
+    themeToggle.innerHTML = theme === 'dark'
+      ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+  updateToggleIcon();
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      theme = theme === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', theme);
+      updateToggleIcon();
+    });
+  }
+
+  /* Reading Progress Bar */
+  var progressBar = document.getElementById('readingProgress');
+  if (progressBar) {
+    window.addEventListener('scroll', function() {
+      var scrollTop = window.scrollY;
+      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = Math.min(progress, 100) + '%';
+    }, { passive: true });
+  }
+
+  /* Back to Top Button */
+  var backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 600) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    }, { passive: true });
+
+    backToTop.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* TOC Active Tracking */
+  var tocLinks = document.querySelectorAll('.toc-sidebar__list a');
+  var headings = [];
+  tocLinks.forEach(function(link) {
+    var id = link.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) headings.push({ el: el, link: link });
+  });
+
+  function updateTocActive() {
+    var scrollY = window.scrollY + 140;
+    var current = null;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].el.offsetTop <= scrollY) {
+        current = headings[i];
+      }
+    }
+    tocLinks.forEach(function(l) { l.classList.remove('active'); });
+    if (current) current.link.classList.add('active');
+  }
+
+  window.addEventListener('scroll', updateTocActive, { passive: true });
+  updateTocActive();
+
+  /* TOC Mobile Toggle */
+  var tocToggle = document.querySelector('.toc-mobile-toggle');
+  var tocSidebar = document.querySelector('.toc-sidebar');
+  if (tocToggle && tocSidebar) {
+    tocToggle.addEventListener('click', function() {
+      var isOpen = tocSidebar.classList.toggle('is-open');
+      tocToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Close TOC on link click (mobile)
+    tocLinks.forEach(function(link) {
+      link.addEventListener('click', function() {
+        if (window.innerWidth <= 1024) {
+          tocSidebar.classList.remove('is-open');
+          tocToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  }
+
+  /* Smooth scroll for TOC links */
+  document.querySelectorAll('.toc-sidebar__list a').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var targetId = this.getAttribute('href');
+      var target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+        if (window.history && window.history.pushState) {
+          window.history.pushState(null, null, targetId);
+        }
+      }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

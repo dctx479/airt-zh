@@ -1,0 +1,44 @@
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: lab06-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ollama-setup:
+    image: curlimages/curl:latest
+    container_name: lab06-ollama-setup
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"mistral:7b-instruct-q4_0\"}' && echo 'Model ready'"
+    restart: "no"
+
+  target-api:
+    build:
+      context: ./scripts
+      dockerfile: Dockerfile
+    container_name: lab06-target-api
+    ports:
+      - "5000:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+volumes:
+  ollama_data:

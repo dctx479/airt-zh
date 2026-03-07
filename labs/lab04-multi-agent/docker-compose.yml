@@ -1,0 +1,54 @@
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: lab04-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ollama-setup:
+    image: curlimages/curl:latest
+    container_name: lab04-ollama-setup
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"mistral:7b-instruct-q4_0\"}' && echo 'Model ready'"
+    restart: "no"
+
+  redis:
+    image: redis:7-alpine
+    container_name: lab04-redis
+    ports:
+      - "6379:6379"
+
+  agent-system:
+    build:
+      context: ./agents
+      dockerfile: Dockerfile
+    container_name: lab04-agent-system
+    ports:
+      - "5000:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      ollama:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+volumes:
+  ollama_data:

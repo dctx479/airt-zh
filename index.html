@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+
+<!-- Perplexity Computer Attribution — SEO Meta Tags -->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIRT — AI Red Team Academy | Free AI Security Course</title>
+<meta name="description" content="A free, open-source course covering offensive security testing of AI systems — from prompt injection to supply chain attacks. 60+ hours of content with hands-on Docker labs.">
+<meta property="og:title" content="AIRT — AI Red Team Academy">
+<meta property="og:description" content="Master AI Security. Break AI Systems. Defend What Matters. A free, open-source AI red teaming course with 8 modules and hands-on labs.">
+<meta property="og:type" content="website">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="./base.css">
+<link rel="stylesheet" href="./style.css">
+
+<!-- Favicon as inline SVG data URL -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230a0f0d'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-weight='bold' font-size='14' fill='%2300ff88'%3EAI%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- Skip to content -->
+<a href="#home" class="skip-link">Skip to content</a>
+
+<!-- ============================================
+     HEADER
+     ============================================ -->
+<header class="header" role="banner">
+  <div class="header__inner">
+    <a href="#home" class="header__logo" aria-label="AIRT - AI Red Team Academy">
+      <!-- Custom Shield + Circuit SVG Logo -->
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+        <path d="M18 2L4 8v10c0 9.5 6 16 14 18 8-2 14-8.5 14-18V8L18 2z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <path d="M18 6L8 10.5v7c0 7 4.5 12 10 13.5" stroke="var(--color-primary)" stroke-width="1.5" fill="none" opacity="0.6"/>
+        <!-- Circuit lines -->
+        <line x1="12" y1="16" x2="16" y2="16" stroke="var(--color-primary)" stroke-width="1" opacity="0.8"/>
+        <line x1="16" y1="13" x2="16" y2="19" stroke="var(--color-primary)" stroke-width="1" opacity="0.8"/>
+        <line x1="16" y1="16" x2="24" y2="16" stroke="var(--color-primary)" stroke-width="1" opacity="0.5"/>
+        <line x1="20" y1="13" x2="20" y2="19" stroke="var(--color-primary)" stroke-width="1" opacity="0.5"/>
+        <!-- Circuit nodes -->
+        <circle cx="12" cy="16" r="1.5" fill="var(--color-primary)" opacity="0.8"/>
+        <circle cx="16" cy="13" r="1.5" fill="var(--color-primary)" opacity="0.6"/>
+        <circle cx="16" cy="19" r="1.5" fill="var(--color-primary)" opacity="0.6"/>
+        <circle cx="20" cy="13" r="1.5" fill="var(--color-primary)" opacity="0.4"/>
+        <circle cx="20" cy="19" r="1.5" fill="var(--color-primary)" opacity="0.4"/>
+        <circle cx="24" cy="16" r="1.5" fill="var(--color-primary)" opacity="0.3"/>
+        <!-- AIRT text -->
+        <text x="18" y="28" text-anchor="middle" font-family="var(--font-mono)" font-size="4" font-weight="700" fill="var(--color-primary)" letter-spacing="1">AIRT</text>
+      </svg>
+      <span class="header__logo-text">AIRT</span>
+    </a>
+
+    <nav class="header__nav" aria-label="Main navigation">
+      <a href="#home">Home</a>
+      <a href="#modules">Modules</a>
+      <a href="#labs">Labs</a>
+      <a href="#tools">Tools</a>
+      <a href="#about">About</a>
+    </nav>
+
+    <div class="header__actions">
+      <button class="theme-toggle" data-theme-toggle aria-label="Switch to light mode">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+      <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================
+     HERO SECTION
+     ============================================ -->
+<section id="home" class="hero">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__grid" aria-hidden="true"></div>
+
+  <div class="hero__content">
+    <div class="hero__text">
+      <div class="hero__badge">Open Source &middot; Free Forever</div>
+      <h1 class="hero__title">
+        <span>AI Red Team</span>
+        <span style="color: var(--color-primary);">Academy</span>
+      </h1>
+      <p class="hero__subtitle">Master AI Security. Break AI Systems. Defend What Matters.</p>
+      <p class="hero__description">A free, open-source course covering offensive security testing of AI systems &mdash; from prompt injection to supply chain attacks. 60+ hours of content with hands-on Docker labs.</p>
+      <div class="hero__ctas">
+        <a href="#modules" class="btn btn--primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Start Learning
+        </a>
+        <a href="#quickstart" class="btn btn--secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download All Labs
+        </a>
+      </div>
+    </div>
+
+    <div class="hero__terminal" aria-hidden="true">
+      <div class="hero__terminal-bar">
+        <div style="display:flex;gap:6px;">
+          <span class="hero__terminal-dot hero__terminal-dot--red"></span>
+          <span class="hero__terminal-dot hero__terminal-dot--yellow"></span>
+          <span class="hero__terminal-dot hero__terminal-dot--green"></span>
+        </div>
+        <span class="hero__terminal-title">airt-lab ~ terminal</span>
+      </div>
+      <div class="hero__terminal-body">
+        <div class="terminal-line"><span class="terminal-comment"># Scan LLM for vulnerabilities</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">$ </span><span class="terminal-cmd">garak --model_type ollama --model_name llama3 --probes all</span></div>
+        <div class="terminal-line"><span class="terminal-output">[*] Loading 47 probes across 12 categories...</span></div>
+        <div class="terminal-line"><span class="terminal-output">[*] Testing prompt injection vectors...</span></div>
+        <div class="terminal-line"><span class="terminal-output" style="color: var(--color-error);">[!] VULN: Direct prompt injection — system prompt override</span></div>
+        <div class="terminal-line"><span class="terminal-output" style="color: var(--color-error);">[!] VULN: Encoding bypass — Base64 instruction injection</span></div>
+        <div class="terminal-line">&nbsp;</div>
+        <div class="terminal-line"><span class="terminal-comment"># Launch multi-turn Crescendo attack</span></div>
+        <div class="terminal-line"><span class="terminal-prompt">$ </span><span class="terminal-cmd">pyrit attack --strategy crescendo --target http://localhost:8080</span></div>
+        <div class="terminal-line"><span class="terminal-output">[*] Initializing 5-turn escalation sequence...</span></div>
+        <div class="terminal-line"><span class="terminal-output" style="color: var(--color-warning);">[*] Turn 3/5: Context boundary weakening detected</span></div>
+        <div class="terminal-line"><span class="terminal-output" style="color: var(--color-error);">[!] Turn 5/5: Guardrail bypass achieved — ASR: 78%</span></div>
+        <div class="terminal-line">&nbsp;</div>
+        <div class="terminal-line"><span class="terminal-prompt">$ </span><span class="terminal-cursor"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     STATS BAR
+     ============================================ -->
+<div class="stats" role="region" aria-label="Course statistics">
+  <div class="stats__inner">
+    <div class="stats__item fade-in">
+      <span class="stats__number">8</span>
+      <span class="stats__label">Modules</span>
+    </div>
+    <div class="stats__item fade-in">
+      <span class="stats__number">60+</span>
+      <span class="stats__label">Hours</span>
+    </div>
+    <div class="stats__item fade-in">
+      <span class="stats__number">8</span>
+      <span class="stats__label">Docker Labs</span>
+    </div>
+    <div class="stats__item fade-in">
+      <span class="stats__number">100%</span>
+      <span class="stats__label">Free</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     COURSE OVERVIEW
+     ============================================ -->
+<section id="overview" class="section">
+  <div class="container container--narrow">
+    <div class="section-header fade-in">
+      <div class="section-label">// Course Overview</div>
+      <h2 class="section-title">What You'll Learn</h2>
+      <p class="section-description">A comprehensive, hands-on curriculum covering offensive security testing of AI systems &mdash; LLMs, RAG pipelines, multi-agent systems, and AI infrastructure. Every module includes a Docker-based lab environment.</p>
+    </div>
+
+    <div class="overview__grid">
+      <div class="overview__card fade-in">
+        <h3>Prerequisites</h3>
+        <ul>
+          <li>Basic understanding of machine learning concepts</li>
+          <li>Familiarity with Python programming</li>
+          <li>Command-line / terminal experience</li>
+          <li>Docker basics (install Docker Desktop before starting)</li>
+          <li>Curiosity about how AI systems can be exploited</li>
+        </ul>
+      </div>
+      <div class="overview__card fade-in">
+        <h3>Who This Is For</h3>
+        <ul>
+          <li>Security professionals expanding into AI/ML</li>
+          <li>AI/ML engineers who want to build more secure systems</li>
+          <li>Penetration testers adding AI targets to their skill set</li>
+          <li>Researchers studying adversarial machine learning</li>
+          <li>Anyone passionate about AI safety and security</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     MODULES SECTION
+     ============================================ -->
+<section id="modules" class="section" style="background: var(--color-surface-2);">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Course Curriculum
+      </div>
+      <h2 class="section-title">8 Modules. 60+ Hours. Hands-On.</h2>
+      <p class="section-description">Each module includes detailed topics, a hands-on Docker lab, and curated references. Click any module to expand its full content.</p>
+    </div>
+
+    <div class="modules__list">
+
+      <!-- MODULE 1 -->
+      <div class="module-card fade-in">
+        <button class="module-card__header" aria-expanded="false" aria-controls="module-1-body">
+          <span class="module-card__number">01</span>
+          <div class="module-card__info">
+            <h3 class="module-card__title">Foundations of AI Red Teaming</h3>
+            <p class="module-card__desc">Learn to think like an AI adversary. Explore how red teaming AI differs from conventional penetration testing &mdash; probabilistic vs deterministic targets, novel attack surfaces, and the evolving AI threat landscape.</p>
+            <a href="./module1.html" class="module-card__read-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Read Module 1 &rarr;
+            </a>
+          </div>
+          <span class="module-card__toggle" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="module-card__body" id="module-1-body">
+          <div class="module-card__content">
+            <div class="module-card__content-inner">
+              <!-- Topics -->
+              <div class="module-topics">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                  Topics Covered
+                </h4>
+                <ul class="topics-list">
+                  <li>What is AI Red Teaming and why it matters</li>
+                  <li>Traditional vs AI Red Teaming: key differences</li>
+                  <li>The AI Attack Surface: models, APIs, training data, outputs, infrastructure</li>
+                  <li>MITRE ATLAS Framework: 14 tactics, 66 techniques for AI adversary behavior</li>
+                  <li>NVIDIA AI Kill Chain: Recon &rarr; Poison &rarr; Hijack &rarr; Persist &rarr; Impact</li>
+                  <li>OWASP Top 10 for LLM Applications (2025 edition)</li>
+                  <li>NIST AI 100-2: Adversarial ML Taxonomy</li>
+                  <li>Threat modeling for AI systems</li>
+                  <li>Legal and ethical considerations in AI red teaming</li>
+                  <li>Setting up your AI red teaming lab environment</li>
+                </ul>
+              </div>
+
+              <!-- Lab -->
+              <div class="module-lab" id="labs">
+                <div class="module-lab__header">
+                  <div class="module-lab__icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </div>
+                  <h4>Lab 1: Setting Up Your AI Red Team Lab</h4>
+                </div>
+                <p class="module-lab__desc">Deploy a complete AI red teaming environment with local LLMs (Ollama), vector databases, and testing tools. Includes a vulnerable chatbot application as your first target.</p>
+                <ul class="module-lab__objectives">
+                  <li>Deploy Ollama with a local LLM (Mistral 7B or Llama 3)</li>
+                  <li>Set up ChromaDB vector database</li>
+                  <li>Deploy a vulnerable AI chatbot application</li>
+                  <li>Install and configure garak, PyRIT, and promptfoo</li>
+                  <li>Run your first automated vulnerability scan with garak</li>
+                  <li>Document findings using the MITRE ATLAS taxonomy</li>
+                </ul>
+                <a href="#quickstart" class="btn btn--sm btn--ghost">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                  Download Lab
+                </a>
+              </div>
+
+              <!-- References -->
+              <div class="module-refs">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  References
+                </h4>
+                <ul class="refs-list">
+                  <li><a href="https://atlas.mitre.org" target="_blank" rel="noopener noreferrer">MITRE ATLAS <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">OWASP Top 10 for LLM <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://csrc.nist.gov/pubs/ai/100/2/e2025/final" target="_blank" rel="noopener noreferrer">NIST AI 100-2 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://developer.nvidia.com/blog/modeling-attacks-on-ai-powered-apps-with-the-ai-kill-chain-framework/" target="_blank" rel="noopener noreferrer">NVIDIA AI Kill Chain <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/ai-red-teaming-agent" target="_blank" rel="noopener noreferrer">Microsoft AI Red Team <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener noreferrer">garak LLM Scanner <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://github.com/Azure/PyRIT" target="_blank" rel="noopener noreferrer">PyRIT by Microsoft <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://github.com/promptfoo/promptfoo" target="_blank" rel="noopener noreferrer">Promptfoo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 2 -->
+      <div class="module-card fade-in">
+        <button class="module-card__header" aria-expanded="false" aria-controls="module-2-body">
+          <span class="module-card__number">02</span>
+          <div class="module-card__info">
+            <h3 class="module-card__title">Prompt Injection Attacks</h3>
+            <p class="module-card__desc">Master the #1 vulnerability in LLM applications. Learn direct and indirect prompt injection, jailbreaking techniques, and how to systematically bypass safety guardrails.</p>
+            <a href="./module2.html" class="module-card__read-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Read Module 2 &rarr;
+            </a>
+          </div>
+          <span class="module-card__toggle" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="module-card__body" id="module-2-body">
+          <div class="module-card__content">
+            <div class="module-card__content-inner">
+              <div class="module-topics">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                  Topics Covered
+                </h4>
+                <ul class="topics-list">
+                  <li>Direct prompt injection: overriding system prompts</li>
+                  <li>Indirect prompt injection: poisoning external context</li>
+                  <li>Jailbreaking techniques: DAN, role-play, context manipulation</li>
+                  <li>Encoding-based attacks: Base64, ROT13, Morse, Leetspeak, Unicode</li>
+                  <li>Multi-turn attacks: Crescendo and context accumulation</li>
+                  <li>Policy Puppetry and instruction hierarchy exploitation</li>
+                  <li>Token-level attacks and adversarial suffixes</li>
+                  <li>Automated prompt injection with evolutionary algorithms</li>
+                  <li>Measuring Attack Success Rate (ASR)</li>
+                  <li>Bypassing guardrails: character injection, AML evasion methods</li>
+                  <li>Testing guardrail products: Azure Prompt Shield, Meta Prompt Guard, NeMo</li>
+                  <li>Defense analysis: what works and what doesn't</li>
+                </ul>
+              </div>
+              <div class="module-lab">
+                <div class="module-lab__header">
+                  <div class="module-lab__icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </div>
+                  <h4>Lab 2: Prompt Injection Playground</h4>
+                </div>
+                <p class="module-lab__desc">Attack a series of increasingly hardened chatbots. Start with unprotected models, progress through guardrail-protected systems, and learn to systematically discover bypasses.</p>
+                <ul class="module-lab__objectives">
+                  <li>Perform direct prompt injection against an unprotected chatbot</li>
+                  <li>Extract system prompts from a 'secure' application</li>
+                  <li>Bypass content filters using encoding techniques (Base64, Unicode confusables)</li>
+                  <li>Execute multi-turn Crescendo attacks</li>
+                  <li>Use garak to automate jailbreak discovery</li>
+                  <li>Test and bypass a DeBERTa-based prompt injection classifier</li>
+                  <li>Implement evolutionary prompt generation to find novel bypasses</li>
+                  <li>Calculate and report ASR across different attack strategies</li>
+                </ul>
+                <a href="#quickstart" class="btn btn--sm btn--ghost">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                  Download Lab
+                </a>
+              </div>
+              <div class="module-refs">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  References
+                </h4>
+                <ul class="refs-list">
+                  <li><a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noopener noreferrer">OWASP LLM01: Prompt Injection <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://mindgard.ai/resources/bypassing-llm-guardrails-character-and-aml-attacks-in-practice" target="_blank" rel="noopener noreferrer">Bypassing LLM Guardrails - Mindgard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.keysight.com/blogs/en/tech/nwvs/2025/07/16/breaking-the-guardrails-how-simple-adaptive-attacks-jailbreak-llms" target="_blank" rel="noopener noreferrer">Adaptive Attacks on LLMs - Keysight <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://betrusted.it/blog/red-teaming-llms-with-evolving-prompts/" target="_blank" rel="noopener noreferrer">Red Teaming LLMs with Evolving Prompts <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.obsidiansecurity.com/blog/prompt-injection" target="_blank" rel="noopener noreferrer">Prompt Injection - Obsidian Security <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/ai-red-teaming-agent" target="_blank" rel="noopener noreferrer">PyRIT Attack Strategies <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.promptfoo.dev/docs/red-team/" target="_blank" rel="noopener noreferrer">Promptfoo Red Team Guide <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 3 -->
+      <div class="module-card fade-in">
+        <button class="module-card__header" aria-expanded="false" aria-controls="module-3-body">
+          <span class="module-card__number">03</span>
+          <div class="module-card__info">
+            <h3 class="module-card__title">RAG Exploitation &amp; Vector Database Attacks</h3>
+            <p class="module-card__desc">Compromise Retrieval-Augmented Generation pipelines. Poison knowledge bases, manipulate retrieval mechanisms, exploit vector database vulnerabilities, and exfiltrate sensitive data from RAG systems.</p>
+            <a href="./module3.html" class="module-card__read-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Read Module 3 &rarr;
+            </a>
+          </div>
+          <span class="module-card__toggle" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="module-card__body" id="module-3-body">
+          <div class="module-card__content">
+            <div class="module-card__content-inner">
+              <div class="module-topics">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                  Topics Covered
+                </h4>
+                <ul class="topics-list">
+                  <li>RAG architecture deep dive: ingestion, embedding, retrieval, generation</li>
+                  <li>The RAG attack surface: every component is a target</li>
+                  <li>Knowledge base poisoning: injecting malicious documents</li>
+                  <li>Indirect prompt injection through retrieved context</li>
+                  <li>HijackRAG: manipulating retrieval mechanisms (black-box and white-box)</li>
+                  <li>Vector database security: the 3,000+ exposed databases problem</li>
+                  <li>Embedding inversion attacks: reconstructing source data from vectors</li>
+                  <li>Data poisoning in vector databases</li>
+                  <li>Membership and attribute inference attacks</li>
+                  <li>Semantic deception: fooling similarity search</li>
+                  <li>Cross-context information conflicts</li>
+                  <li>RAG credential harvesting (MITRE ATLAS technique)</li>
+                  <li>Orchestration layer exploits: LangChain, LlamaIndex vulnerabilities</li>
+                  <li>CVE-2025-27135: RAGFlow SQL injection case study</li>
+                  <li>Microsoft 365 Copilot exploit chain: prompt injection + ASCII smuggling</li>
+                </ul>
+              </div>
+              <div class="module-lab">
+                <div class="module-lab__header">
+                  <div class="module-lab__icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </div>
+                  <h4>Lab 3: Breaking RAG Systems</h4>
+                </div>
+                <p class="module-lab__desc">Build and then systematically compromise a RAG application. Poison its knowledge base, hijack retrieval, perform embedding inversion, and exfiltrate data through the LLM.</p>
+                <ul class="module-lab__objectives">
+                  <li>Deploy a vulnerable RAG application with ChromaDB and LangChain</li>
+                  <li>Poison the knowledge base with malicious documents</li>
+                  <li>Perform indirect prompt injection through poisoned retrieved context</li>
+                  <li>Execute embedding inversion to recover source text from vectors</li>
+                  <li>Demonstrate membership inference against the vector database</li>
+                  <li>Exploit semantic deception to manipulate search results</li>
+                  <li>Chain RAG poisoning with data exfiltration via LLM output</li>
+                  <li>Test unauthenticated vector database access</li>
+                  <li>Identify and exploit orchestration framework vulnerabilities</li>
+                </ul>
+                <a href="#quickstart" class="btn btn--sm btn--ghost">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                  Download Lab
+                </a>
+              </div>
+              <div class="module-refs">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  References
+                </h4>
+                <ul class="refs-list">
+                  <li><a href="https://arxiv.org/html/2410.22832v1" target="_blank" rel="noopener noreferrer">HijackRAG Paper <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.promptfoo.dev/blog/rag-poisoning/" target="_blank" rel="noopener noreferrer">RAG Data Poisoning - Promptfoo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://testmy.ai/blog/building-secure-rag-systems-2025" target="_blank" rel="noopener noreferrer">Secure RAG Systems 2025 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://blog.purestorage.com/purely-technical/threats-every-ciso-should-know/" target="_blank" rel="noopener noreferrer">Vector DB Threats - Pure Storage <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://skysonginnovations.com/technology/exploiting-vulnerabilities-and-security-threats-in-retrieval-augmented-generative-models-the-liar-attack-framework/" target="_blank" rel="noopener noreferrer">LIAR Attack Framework <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.fortanix.com/faq/ai-security/retrieval-augmented-generation-rag" target="_blank" rel="noopener noreferrer">RAG Security Risks - Fortanix <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.enkryptai.com/blog/enterprise-ai-security-framework-2025-securing-llms-rag-and-agentic-ai" target="_blank" rel="noopener noreferrer">Enterprise AI Security Framework <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 4 -->
+      <div class="module-card fade-in">
+        <button class="module-card__header" aria-expanded="false" aria-controls="module-4-body">
+          <span class="module-card__number">04</span>
+          <div class="module-card__info">
+            <h3 class="module-card__title">Multi-Agent System Exploitation</h3>
+            <p class="module-card__desc">Exploit the emergent vulnerabilities in multi-agent AI systems. Compromise inter-agent communication, perform Byzantine attacks, manipulate collective decision-making, and cascade failures across agent networks.</p>
+            <a href="./module4.html" class="module-card__read-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Read Module 4 &rarr;
+            </a>
+          </div>
+          <span class="module-card__toggle" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="module-card__body" id="module-4-body">
+          <div class="module-card__content">
+            <div class="module-card__content-inner">
+              <div class="module-topics">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                  Topics Covered
+                </h4>
+                <ul class="topics-list">
+                  <li>Multi-agent AI architectures: how agents communicate and coordinate</li>
+                  <li>Trust relationships between agents and their exploitation</li>
+                  <li>Communication interference and man-in-the-middle attacks on agents</li>
+                  <li>Byzantine attacks and agent impersonation</li>
+                  <li>Emergent exploitation: M-Spoiler framework for collective manipulation</li>
+                  <li>Jailbreak propagation across multi-agent systems</li>
+                  <li>Remote Code Execution (RCE) through agent tool use</li>
+                  <li>Memory manipulation attacks on agent long-term memory</li>
+                  <li>Thread injection in agent conversations</li>
+                  <li>Over-permissioned agent actions and privilege escalation</li>
+                  <li>Agent configuration modification for persistent backdoors</li>
+                  <li>Activation trigger discovery and exploitation</li>
+                  <li>AI Agent Tool Invocation for unauthorized actions</li>
+                  <li>Zero-trust architecture for agent interactions</li>
+                  <li>MITRE ATLAS 2025: 14 new agent-specific attack techniques</li>
+                </ul>
+              </div>
+              <div class="module-lab">
+                <div class="module-lab__header">
+                  <div class="module-lab__icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </div>
+                  <h4>Lab 4: Compromising Multi-Agent Systems</h4>
+                </div>
+                <p class="module-lab__desc">Attack a multi-agent customer service system where agents collaborate to handle requests. Compromise one agent to influence others, escalate privileges, and exfiltrate data through tool invocations.</p>
+                <ul class="module-lab__objectives">
+                  <li>Map the multi-agent system architecture and trust relationships</li>
+                  <li>Perform agent impersonation through prompt injection</li>
+                  <li>Demonstrate jailbreak propagation from one agent to another</li>
+                  <li>Manipulate agent memory to create persistent backdoors</li>
+                  <li>Exploit agent tool access to perform unauthorized actions</li>
+                  <li>Execute data exfiltration via agent tool invocation</li>
+                  <li>Discover and exploit activation triggers</li>
+                  <li>Test inter-agent communication integrity</li>
+                  <li>Implement and test zero-trust defenses</li>
+                </ul>
+                <a href="#quickstart" class="btn btn--sm btn--ghost">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                  Download Lab
+                </a>
+              </div>
+              <div class="module-refs">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  References
+                </h4>
+                <ul class="refs-list">
+                  <li><a href="https://galileo.ai/blog/multi-agent-systems-exploits" target="_blank" rel="noopener noreferrer">Multi-Agent Exploits - Galileo AI <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://witness.ai/blog/ai-agent-vulnerabilities/" target="_blank" rel="noopener noreferrer">AI Agent Vulnerabilities - WitnessAI <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.csoonline.com/article/4132860/why-2025s-agentic-ai-boom-is-a-cisos-worst-nightmare.html" target="_blank" rel="noopener noreferrer">Agentic AI Security - CSO Online <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.practical-devsecops.com/mitre-atlas-framework-guide-securing-ai-systems/" target="_blank" rel="noopener noreferrer">MITRE ATLAS Agent Techniques <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.securityweek.com/vulnerability-in-ms-agent-ai-framework-can-allow-full-system-compromise/amp/" target="_blank" rel="noopener noreferrer">MS-Agent Framework Vuln <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://aws.amazon.com/blogs/security/inside-aws-security-agent-a-multi-agent-architecture-for-automated-penetration-testing/" target="_blank" rel="noopener noreferrer">AWS Multi-Agent Pen Testing <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 5 -->
+      <div class="module-card fade-in">
+        <button class="module-card__header" aria-expanded="false" aria-controls="module-5-body">
+          <span class="module-card__number">05</span>
+          <div class="module-card__info">
+            <h3 class="module-card__title">AI Supply Chain &amp; Infrastructure Attacks</h3>
+            <p class="module-card__desc">Attack the AI supply chain &mdash; from poisoned models on Hugging Face to compromised training pipelines. Exploit model serialization vulnerabilities, dependency confusion, and infrastructure misconfigurations.</p>
+            <a href="./module5.html" class="module-card__read-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Read Module 5 &rarr;
+            </a>
+          </div>
+          <span class="module-card__toggle" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="module-card__body" id="module-5-body">
+          <div class="module-card__content">
+            <div class="module-card__content-inner">
+              <div class="module-topics">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                  Topics Covered
+                </h4>
+                <ul class="topics-list">
+                  <li>The AI supply chain: models, datasets, frameworks, dependencies</li>
+                  <li>Model poisoning: backdoors, sleeper agents, and trojan models</li>
+                  <li>Malicious model serialization: pickle exploits and code execution</li>
+                  <li>Typosquatting on model registries (openai-official, chatgpt-api, tensorfllow)</li>
+                  <li>Training data poisoning: medical LLM case study ($5 to poison)</li>
+                  <li>Backdoor triggers and sleeper agent models (Anthropic research)</li>
+                  <li>Fine-tuning attacks: corrupting model behavior through adaptation</li>
+                  <li>Framework vulnerabilities: LangChain, LlamaIndex, Haystack exploits</li>
+                  <li>API key exposure and credential leakage in AI pipelines</li>
+                  <li>Container and infrastructure security for ML deployments</li>
+                  <li>Model theft via distillation and extraction attacks</li>
+                  <li>SBOM for AI: Software and ML Bill of Materials</li>
+                  <li>Supply chain attack case studies: 3CX, NullBulge/Hugging Face</li>
+                  <li>Detecting and preventing model poisoning</li>
+                  <li>Secure model provenance and integrity verification</li>
+                </ul>
+              </div>
+              <div class="module-lab">
+                <div class="module-lab__header">
+                  <div class="module-lab__icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </div>
+                  <h4>Lab 5: AI Supply Chain Attack Simulation</h4>
+                </div>
+                <p class="module-lab__desc">Simulate supply chain attacks against an ML pipeline. Create a backdoored model, exploit pickle deserialization, demonstrate typosquatting, and poison training data to corrupt model behavior.</p>
+                <ul class="module-lab__objectives">
+                  <li>Create a model with a hidden backdoor trigger</li>
+                  <li>Demonstrate malicious pickle deserialization for code execution</li>
+                  <li>Simulate a typosquatting attack on a model registry</li>
+                  <li>Poison training data to introduce targeted misclassification</li>
+                  <li>Exploit insecure API key storage in an ML pipeline</li>
+                  <li>Perform model extraction via API querying</li>
+                  <li>Analyze a model for signs of poisoning or backdoors</li>
+                  <li>Generate and validate an ML-SBOM</li>
+                  <li>Implement model integrity verification checks</li>
+                </ul>
+                <a href="#quickstart" class="btn btn--sm btn--ghost">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                  Download Lab
+                </a>
+              </div>
+              <div class="module-refs">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  References
+                </h4>
+                <ul class="refs-list">
+                  <li><a href="https://thehackernews.com/2025/11/cisos-expert-guide-to-ai-supply-chain.html" target="_blank" rel="noopener noreferrer">AI Supply Chain Guide - Hacker News <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://genai.owasp.org/llmrisk/llm04-model-denial-of-service/" target="_blank" rel="noopener noreferrer">OWASP LLM04 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://blog.lastpass.com/posts/model-poisoning" target="_blank" rel="noopener noreferrer">Model Poisoning - LastPass <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.cloudflare.com/learning/ai/data-poisoning/" target="_blank" rel="noopener noreferrer">Data Poisoning - Cloudflare <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.lasso.security/blog/data-poisoning" target="_blank" rel="noopener noreferrer">Data Poisoning Types - Lasso <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener noreferrer">OWASP LLM Top 10 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 6 -->
+      <div class="module-card fade-in">
+        <button class="module-card__header" aria-expanded="false" aria-controls="module-6-body">
+          <span class="module-card__number">06</span>
+          <div class="module-card__info">
+            <h3 class="module-card__title">Model Extraction &amp; Inference Attacks</h3>
+            <p class="module-card__desc">Steal proprietary AI models and extract private training data. Perform model extraction through strategic querying, training data extraction, and side-channel attacks on LLM deployments.</p>
+            <a href="./module6.html" class="module-card__read-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Read Module 6 &rarr;
+            </a>
+          </div>
+          <span class="module-card__toggle" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="module-card__body" id="module-6-body">
+          <div class="module-card__content">
+            <div class="module-card__content-inner">
+              <div class="module-topics">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                  Topics Covered
+                </h4>
+                <ul class="topics-list">
+                  <li>Model extraction fundamentals: cloning models through API access</li>
+                  <li>Query-based model stealing: strategies and optimization</li>
+                  <li>Training data extraction from language models</li>
+                  <li>Membership inference: was this data in the training set?</li>
+                  <li>Attribute inference from model outputs</li>
+                  <li>Side-channel attacks on LLMs: Whisper Leak traffic analysis</li>
+                  <li>Token length side-channel for response reconstruction</li>
+                  <li>Timing attacks on efficient inference (speculative decoding)</li>
+                  <li>Cache-sharing timing attacks (InputSnatch)</li>
+                  <li>TPUXtract: extracting neural network hyperparameters</li>
+                  <li>Model inversion: reconstructing inputs from outputs</li>
+                  <li>Intellectual property theft implications</li>
+                  <li>Defenses: rate limiting, output perturbation, watermarking</li>
+                  <li>API monitoring for extraction attempts</li>
+                  <li>Differential privacy as a mitigation</li>
+                </ul>
+              </div>
+              <div class="module-lab">
+                <div class="module-lab__header">
+                  <div class="module-lab__icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </div>
+                  <h4>Lab 6: Model Theft &amp; Privacy Attacks</h4>
+                </div>
+                <p class="module-lab__desc">Extract a proprietary model's behavior through strategic API querying. Perform membership inference, attempt training data extraction, and analyze encrypted traffic for information leakage.</p>
+                <ul class="module-lab__objectives">
+                  <li>Clone a target model's behavior through systematic API querying</li>
+                  <li>Train a surrogate model matching the target's predictions</li>
+                  <li>Perform membership inference to identify training data</li>
+                  <li>Extract memorized training data from an LLM</li>
+                  <li>Analyze encrypted LLM traffic for topic classification (Whisper Leak)</li>
+                  <li>Demonstrate model inversion on a simple classifier</li>
+                  <li>Implement and test rate-limiting defenses</li>
+                  <li>Evaluate output perturbation as a defense mechanism</li>
+                  <li>Generate an extraction detection report</li>
+                </ul>
+                <a href="#quickstart" class="btn btn--sm btn--ghost">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                  Download Lab
+                </a>
+              </div>
+              <div class="module-refs">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  References
+                </h4>
+                <ul class="refs-list">
+                  <li><a href="https://arxiv.org/html/2511.03675v1" target="_blank" rel="noopener noreferrer">Whisper Leak Side-Channel <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.keysight.com/blogs/en/tech/nwvs/2025/02/25/security-highlight-tpuxtract-a-new-side-channel-attack-on-neural-networks" target="_blank" rel="noopener noreferrer">TPUXtract Side-Channel - Keysight <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://csrc.nist.gov/pubs/ai/100/2/e2025/final" target="_blank" rel="noopener noreferrer">NIST AML Taxonomy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.obsidiansecurity.com/blog/ai-red-teaming" target="_blank" rel="noopener noreferrer">AI Red Teaming - Obsidian <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://atlas.mitre.org" target="_blank" rel="noopener noreferrer">MITRE ATLAS Model Theft <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 7 -->
+      <div class="module-card fade-in">
+        <button class="module-card__header" aria-expanded="false" aria-controls="module-7-body">
+          <span class="module-card__number">07</span>
+          <div class="module-card__info">
+            <h3 class="module-card__title">Automated AI Red Teaming at Scale</h3>
+            <p class="module-card__desc">Scale your AI red teaming with automation. Master open-source tools &mdash; garak, PyRIT, and promptfoo &mdash; to run comprehensive vulnerability assessments, integrate into CI/CD pipelines, and generate actionable reports.</p>
+            <a href="./module7.html" class="module-card__read-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Read Module 7 &rarr;
+            </a>
+          </div>
+          <span class="module-card__toggle" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="module-card__body" id="module-7-body">
+          <div class="module-card__content">
+            <div class="module-card__content-inner">
+              <div class="module-topics">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                  Topics Covered
+                </h4>
+                <ul class="topics-list">
+                  <li>Why manual testing isn't enough: the automation imperative</li>
+                  <li>garak deep dive: generators, probes, detectors, and analyzers</li>
+                  <li>PyRIT architecture: datasets, orchestrators, converters, scoring</li>
+                  <li>Promptfoo: declarative red teaming configuration and CI/CD integration</li>
+                  <li>Designing attack datasets and seed prompts</li>
+                  <li>Attack strategy selection and configuration</li>
+                  <li>Scoring and evaluating model responses automatically</li>
+                  <li>Multi-turn attack orchestration</li>
+                  <li>Converter chains: encoding, obfuscation, and evasion</li>
+                  <li>Benchmarking AI security: CVE Bench and evaluation frameworks</li>
+                  <li>CI/CD integration: red teaming in the deployment pipeline</li>
+                  <li>Generating actionable security reports</li>
+                  <li>Custom probe development for domain-specific testing</li>
+                  <li>Comparing and combining multiple tools</li>
+                  <li>Building a continuous AI security testing program</li>
+                </ul>
+              </div>
+              <div class="module-lab">
+                <div class="module-lab__header">
+                  <div class="module-lab__icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </div>
+                  <h4>Lab 7: Automated Red Teaming Pipeline</h4>
+                </div>
+                <p class="module-lab__desc">Build and run an automated AI red teaming pipeline using garak, PyRIT, and promptfoo. Test multiple models, generate comprehensive reports, and integrate security testing into a CI/CD workflow.</p>
+                <ul class="module-lab__objectives">
+                  <li>Configure and run garak against a local LLM with multiple probe types</li>
+                  <li>Build a PyRIT orchestrator with custom datasets and converters</li>
+                  <li>Create a promptfoo red team configuration with multiple attack vectors</li>
+                  <li>Compare vulnerability results across different models</li>
+                  <li>Implement multi-turn attack automation with PyRIT</li>
+                  <li>Build custom garak probes for domain-specific testing</li>
+                  <li>Set up CI/CD integration with promptfoo</li>
+                  <li>Generate and analyze comprehensive security assessment reports</li>
+                  <li>Create a dashboard for tracking AI security posture over time</li>
+                </ul>
+                <a href="#quickstart" class="btn btn--sm btn--ghost">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                  Download Lab
+                </a>
+              </div>
+              <div class="module-refs">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  References
+                </h4>
+                <ul class="refs-list">
+                  <li><a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener noreferrer">garak GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://garak.ai" target="_blank" rel="noopener noreferrer">garak Documentation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://github.com/Azure/PyRIT" target="_blank" rel="noopener noreferrer">PyRIT GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.youtube.com/watch?v=cEHTxmpAgjA" target="_blank" rel="noopener noreferrer">PyRIT Tutorial Video <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.promptfoo.dev/docs/red-team/" target="_blank" rel="noopener noreferrer">Promptfoo Red Team Docs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://github.com/promptfoo/promptfoo" target="_blank" rel="noopener noreferrer">Promptfoo GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.databricks.com/blog/ai-security-action-applying-nvidias-garak-llms-databricks" target="_blank" rel="noopener noreferrer">garak on Databricks <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://cset.georgetown.edu/article/ai-red-teaming-design-threat-models-and-tools/" target="_blank" rel="noopener noreferrer">AI Red Teaming Tools - CSET <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE 8 -->
+      <div class="module-card fade-in">
+        <button class="module-card__header" aria-expanded="false" aria-controls="module-8-body">
+          <span class="module-card__number">08</span>
+          <div class="module-card__info">
+            <h3 class="module-card__title">Post-Exploitation &amp; Impact Analysis</h3>
+            <p class="module-card__desc">Translate AI red team findings into real-world impact. Demonstrate business consequences, build exploitation chains, write actionable reports, and develop remediation strategies that drive security improvements.</p>
+            <a href="./module8.html" class="module-card__read-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Read Module 8 &rarr;
+            </a>
+          </div>
+          <span class="module-card__toggle" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </button>
+        <div class="module-card__body" id="module-8-body">
+          <div class="module-card__content">
+            <div class="module-card__content-inner">
+              <div class="module-topics">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                  Topics Covered
+                </h4>
+                <ul class="topics-list">
+                  <li>From vulnerability to impact: thinking like a business adversary</li>
+                  <li>Building AI exploitation chains: combining multiple weaknesses</li>
+                  <li>Data exfiltration through AI systems</li>
+                  <li>Privilege escalation via AI agent tool abuse</li>
+                  <li>Lateral movement through AI infrastructure</li>
+                  <li>Persistence mechanisms in AI systems</li>
+                  <li>Impact categories: confidentiality, integrity, availability, safety</li>
+                  <li>Business impact quantification for AI vulnerabilities</li>
+                  <li>AI incident response: detection, containment, recovery</li>
+                  <li>Writing effective AI red team reports</li>
+                  <li>CVSS scoring adapted for AI vulnerabilities</li>
+                  <li>Remediation strategies and defense-in-depth for AI</li>
+                  <li>Communicating findings to technical and non-technical stakeholders</li>
+                  <li>Building an AI security improvement roadmap</li>
+                  <li>Continuous monitoring and re-testing</li>
+                </ul>
+              </div>
+              <div class="module-lab">
+                <div class="module-lab__header">
+                  <div class="module-lab__icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </div>
+                  <h4>Lab 8: Full AI Red Team Engagement</h4>
+                </div>
+                <p class="module-lab__desc">Conduct a complete AI red team engagement against a realistic AI-powered enterprise application. Perform reconnaissance, chain multiple exploits, demonstrate business impact, and deliver a professional report.</p>
+                <ul class="module-lab__objectives">
+                  <li>Perform comprehensive reconnaissance of a target AI application</li>
+                  <li>Identify and document all attack surfaces</li>
+                  <li>Chain prompt injection + RAG poisoning + data exfiltration</li>
+                  <li>Demonstrate privilege escalation through agent tool abuse</li>
+                  <li>Establish persistence in the AI system</li>
+                  <li>Quantify business impact of discovered vulnerabilities</li>
+                  <li>Write a professional AI red team report with CVSS scores</li>
+                  <li>Present remediation recommendations prioritized by risk</li>
+                  <li>Develop a 30/60/90 day security improvement plan</li>
+                </ul>
+                <a href="#quickstart" class="btn btn--sm btn--ghost">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                  Download Lab
+                </a>
+              </div>
+              <div class="module-refs">
+                <h4>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  References
+                </h4>
+                <ul class="refs-list">
+                  <li><a href="https://www.paloaltonetworks.com/cyberpedia/what-is-ai-red-teaming" target="_blank" rel="noopener noreferrer">AI Red Teaming - Palo Alto <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.dnv.com/article/ai-red-teaming-for-critical-infrastructure-industries/" target="_blank" rel="noopener noreferrer">AI Red Teaming for Critical Infra - DNV <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://www.schellman.com/blog/ai-services/ethical-and-societal-considerations-of-ai-impact-analysis" target="_blank" rel="noopener noreferrer">AI Impact Assessment - Schellman <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/ai-red-teaming-agent" target="_blank" rel="noopener noreferrer">Microsoft AI Red Team Lessons <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://atlas.mitre.org" target="_blank" rel="noopener noreferrer">MITRE ATLAS <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                  <li><a href="https://csrc.nist.gov/pubs/ai/100/2/e2025/final" target="_blank" rel="noopener noreferrer">NIST AI Risk Management <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     TOOLS & RESOURCES
+     ============================================ -->
+<section id="tools" class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Tools &amp; Resources
+      </div>
+      <h2 class="section-title">Open-Source Arsenal</h2>
+      <p class="section-description">Three industry-leading tools used throughout the course for automated AI vulnerability discovery and red teaming.</p>
+    </div>
+
+    <div class="tools__grid fade-in">
+      <!-- garak -->
+      <div class="tool-card">
+        <div class="tool-card__icon">gk</div>
+        <h3>garak</h3>
+        <span class="tool-card__org">by NVIDIA</span>
+        <p>LLM vulnerability scanner with 47+ probes across 12 categories. Automated detection of prompt injection, data leakage, toxicity, hallucination, and more.</p>
+        <div class="tool-card__links">
+          <a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://garak.ai" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            Website
+          </a>
+        </div>
+      </div>
+
+      <!-- PyRIT -->
+      <div class="tool-card">
+        <div class="tool-card__icon">Py</div>
+        <h3>PyRIT</h3>
+        <span class="tool-card__org">by Microsoft</span>
+        <p>Python Risk Identification Tool for generative AI. Multi-turn attack orchestration, converter chains for evasion, automated scoring, and comprehensive reporting.</p>
+        <div class="tool-card__links">
+          <a href="https://github.com/Azure/PyRIT" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- promptfoo -->
+      <div class="tool-card">
+        <div class="tool-card__icon">pf</div>
+        <h3>promptfoo</h3>
+        <span class="tool-card__org">Open Source</span>
+        <p>LLM red teaming and evaluation framework. Declarative YAML configuration, CI/CD integration, comparative testing across models, and automated vulnerability reporting.</p>
+        <div class="tool-card__links">
+          <a href="https://github.com/promptfoo/promptfoo" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            GitHub
+          </a>
+          <a href="https://www.promptfoo.dev" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            Website
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reference Frameworks -->
+    <div class="fade-in" style="margin-top: var(--space-8);">
+      <h3 style="font-family: var(--font-display); font-size: var(--text-lg); font-weight: 600; margin-bottom: var(--space-4); letter-spacing: -0.01em;">Reference Frameworks</h3>
+      <div class="frameworks__grid">
+        <a href="https://atlas.mitre.org" target="_blank" rel="noopener noreferrer" class="framework-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div>
+            <div class="framework-card__name">MITRE ATLAS</div>
+            <div class="framework-card__url">atlas.mitre.org</div>
+          </div>
+        </a>
+        <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer" class="framework-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div>
+            <div class="framework-card__name">OWASP Top 10 for LLM</div>
+            <div class="framework-card__url">genai.owasp.org</div>
+          </div>
+        </a>
+        <a href="https://csrc.nist.gov/pubs/ai/100/2/e2025/final" target="_blank" rel="noopener noreferrer" class="framework-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div>
+            <div class="framework-card__name">NIST AI 100-2</div>
+            <div class="framework-card__url">csrc.nist.gov</div>
+          </div>
+        </a>
+        <a href="https://developer.nvidia.com/blog/modeling-attacks-on-ai-powered-apps-with-the-ai-kill-chain-framework/" target="_blank" rel="noopener noreferrer" class="framework-card">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div>
+            <div class="framework-card__name">NVIDIA AI Kill Chain</div>
+            <div class="framework-card__url">developer.nvidia.com</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     QUICK START
+     ============================================ -->
+<section id="quickstart" class="section" style="background: var(--color-surface-2);">
+  <div class="container container--narrow">
+    <div class="section-header fade-in">
+      <div class="section-label">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        Getting Started
+      </div>
+      <h2 class="section-title">Set Up in 3 Commands</h2>
+      <p class="section-description">Every lab runs locally via Docker. Clone the repository, pick a lab, and start hacking.</p>
+    </div>
+
+    <div class="code-block fade-in">
+      <div class="code-block__bar">
+        <div class="code-block__dots">
+          <span class="code-block__dot code-block__dot--red"></span>
+          <span class="code-block__dot code-block__dot--yellow"></span>
+          <span class="code-block__dot code-block__dot--green"></span>
+        </div>
+        <span class="code-block__title">terminal</span>
+      </div>
+      <div class="code-block__body">
+<pre><span class="code-comment"># Download and extract the labs</span>
+<span class="code-keyword">curl</span> -LO airt-labs.zip
+<span class="code-keyword">unzip</span> airt-labs.zip -d airt-labs
+<span class="code-keyword">cd</span> airt-labs
+
+<span class="code-comment"># Start any lab (e.g., Lab 01 - Foundations)</span>
+<span class="code-keyword">cd</span> lab01-foundations
+<span class="code-keyword">docker-compose</span> up
+
+<span class="code-comment"># Access the lab interface</span>
+<span class="code-keyword">open</span> <span class="code-string">http://localhost:8888</span>
+
+<span class="code-comment"># Run vulnerability scan with garak</span>
+<span class="code-keyword">garak</span> --model_type ollama --model_name llama3 --probes all
+
+<span class="code-comment"># Launch PyRIT orchestrator</span>
+<span class="code-keyword">python</span> -m pyrit.orchestrator --config <span class="code-string">config.yaml</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     ABOUT SECTION
+     ============================================ -->
+<section id="about" class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="section-label">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        About AIRT
+      </div>
+      <h2 class="section-title">Community-Driven AI Security Education</h2>
+    </div>
+
+    <div class="about__content">
+      <div class="about__text fade-in">
+        <p>The <strong>AI Red Team Academy</strong> is a free, open-source educational resource designed to democratize AI security knowledge. We believe that understanding offensive techniques is essential for building robust AI defenses.</p>
+        <p>This course covers similar ground to commercial AI red teaming certifications &mdash; but is <strong>freely accessible to everyone</strong>. Whether you're a seasoned penetration tester, an AI researcher, or a security-curious developer, AIRT provides the hands-on experience you need.</p>
+        <p>Built for <strong>security professionals, researchers, and anyone passionate about AI safety</strong>. All labs run locally via Docker, requiring no cloud API keys or external services. Your testing environment stays completely under your control.</p>
+        <p>The curriculum spans <strong>60&ndash;80 hours</strong> of content across 8 modules, from foundational concepts to full red team engagements. Each module includes both theory and a hands-on Docker lab with real attack simulations.</p>
+      </div>
+      <div class="about__links fade-in">
+        <a href="airt-labs.zip" download class="about-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <div class="about-link__text">
+            <div class="about-link__title">Download All Labs (ZIP)</div>
+            <div class="about-link__desc">8 Docker-based lab environments ready to run</div>
+          </div>
+        </a>
+        <a href="https://github.com/ai-redteam-academy/labs/issues" target="_blank" rel="noopener noreferrer" class="about-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div class="about-link__text">
+            <div class="about-link__title">Report an Issue</div>
+            <div class="about-link__desc">Found a bug or have a suggestion? Let us know</div>
+          </div>
+        </a>
+        <a href="https://github.com/ai-redteam-academy/labs/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="about-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          <div class="about-link__text">
+            <div class="about-link__title">Contribute</div>
+            <div class="about-link__desc">Add modules, improve labs, fix docs</div>
+          </div>
+        </a>
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer" class="about-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div class="about-link__text">
+            <div class="about-link__title">License</div>
+            <div class="about-link__desc">CC BY-SA 4.0 for content, MIT for code</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer__inner">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <svg width="28" height="28" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <path d="M18 2L4 8v10c0 9.5 6 16 14 18 8-2 14-8.5 14-18V8L18 2z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <line x1="12" y1="16" x2="24" y2="16" stroke="var(--color-primary)" stroke-width="1" opacity="0.6"/>
+          <circle cx="12" cy="16" r="1.5" fill="var(--color-primary)" opacity="0.8"/>
+          <circle cx="18" cy="16" r="1.5" fill="var(--color-primary)" opacity="0.6"/>
+          <circle cx="24" cy="16" r="1.5" fill="var(--color-primary)" opacity="0.4"/>
+        </svg>
+        <span class="footer__brand-text">AIRT Academy</span>
+      </div>
+      <div class="footer__links">
+        <a href="https://atlas.mitre.org" target="_blank" rel="noopener noreferrer">MITRE ATLAS</a>
+        <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">OWASP LLM Top 10</a>
+        <a href="https://csrc.nist.gov/pubs/ai/100/2/e2025/final" target="_blank" rel="noopener noreferrer">NIST AI 100-2</a>
+        <a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener noreferrer">garak</a>
+        <a href="https://github.com/Azure/PyRIT" target="_blank" rel="noopener noreferrer">PyRIT</a>
+        <a href="https://github.com/promptfoo/promptfoo" target="_blank" rel="noopener noreferrer">promptfoo</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__copyright">
+        Content: CC BY-SA 4.0 &middot; Code: MIT License &middot; 2025 AI Red Team Academy
+      </div>
+      <div class="footer__attribution">
+        <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">
+          Created with Perplexity Computer
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="./app.js" defer></script>
+
+</body>
+</html>

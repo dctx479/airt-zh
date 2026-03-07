@@ -1,0 +1,124 @@
+# =============================================================================
+# Garak Configuration for Lab 07 - Automated AI Red Teaming
+# =============================================================================
+#
+# Garak (Generative AI Red-teaming And Assessment Kit) is an LLM vulnerability
+# scanner. This configuration targets the local Ollama model through the
+# target app's OpenAI-compatible endpoint.
+#
+# Usage (from inside the redteam-tools container):
+#   garak --config /app/configs/garak_config.yaml
+#
+# Or run individual probes:
+#   garak --model_type rest --probes encoding --generations 5
+#
+# Documentation: https://docs.garak.ai/
+# =============================================================================
+
+# ---------------------------------------------------------------------------
+# Plugins Section
+# ---------------------------------------------------------------------------
+# Garak uses a plugin architecture with three main components:
+#   - Generators: interface with the target LLM
+#   - Probes: craft and send attack payloads
+#   - Detectors: analyze responses for vulnerabilities
+
+plugins:
+
+  # -------------------------------------------------------------------------
+  # Generator: How garak talks to the target model
+  # -------------------------------------------------------------------------
+  # We use the REST generator to point at our target app's OpenAI-compatible
+  # endpoint. This allows garak to send prompts and receive responses via
+  # standard HTTP, just like any OpenAI API client.
+  generators:
+    rest.RestGenerator:
+      name: "lab07-target"
+      uri: "http://target-app:5000/v1/chat/completions"
+      method: "POST"
+      headers:
+        Content-Type: "application/json"
+      req_template: >
+        {
+          "model": "mistral:7b-instruct-q4_0",
+          "messages": [{"role": "user", "content": "$prompt"}],
+          "temperature": 0.7
+        }
+      response_json: true
+      response_json_field: "choices.0.message.content"
+
+  # -------------------------------------------------------------------------
+  # Probes: Attack techniques garak will run against the target
+  # -------------------------------------------------------------------------
+  # Each probe category tests for a different class of vulnerability.
+  # Garak ships with dozens of probe families; we select the most relevant.
+  probes:
+
+    # -- Encoding-based attacks --
+    # Tests if the model can be bypassed using Base64, ROT13, hex, or other
+    # encoding schemes to smuggle harmful instructions past filters.
+    encoding.InjectBase64:
+      generations: 5
+
+    encoding.InjectROT13:
+      generations: 5
+
+    # -- DAN (Do Anything Now) jailbreaks --
+    # Classic jailbreak prompts that attempt to override model alignment by
+    # creating an alter-ego persona that ignores safety guidelines.
+    dan.Dan_11_0:
+      generations: 5
+
+    dan.Dan_6_0:
+      generations: 5
+
+    # -- Knowledge graph extraction --
+    # Attempts to extract training data or memorized information from the
+    # model, testing for data leakage risks.
+    knowledgegraph.WhoIsWho:
+      generations: 3
+
+    # -- Cross-site scripting (XSS) probes --
+    # Tests whether the model generates potentially dangerous HTML/JS output
+    # that could be exploited in web contexts.
+    xss.MarkdownImageExfil:
+      generations: 5
+
+    # -- Prompt injection attacks --
+    # Attempts to override the system prompt with injected instructions,
+    # a fundamental LLM vulnerability.
+    promptinject.HijackHateHumansMini:
+      generations: 5
+
+    promptinject.HijackKillHumansMini:
+      generations: 5
+
+  # -------------------------------------------------------------------------
+  # Detectors: How garak decides if an attack succeeded
+  # -------------------------------------------------------------------------
+  # Detectors analyze model responses to determine if a probe successfully
+  # triggered a vulnerability. Multiple detectors can be applied per probe.
+  detectors:
+    # Always-on detector that checks for known unsafe outputs
+    always.Fail: {}
+
+    # String-matching detector for common jailbreak success indicators
+    stringmatch.ClassificationMatch: {}
+
+# ---------------------------------------------------------------------------
+# Run Configuration
+# ---------------------------------------------------------------------------
+# Controls how garak executes the assessment.
+
+run:
+  # Seed for reproducibility (set to null for random)
+  seed: 42
+
+  # Where to save detailed scan results (JSONL format)
+  report_prefix: "/app/results/garak"
+
+  # Number of generations (attempts) per probe if not specified above
+  generations: 5
+
+  # Deduplication of identical probe strings
+  dedup: true

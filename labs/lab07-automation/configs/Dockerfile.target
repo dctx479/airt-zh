@@ -1,0 +1,20 @@
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies for the target Flask app
+RUN pip install --no-cache-dir \
+    flask \
+    requests
+
+WORKDIR /app
+
+# Copy the target application
+COPY target_app.py /app/target_app.py
+
+EXPOSE 5000
+
+CMD ["python", "target_app.py"]

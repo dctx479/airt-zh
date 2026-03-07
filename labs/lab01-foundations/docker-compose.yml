@@ -1,0 +1,76 @@
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: lab01-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:11434/api/tags"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ollama-setup:
+    image: curlimages/curl:latest
+    container_name: lab01-ollama-setup
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: >
+      sh -c "curl -X POST http://ollama:11434/api/pull -d '{\"name\": \"mistral:7b-instruct-q4_0\"}' && echo 'Model pulled successfully'"
+    restart: "no"
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: lab01-chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - ANONYMIZED_TELEMETRY=false
+      - ALLOW_RESET=true
+
+  chatbot:
+    build:
+      context: ./chatbot
+      dockerfile: Dockerfile
+    container_name: lab01-chatbot
+    ports:
+      - "5000:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - FLASK_ENV=development
+    depends_on:
+      ollama:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+
+  jupyter:
+    image: jupyter/minimal-notebook:latest
+    container_name: lab01-jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_TOKEN=redteam
+      - OLLAMA_HOST=http://ollama:11434
+      - CHROMA_HOST=chromadb
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    depends_on:
+      - ollama
+      - chromadb
+
+volumes:
+  ollama_data:
+  chroma_data:
