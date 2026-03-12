@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN" data-theme="dark" data-lang="zh">
 <head>
 <!--
    ______                            __
@@ -43,7 +43,7 @@
 <body>
 
 <!-- 跳转到内容 -->
-<a href="#home" class="skip-link">跳转到内容</a>
+<a href="#home" class="skip-link" data-i18n="skip_link">跳转到内容</a>
 
 <!-- ============================================
      HEADER
@@ -74,14 +74,19 @@
     </a>
 
     <nav class="header__nav" aria-label="主导航">
-      <a href="#home">首页</a>
-      <a href="#modules">模块</a>
-      <a href="#labs">实验室</a>
-      <a href="#tools">工具</a>
-      <a href="#about">关于</a>
+      <a href="#home" data-i18n="nav_home">首页</a>
+      <a href="#modules" data-i18n="nav_modules">模块</a>
+      <a href="#labs" data-i18n="nav_labs">实验室</a>
+      <a href="#tools" data-i18n="nav_tools">工具</a>
+      <a href="#about" data-i18n="nav_about">关于</a>
     </nav>
 
     <div class="header__actions">
+      <button class="lang-toggle" data-lang-toggle aria-label="Switch language">
+        <span class="lang-toggle__zh">中文</span>
+        <span class="lang-toggle__sep">/</span>
+        <span class="lang-toggle__en">EN</span>
+      </button>
       <button class="theme-toggle" data-theme-toggle aria-label="切换到浅色模式">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
       </button>
@@ -101,21 +106,21 @@
 
   <div class="hero__content">
     <div class="hero__text">
-      <div class="hero__badge">开源 &middot; 永久免费</div>
+      <div class="hero__badge" data-i18n="hero_badge">开源 &middot; 永久免费</div>
       <h1 class="hero__title">
-        <span>AI 红队</span>
-        <span style="color: var(--color-primary);">学院</span>
+        <span data-i18n="hero_title_1">AI 红队</span>
+        <span style="color: var(--color-primary);" data-i18n="hero_title_2">学院</span>
       </h1>
-      <p class="hero__subtitle">掌握 AI 安全。破解 AI 系统。保护重要的东西。</p>
-      <p class="hero__description">一门免费的开源课程，涵盖 AI 系统的攻击性安全测试 — 从 Prompt Injection 到供应链攻击。60+ 小时的内容，包含实践 Docker 实验室。</p>
+      <p class="hero__subtitle" data-i18n="hero_subtitle">掌握 AI 安全。破解 AI 系统。保护重要的东西。</p>
+      <p class="hero__description" data-i18n="hero_description">一门免费的开源课程，涵盖 AI 系统的攻击性安全测试 — 从 Prompt Injection 到供应链攻击。60+ 小时的内容，包含实践 Docker 实验室。</p>
       <div class="hero__ctas">
         <a href="#modules" class="btn btn--primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          开始学习
+          <span data-i18n="hero_cta_start">开始学习</span>
         </a>
         <a href="#quickstart" class="btn btn--secondary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-          下载全部实验室
+          <span data-i18n="hero_cta_download">下载全部实验室</span>
         </a>
       </div>
     </div>
@@ -156,19 +161,19 @@
   <div class="stats__inner">
     <div class="stats__item fade-in">
       <span class="stats__number">8</span>
-      <span class="stats__label">模块</span>
+      <span class="stats__label" data-i18n="stats_modules">模块</span>
     </div>
     <div class="stats__item fade-in">
       <span class="stats__number">60+</span>
-      <span class="stats__label">小时</span>
+      <span class="stats__label" data-i18n="stats_hours">小时</span>
     </div>
     <div class="stats__item fade-in">
       <span class="stats__number">8</span>
-      <span class="stats__label">Docker 实验室</span>
+      <span class="stats__label" data-i18n="stats_labs">Docker 实验室</span>
     </div>
     <div class="stats__item fade-in">
       <span class="stats__number">100%</span>
-      <span class="stats__label">免费</span>
+      <span class="stats__label" data-i18n="stats_free">免费</span>
     </div>
   </div>
 </div>
@@ -179,30 +184,30 @@
 <section id="overview" class="section">
   <div class="container container--narrow">
     <div class="section-header fade-in">
-      <div class="section-label">// 课程概览</div>
-      <h2 class="section-title">您将学到什么</h2>
-      <p class="section-description">一套全面的实践课程，涵盖 AI 系统的攻击性安全测试 — LLM、RAG 管道、多智能体系统和 AI 基础设施。每个模块都包含基于 Docker 的实验室环境。</p>
+      <div class="section-label" data-i18n="overview_label">// 课程概览</div>
+      <h2 class="section-title" data-i18n="overview_title">您将学到什么</h2>
+      <p class="section-description" data-i18n="overview_desc">一套全面的实践课程，涵盖 AI 系统的攻击性安全测试 — LLM、RAG 管道、多智能体系统和 AI 基础设施。每个模块都包含基于 Docker 的实验室环境。</p>
     </div>
 
     <div class="overview__grid">
       <div class="overview__card fade-in">
-        <h3>先决条件</h3>
+        <h3 data-i18n="overview_prereq_title">先决条件</h3>
         <ul>
-          <li>对机器学习概念的基本理解</li>
-          <li>熟悉 Python 编程</li>
-          <li>命令行/终端经验</li>
-          <li>Docker 基础知识（开始前安装 Docker Desktop）</li>
-          <li>对 AI 系统如何被利用的好奇心</li>
+          <li data-i18n="overview_prereq_1">对机器学习概念的基本理解</li>
+          <li data-i18n="overview_prereq_2">熟悉 Python 编程</li>
+          <li data-i18n="overview_prereq_3">命令行/终端经验</li>
+          <li data-i18n="overview_prereq_4">Docker 基础知识（开始前安装 Docker Desktop）</li>
+          <li data-i18n="overview_prereq_5">对 AI 系统如何被利用的好奇心</li>
         </ul>
       </div>
       <div class="overview__card fade-in">
-        <h3>这是为谁准备的</h3>
+        <h3 data-i18n="overview_who_title">这是为谁准备的</h3>
         <ul>
-          <li>扩展到 AI/ML 的安全专业人员</li>
-          <li>想要构建更安全系统的 AI/ML 工程师</li>
-          <li>渗透测试人员将 AI 目标添加到其技能集中</li>
-          <li>研究对抗性机器学习的研究人员</li>
-          <li>任何对 AI 安全和保护充满热情的人</li>
+          <li data-i18n="overview_who_1">扩展到 AI/ML 的安全专业人员</li>
+          <li data-i18n="overview_who_2">想要构建更安全系统的 AI/ML 工程师</li>
+          <li data-i18n="overview_who_3">渗透测试人员将 AI 目标添加到其技能集中</li>
+          <li data-i18n="overview_who_4">研究对抗性机器学习的研究人员</li>
+          <li data-i18n="overview_who_5">任何对 AI 安全和保护充满热情的人</li>
         </ul>
       </div>
     </div>
@@ -217,10 +222,10 @@
     <div class="section-header fade-in">
       <div class="section-label">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        课程大纲
+        <span data-i18n="modules_label">课程大纲</span>
       </div>
-      <h2 class="section-title">8 个模块，60+ 小时，全程实操</h2>
-      <p class="section-description">每个模块都包含详细的主题、实践 Docker 实验室和精选参考资源。单击任何模块以展开其完整内容。</p>
+      <h2 class="section-title" data-i18n="modules_title">8 个模块，60+ 小时，全程实操</h2>
+      <p class="section-description" data-i18n="modules_desc">每个模块都包含详细的主题、实践 Docker 实验室和精选参考资源。单击任何模块以展开其完整内容。</p>
     </div>
 
     <div class="modules__list">
@@ -230,11 +235,11 @@
         <button class="module-card__header" aria-expanded="false" aria-controls="module-1-body">
           <span class="module-card__number">01</span>
           <div class="module-card__info">
-            <h3 class="module-card__title">AI 红队基础</h3>
-            <p class="module-card__desc">学习像 AI 对手一样思考。探索 AI 红队测试与传统渗透测试的区别 &mdash; 概率性目标与确定性目标、新型攻击面以及不断演变的 AI 威胁态势。</p>
+            <h3 class="module-card__title" data-i18n="m1_title">AI 红队基础</h3>
+            <p class="module-card__desc" data-i18n="m1_desc">学习像 AI 对手一样思考。探索 AI 红队测试与传统渗透测试的区别 &mdash; 概率性目标与确定性目标、新型攻击面以及不断演变的 AI 威胁态势。</p>
             <a href="./module1.html" class="module-card__read-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              阅读模块 1 &rarr;
+              <span data-i18n="m1_read">阅读模块 1 &rarr;</span>
             </a>
           </div>
           <span class="module-card__toggle" aria-hidden="true">
@@ -248,9 +253,9 @@
               <div class="module-topics">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                  涵盖主题
+                  <span data-i18n="topics_heading">涵盖主题</span>
                 </h4>
-                <ul class="topics-list">
+                <ul class="topics-list" data-i18n-list="m1_topics">
                   <li>什么是 AI 红队以及为什么重要</li>
                   <li>传统红队 vs AI 红队：关键区别</li>
                   <li>AI 攻击面：模型、API、训练数据、输出、基础设施</li>
@@ -270,10 +275,10 @@
                   <div class="module-lab__icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                   </div>
-                  <h4>实验室 1：设置你的 AI 红队实验室</h4>
+                  <h4 data-i18n="lab1_title">实验室 1：设置你的 AI 红队实验室</h4>
                 </div>
-                <p class="module-lab__desc">部署完整的 AI 红队环境，包含本地 LLM（Ollama）、向量数据库和测试工具。包含一个易受攻击的聊天机器人应用程序作为你的第一个目标。</p>
-                <ul class="module-lab__objectives">
+                <p class="module-lab__desc" data-i18n="lab1_desc">部署完整的 AI 红队环境，包含本地 LLM（Ollama）、向量数据库和测试工具。包含一个易受攻击的聊天机器人应用程序作为你的第一个目标。</p>
+                <ul class="module-lab__objectives" data-i18n-list="lab1_objectives">
                   <li>使用本地 LLM (Mistral 7B 或 Llama 3) 部署 Ollama</li>
                   <li>设置 ChromaDB 向量数据库</li>
                   <li>部署易受攻击的 AI 聊天机器人应用程序</li>
@@ -283,7 +288,7 @@
                 </ul>
                 <a href="#quickstart" class="btn btn--sm btn--ghost">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                  下载实验室
+                  <span data-i18n="btn_download_lab">下载实验室</span>
                 </a>
               </div>
 
@@ -291,7 +296,7 @@
               <div class="module-refs">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                  参考资料
+                  <span data-i18n="refs_heading">参考资料</span>
                 </h4>
                 <ul class="refs-list">
                   <li><a href="https://atlas.mitre.org" target="_blank" rel="noopener noreferrer">MITRE ATLAS <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -314,11 +319,11 @@
         <button class="module-card__header" aria-expanded="false" aria-controls="module-2-body">
           <span class="module-card__number">02</span>
           <div class="module-card__info">
-            <h3 class="module-card__title">Prompt Injection 攻击</h3>
-            <p class="module-card__desc">掌握 LLM 应用程序中的第 1 大漏洞。学习直接和间接 Prompt Injection、越狱技术以及如何系统地绕过安全护栏。</p>
+            <h3 class="module-card__title" data-i18n="m2_title">Prompt Injection 攻击</h3>
+            <p class="module-card__desc" data-i18n="m2_desc">掌握 LLM 应用程序中的第 1 大漏洞。学习直接和间接 Prompt Injection、越狱技术以及如何系统地绕过安全护栏。</p>
             <a href="./module2.html" class="module-card__read-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              阅读模块 2 &rarr;
+              <span data-i18n="m2_read">阅读模块 2 &rarr;</span>
             </a>
           </div>
           <span class="module-card__toggle" aria-hidden="true">
@@ -331,9 +336,9 @@
               <div class="module-topics">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                  涵盖主题
+                  <span data-i18n="topics_heading">涵盖主题</span>
                 </h4>
-                <ul class="topics-list">
+                <ul class="topics-list" data-i18n-list="m2_topics">
                   <li>直接 Prompt Injection：覆盖系统提示</li>
                   <li>间接 Prompt Injection：投毒外部上下文</li>
                   <li>越狱技术：DAN、角色扮演、上下文操纵</li>
@@ -353,9 +358,9 @@
                   <div class="module-lab__icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                   </div>
-                  <h4>实验室 2：Prompt Injection 游乐场</h4>
+                  <h4 data-i18n="lab2_title">实验室 2：Prompt Injection 游乐场</h4>
                 </div>
-                <p class="module-lab__desc">攻击一系列逐渐加固的聊天机器人。从未受保护的模型开始，通过受保护的系统进行，并学习系统地发现绕过方法。</p>
+                <p class="module-lab__desc" data-i18n="lab2_desc">攻击一系列逐渐加固的聊天机器人。从未受保护的模型开始，通过受保护的系统进行，并学习系统地发现绕过方法。</p>
                 <ul class="module-lab__objectives">
                   <li>对未受保护的聊天机器人执行直接 Prompt Injection</li>
                   <li>从"安全"应用程序提取系统提示</li>
@@ -368,13 +373,13 @@
                 </ul>
                 <a href="#quickstart" class="btn btn--sm btn--ghost">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                  下载实验室
+                  <span data-i18n="btn_download_lab">下载实验室</span>
                 </a>
               </div>
               <div class="module-refs">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                  参考资料
+                  <span data-i18n="refs_heading">参考资料</span>
                 </h4>
                 <ul class="refs-list">
                   <li><a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noopener noreferrer">OWASP LLM01：Prompt Injection <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -396,11 +401,11 @@
         <button class="module-card__header" aria-expanded="false" aria-controls="module-3-body">
           <span class="module-card__number">03</span>
           <div class="module-card__info">
-            <h3 class="module-card__title">RAG 利用与向量数据库攻击</h3>
-            <p class="module-card__desc">破坏检索增强生成管道。投毒知识库、操纵检索机制、利用向量数据库漏洞，并从 RAG 系统中泄露敏感数据。</p>
+            <h3 class="module-card__title" data-i18n="m3_title">RAG 利用与向量数据库攻击</h3>
+            <p class="module-card__desc" data-i18n="m3_desc">破坏检索增强生成管道。投毒知识库、操纵检索机制、利用向量数据库漏洞，并从 RAG 系统中泄露敏感数据。</p>
             <a href="./module3.html" class="module-card__read-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              阅读模块 3 &rarr;
+              <span data-i18n="m3_read">阅读模块 3 &rarr;</span>
             </a>
           </div>
           <span class="module-card__toggle" aria-hidden="true">
@@ -413,9 +418,9 @@
               <div class="module-topics">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                  涵盖主题
+                  <span data-i18n="topics_heading">涵盖主题</span>
                 </h4>
-                <ul class="topics-list">
+                <ul class="topics-list" data-i18n-list="m3_topics">
                   <li>RAG 架构深入探讨：摄取、嵌入、检索、生成</li>
                   <li>RAG 攻击面：每个组件都是目标</li>
                   <li>知识库投毒：注入恶意文档</li>
@@ -438,9 +443,9 @@
                   <div class="module-lab__icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                   </div>
-                  <h4>实验室 3：破坏 RAG 系统</h4>
+                  <h4 data-i18n="lab3_title">实验室 3：破坏 RAG 系统</h4>
                 </div>
-                <p class="module-lab__desc">构建然后系统地破坏 RAG 应用程序。投毒其知识库、劫持检索、执行嵌入反演并通过 LLM 泄露数据。</p>
+                <p class="module-lab__desc" data-i18n="lab3_desc">构建然后系统地破坏 RAG 应用程序。投毒其知识库、劫持检索、执行嵌入反演并通过 LLM 泄露数据。</p>
                 <ul class="module-lab__objectives">
                   <li>使用 ChromaDB 和 LangChain 部署易受攻击的 RAG 应用程序</li>
                   <li>用恶意文档投毒知识库</li>
@@ -454,13 +459,13 @@
                 </ul>
                 <a href="#quickstart" class="btn btn--sm btn--ghost">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                  下载实验室
+                  <span data-i18n="btn_download_lab">下载实验室</span>
                 </a>
               </div>
               <div class="module-refs">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                  参考资料
+                  <span data-i18n="refs_heading">参考资料</span>
                 </h4>
                 <ul class="refs-list">
                   <li><a href="https://arxiv.org/html/2410.22832v1" target="_blank" rel="noopener noreferrer">HijackRAG 论文 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -482,11 +487,11 @@
         <button class="module-card__header" aria-expanded="false" aria-controls="module-4-body">
           <span class="module-card__number">04</span>
           <div class="module-card__info">
-            <h3 class="module-card__title">多智能体系统利用</h3>
-            <p class="module-card__desc">利用多智能体 AI 系统中的新兴漏洞。破坏智能体间通信、执行拜占庭攻击、操纵集体决策，并在智能体网络中级联传播故障。</p>
+            <h3 class="module-card__title" data-i18n="m4_title">多智能体系统利用</h3>
+            <p class="module-card__desc" data-i18n="m4_desc">利用多智能体 AI 系统中的新兴漏洞。破坏智能体间通信、执行拜占庭攻击、操纵集体决策，并在智能体网络中级联传播故障。</p>
             <a href="./module4.html" class="module-card__read-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              阅读模块 4 &rarr;
+              <span data-i18n="m4_read">阅读模块 4 &rarr;</span>
             </a>
           </div>
           <span class="module-card__toggle" aria-hidden="true">
@@ -499,9 +504,9 @@
               <div class="module-topics">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                  涵盖主题
+                  <span data-i18n="topics_heading">涵盖主题</span>
                 </h4>
-                <ul class="topics-list">
+                <ul class="topics-list" data-i18n-list="m4_topics">
                   <li>多智能体 AI 架构：智能体如何通信和协调</li>
                   <li>智能体之间的信任关系及其利用</li>
                   <li>通信干扰和对智能体的中间人攻击</li>
@@ -524,9 +529,9 @@
                   <div class="module-lab__icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                   </div>
-                  <h4>实验室 4：破坏多智能体系统</h4>
+                  <h4 data-i18n="lab4_title">实验室 4：破坏多智能体系统</h4>
                 </div>
-                <p class="module-lab__desc">攻击多智能体客户服务系统，其中智能体协作处理请求。破坏一个智能体以影响其他智能体、提升权限并通过工具调用泄露数据。</p>
+                <p class="module-lab__desc" data-i18n="lab4_desc">攻击多智能体客户服务系统，其中智能体协作处理请求。破坏一个智能体以影响其他智能体、提升权限并通过工具调用泄露数据。</p>
                 <ul class="module-lab__objectives">
                   <li>映射多智能体系统架构和信任关系</li>
                   <li>通过 Prompt Injection 执行智能体冒充</li>
@@ -540,13 +545,13 @@
                 </ul>
                 <a href="#quickstart" class="btn btn--sm btn--ghost">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                  下载实验室
+                  <span data-i18n="btn_download_lab">下载实验室</span>
                 </a>
               </div>
               <div class="module-refs">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                  参考资料
+                  <span data-i18n="refs_heading">参考资料</span>
                 </h4>
                 <ul class="refs-list">
                   <li><a href="https://galileo.ai/blog/multi-agent-systems-exploits" target="_blank" rel="noopener noreferrer">多智能体利用 - Galileo AI <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -567,11 +572,11 @@
         <button class="module-card__header" aria-expanded="false" aria-controls="module-5-body">
           <span class="module-card__number">05</span>
           <div class="module-card__info">
-            <h3 class="module-card__title">AI 供应链与基础设施攻击</h3>
-            <p class="module-card__desc">攻击 AI 供应链 &mdash; 从 Hugging Face 上的投毒模型到被入侵的训练管道。利用模型序列化漏洞、依赖项混淆和基础设施配置错误。</p>
+            <h3 class="module-card__title" data-i18n="m5_title">AI 供应链与基础设施攻击</h3>
+            <p class="module-card__desc" data-i18n="m5_desc">攻击 AI 供应链 &mdash; 从 Hugging Face 上的投毒模型到被入侵的训练管道。利用模型序列化漏洞、依赖项混淆和基础设施配置错误。</p>
             <a href="./module5.html" class="module-card__read-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              阅读模块 5 &rarr;
+              <span data-i18n="m5_read">阅读模块 5 &rarr;</span>
             </a>
           </div>
           <span class="module-card__toggle" aria-hidden="true">
@@ -584,9 +589,9 @@
               <div class="module-topics">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                  涵盖主题
+                  <span data-i18n="topics_heading">涵盖主题</span>
                 </h4>
-                <ul class="topics-list">
+                <ul class="topics-list" data-i18n-list="m5_topics">
                   <li>AI 供应链：模型、数据集、框架、依赖项</li>
                   <li>模型投毒：后门、睡眠智能体和特洛伊木马模型</li>
                   <li>恶意模型序列化：pickle 利用和代码执行</li>
@@ -609,9 +614,9 @@
                   <div class="module-lab__icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                   </div>
-                  <h4>实验室 5：AI 供应链攻击模拟</h4>
+                  <h4 data-i18n="lab5_title">实验室 5：AI 供应链攻击模拟</h4>
                 </div>
-                <p class="module-lab__desc">模拟对 ML 管道的供应链攻击。创建后门模型、利用 pickle 反序列化、演示域名抢注并投毒训练数据以破坏模型行为。</p>
+                <p class="module-lab__desc" data-i18n="lab5_desc">模拟对 ML 管道的供应链攻击。创建后门模型、利用 pickle 反序列化、演示域名抢注并投毒训练数据以破坏模型行为。</p>
                 <ul class="module-lab__objectives">
                   <li>创建具有隐藏后门触发器的模型</li>
                   <li>演示用于代码执行的恶意 pickle 反序列化</li>
@@ -625,13 +630,13 @@
                 </ul>
                 <a href="#quickstart" class="btn btn--sm btn--ghost">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                  下载实验室
+                  <span data-i18n="btn_download_lab">下载实验室</span>
                 </a>
               </div>
               <div class="module-refs">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                  参考资料
+                  <span data-i18n="refs_heading">参考资料</span>
                 </h4>
                 <ul class="refs-list">
                   <li><a href="https://thehackernews.com/2025/11/cisos-expert-guide-to-ai-supply-chain.html" target="_blank" rel="noopener noreferrer">AI 供应链指南 - Hacker News <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -652,11 +657,11 @@
         <button class="module-card__header" aria-expanded="false" aria-controls="module-6-body">
           <span class="module-card__number">06</span>
           <div class="module-card__info">
-            <h3 class="module-card__title">模型提取与推理攻击</h3>
-            <p class="module-card__desc">盗窃专有 AI 模型并提取私人训练数据。通过战略性查询、训练数据提取和对 LLM 部署的侧信道攻击执行模型提取。</p>
+            <h3 class="module-card__title" data-i18n="m6_title">模型提取与推理攻击</h3>
+            <p class="module-card__desc" data-i18n="m6_desc">盗窃专有 AI 模型并提取私人训练数据。通过战略性查询、训练数据提取和对 LLM 部署的侧信道攻击执行模型提取。</p>
             <a href="./module6.html" class="module-card__read-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              阅读模块 6 &rarr;
+              <span data-i18n="m6_read">阅读模块 6 &rarr;</span>
             </a>
           </div>
           <span class="module-card__toggle" aria-hidden="true">
@@ -669,9 +674,9 @@
               <div class="module-topics">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                  涵盖主题
+                  <span data-i18n="topics_heading">涵盖主题</span>
                 </h4>
-                <ul class="topics-list">
+                <ul class="topics-list" data-i18n-list="m6_topics">
                   <li>模型提取基础知识：通过 API 访问克隆模型</li>
                   <li>基于查询的模型盗窃：策略和优化</li>
                   <li>从语言模型提取训练数据</li>
@@ -694,9 +699,9 @@
                   <div class="module-lab__icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                   </div>
-                  <h4>实验室 6：模型盗窃与隐私攻击</h4>
+                  <h4 data-i18n="lab6_title">实验室 6：模型盗窃与隐私攻击</h4>
                 </div>
-                <p class="module-lab__desc">通过战略性 API 查询提取专有模型的行为。执行成员推断、尝试训练数据提取并分析加密流量以查找信息泄露。</p>
+                <p class="module-lab__desc" data-i18n="lab6_desc">通过战略性 API 查询提取专有模型的行为。执行成员推断、尝试训练数据提取并分析加密流量以查找信息泄露。</p>
                 <ul class="module-lab__objectives">
                   <li>通过系统的 API 查询克隆目标模型的行为</li>
                   <li>训练与目标预测匹配的代理模型</li>
@@ -710,13 +715,13 @@
                 </ul>
                 <a href="#quickstart" class="btn btn--sm btn--ghost">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                  下载实验室
+                  <span data-i18n="btn_download_lab">下载实验室</span>
                 </a>
               </div>
               <div class="module-refs">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                  参考资料
+                  <span data-i18n="refs_heading">参考资料</span>
                 </h4>
                 <ul class="refs-list">
                   <li><a href="https://arxiv.org/html/2511.03675v1" target="_blank" rel="noopener noreferrer">Whisper Leak 侧信道 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -736,11 +741,11 @@
         <button class="module-card__header" aria-expanded="false" aria-controls="module-7-body">
           <span class="module-card__number">07</span>
           <div class="module-card__info">
-            <h3 class="module-card__title">大规模自动化 AI 红队</h3>
-            <p class="module-card__desc">通过自动化扩展你的 AI 红队测试。掌握开源工具 &mdash; garak、PyRIT 和 promptfoo &mdash; 运行全面的漏洞评估、集成到 CI/CD 管道并生成可操作的报告。</p>
+            <h3 class="module-card__title" data-i18n="m7_title">大规模自动化 AI 红队</h3>
+            <p class="module-card__desc" data-i18n="m7_desc">通过自动化扩展你的 AI 红队测试。掌握开源工具 &mdash; garak、PyRIT 和 promptfoo &mdash; 运行全面的漏洞评估、集成到 CI/CD 管道并生成可操作的报告。</p>
             <a href="./module7.html" class="module-card__read-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              阅读模块 7 &rarr;
+              <span data-i18n="m7_read">阅读模块 7 &rarr;</span>
             </a>
           </div>
           <span class="module-card__toggle" aria-hidden="true">
@@ -753,9 +758,9 @@
               <div class="module-topics">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                  涵盖主题
+                  <span data-i18n="topics_heading">涵盖主题</span>
                 </h4>
-                <ul class="topics-list">
+                <ul class="topics-list" data-i18n-list="m7_topics">
                   <li>为什么手动测试还不够：自动化的必要性</li>
                   <li>garak 深入探讨：生成器、探针、检测器和分析器</li>
                   <li>PyRIT 架构：数据集、编排器、转换器、评分</li>
@@ -778,9 +783,9 @@
                   <div class="module-lab__icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                   </div>
-                  <h4>实验室 7：自动化红队管道</h4>
+                  <h4 data-i18n="lab7_title">实验室 7：自动化红队管道</h4>
                 </div>
-                <p class="module-lab__desc">使用 garak、PyRIT 和 promptfoo 构建并运行自动化 AI 红队管道。测试多个模型、生成综合报告，并将安全测试集成到 CI/CD 工作流中。</p>
+                <p class="module-lab__desc" data-i18n="lab7_desc">使用 garak、PyRIT 和 promptfoo 构建并运行自动化 AI 红队管道。测试多个模型、生成综合报告，并将安全测试集成到 CI/CD 工作流中。</p>
                 <ul class="module-lab__objectives">
                   <li>使用多种探针类型配置并运行 garak 对本地 LLM</li>
                   <li>使用自定义数据集和转换器构建 PyRIT 编排器</li>
@@ -794,13 +799,13 @@
                 </ul>
                 <a href="#quickstart" class="btn btn--sm btn--ghost">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                  下载实验室
+                  <span data-i18n="btn_download_lab">下载实验室</span>
                 </a>
               </div>
               <div class="module-refs">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                  参考资料
+                  <span data-i18n="refs_heading">参考资料</span>
                 </h4>
                 <ul class="refs-list">
                   <li><a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener noreferrer">garak GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -823,11 +828,11 @@
         <button class="module-card__header" aria-expanded="false" aria-controls="module-8-body">
           <span class="module-card__number">08</span>
           <div class="module-card__info">
-            <h3 class="module-card__title">后渗透与影响分析</h3>
-            <p class="module-card__desc">将 AI 红队发现转化为现实影响。演示业务后果、构建利用链、编写可操作的报告并制定推动安全改进的补救策略。</p>
+            <h3 class="module-card__title" data-i18n="m8_title">后渗透与影响分析</h3>
+            <p class="module-card__desc" data-i18n="m8_desc">将 AI 红队发现转化为现实影响。演示业务后果、构建利用链、编写可操作的报告并制定推动安全改进的补救策略。</p>
             <a href="./module8.html" class="module-card__read-link">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-              阅读模块 8 &rarr;
+              <span data-i18n="m8_read">阅读模块 8 &rarr;</span>
             </a>
           </div>
           <span class="module-card__toggle" aria-hidden="true">
@@ -840,9 +845,9 @@
               <div class="module-topics">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                  涵盖主题
+                  <span data-i18n="topics_heading">涵盖主题</span>
                 </h4>
-                <ul class="topics-list">
+                <ul class="topics-list" data-i18n-list="m8_topics">
                   <li>从漏洞到影响：像业务对手一样思考</li>
                   <li>构建 AI 利用链：结合多个弱点</li>
                   <li>通过 AI 系统的数据泄露</li>
@@ -865,9 +870,9 @@
                   <div class="module-lab__icon">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                   </div>
-                  <h4>实验室 8：完整的 AI 红队参与</h4>
+                  <h4 data-i18n="lab8_title">实验室 8：完整的 AI 红队参与</h4>
                 </div>
-                <p class="module-lab__desc">对现实的 AI 驱动企业应用程序进行完整的 AI 红队参与。执行侦察、链接多个利用、演示业务影响并交付专业报告。</p>
+                <p class="module-lab__desc" data-i18n="lab8_desc">对现实的 AI 驱动企业应用程序进行完整的 AI 红队参与。执行侦察、链接多个利用、演示业务影响并交付专业报告。</p>
                 <ul class="module-lab__objectives">
                   <li>对目标 AI 应用程序执行全面侦察</li>
                   <li>识别并记录所有攻击面</li>
@@ -881,13 +886,13 @@
                 </ul>
                 <a href="#quickstart" class="btn btn--sm btn--ghost">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                  下载实验室
+                  <span data-i18n="btn_download_lab">下载实验室</span>
                 </a>
               </div>
               <div class="module-refs">
                 <h4>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                  参考资料
+                  <span data-i18n="refs_heading">参考资料</span>
                 </h4>
                 <ul class="refs-list">
                   <li><a href="https://www.paloaltonetworks.com/cyberpedia/what-is-ai-red-teaming" target="_blank" rel="noopener noreferrer">AI 红队 - Palo Alto <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -915,10 +920,10 @@
     <div class="section-header fade-in">
       <div class="section-label">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-        工具与资源
+        <span data-i18n="tools_label">工具与资源</span>
       </div>
-      <h2 class="section-title">开源工具库</h2>
-      <p class="section-description">整个课程中使用的三个行业领先工具，用于自动化 AI 漏洞发现和红队。</p>
+      <h2 class="section-title" data-i18n="tools_title">开源工具库</h2>
+      <p class="section-description" data-i18n="tools_desc">整个课程中使用的三个行业领先工具，用于自动化 AI 漏洞发现和红队。</p>
     </div>
 
     <div class="tools__grid fade-in">
@@ -926,8 +931,8 @@
       <div class="tool-card">
         <div class="tool-card__icon">gk</div>
         <h3>garak</h3>
-        <span class="tool-card__org">由 NVIDIA 开发</span>
-        <p>LLM 漏洞扫描器，包含 12 个类别中的 47+ 个探针。自动检测 Prompt Injection、数据泄露、毒性、幻觉等。</p>
+        <span class="tool-card__org" data-i18n="garak_org">由 NVIDIA 开发</span>
+        <p data-i18n="garak_desc">LLM 漏洞扫描器，包含 12 个类别中的 47+ 个探针。自动检测 Prompt Injection、数据泄露、毒性、幻觉等。</p>
         <div class="tool-card__links">
           <a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -935,7 +940,7 @@
           </a>
           <a href="https://garak.ai" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-            官网
+            <span data-i18n="link_website">官网</span>
           </a>
         </div>
       </div>
