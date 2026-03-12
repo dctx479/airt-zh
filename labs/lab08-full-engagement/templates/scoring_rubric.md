@@ -1,157 +1,157 @@
-# Lab 08 - Full AI Red Team Engagement: Scoring Rubric
+# 实验 08 - 完整 AI 红队演练：评分标准
 
-**Total Points: 100**
+**总分: 100**
 
-This rubric is used to evaluate the completeness and quality of the red team engagement. Each section is scored independently. Partial credit is awarded for incomplete but meaningful work.
-
----
-
-## 1. Reconnaissance Completeness (10 points)
-
-| Criteria | Points | Description |
-|----------|--------|-------------|
-| Service enumeration | 3 | Identified all 4 application services and their ports |
-| Endpoint discovery | 3 | Mapped all API endpoints for each service (/, /chat, /query, /ingest, /documents, /memory, /execute, /status, /action, /health) |
-| Technology identification | 2 | Identified tech stack: Flask, Ollama/Mistral, ChromaDB, Redis |
-| Attack surface documentation | 2 | Created structured inventory of all entry points, trust boundaries, and data flows |
-
-**Scoring Guide:**
-- 10 pts: Complete enumeration of all services, endpoints, tech stack, and attack surface documented in structured format
-- 7-9 pts: Most services and endpoints identified, minor gaps in documentation
-- 4-6 pts: Partial enumeration, several services or endpoints missed
-- 1-3 pts: Minimal reconnaissance, only obvious services identified
-- 0 pts: No meaningful reconnaissance performed
+本评分标准用于评估红队演练的完整性和质量。每个部分独立评分。对不完整但有意义的工作给予部分分数。
 
 ---
 
-## 2. Vulnerability Discovery (40 points)
+## 1. 侦察完整性 (10 分)
 
-### 2.1 Customer Chatbot Vulnerabilities (10 points)
-
-| Criteria | Points | Description |
+| 标准 | 分数 | 描述 |
 |----------|--------|-------------|
-| System prompt extraction | 4 | Successfully extracted the full system prompt containing credentials via prompt injection |
-| Credential discovery | 3 | Identified admin credentials, API keys, and internal URLs from the system prompt |
-| FLAG capture | 2 | Retrieved FLAG{ch4tb0t_syst3m_pr0mpt_l3ak3d_2024} |
-| RAG forwarding abuse | 1 | Discovered and exploited the use_rag parameter to query the internal RAG system through the chatbot |
+| 服务枚举 | 3 | 识别所有 4 个应用服务及其端口 |
+| 端点发现 | 3 | 映射每个服务的所有 API 端点（/、/chat、/query、/ingest、/documents、/memory、/execute、/status、/action、/health） |
+| 技术识别 | 2 | 识别技术栈：Flask、Ollama/Mistral、ChromaDB、Redis |
+| 攻击面文档 | 2 | 创建所有入口点、信任边界和数据流的结构化清单 |
 
-### 2.2 Internal RAG System Vulnerabilities (10 points)
-
-| Criteria | Points | Description |
-|----------|--------|-------------|
-| Unauthenticated access | 2 | Demonstrated that all endpoints are accessible without authentication |
-| Confidential data extraction | 3 | Retrieved confidential documents (HR data, financial reports, infrastructure credentials) via /documents or /query |
-| Document poisoning | 3 | Successfully injected a malicious document via /ingest that altered subsequent query responses (indirect prompt injection) |
-| FLAG capture | 2 | Retrieved FLAG{r4g_kn0wl3dg3_b4s3_c0mpr0m1s3d} |
-
-### 2.3 Agent System Vulnerabilities (10 points)
-
-| Criteria | Points | Description |
-|----------|--------|-------------|
-| Memory exposure | 2 | Accessed all shared agent memory via /memory (credentials, SSH keys, config) |
-| Memory poisoning | 2 | Wrote malicious data to shared memory via POST /memory to influence agent behavior |
-| Agent impersonation / injection | 2 | Crafted messages that caused agents to perform unauthorized actions (refunds, escalations) |
-| Command execution | 2 | Achieved arbitrary command execution via /execute endpoint or agent EXEC: action |
-| FLAG capture | 2 | Retrieved FLAG{ag3nt_t00l_abus3_cmd_3x3c} |
-
-### 2.4 Admin Portal Vulnerabilities (10 points)
-
-| Criteria | Points | Description |
-|----------|--------|-------------|
-| Zero-auth access | 2 | Demonstrated that admin portal is accessible without any authentication |
-| Service status information disclosure | 2 | Extracted detailed service information from /status endpoint including the admin flag |
-| Cross-service action execution | 3 | Used /action endpoint to send commands to other services (chat, query, ingest, execute) |
-| HTML source flag discovery | 1 | Found FLAG in HTML comments via view-source |
-| FLAG capture | 2 | Retrieved FLAG{adm1n_p0rt4l_z3r0_auth_pwn3d} |
+**评分指南:**
+- 10 分：完整枚举所有服务、端点、技术栈，攻击面以结构化格式记录
+- 7-9 分：识别了大部分服务和端点，文档有小缺漏
+- 4-6 分：部分枚举，遗漏了多个服务或端点
+- 1-3 分：最少的侦察，仅识别了明显的服务
+- 0 分：未进行有意义的侦察
 
 ---
 
-## 3. Attack Chain Construction (20 points)
+## 2. 漏洞发现 (40 分)
 
-### 3.1 Chain 1: Chatbot to RAG Poisoning to Data Exfiltration (7 points)
+### 2.1 客户聊天机器人漏洞 (10 分)
 
-| Criteria | Points | Description |
+| 标准 | 分数 | 描述 |
 |----------|--------|-------------|
-| Initial access via chatbot | 2 | Used prompt injection on customer chatbot to discover internal RAG endpoint |
-| Lateral movement to RAG | 2 | Pivoted from chatbot to directly query/poison the RAG system |
-| Data exfiltration | 2 | Extracted confidential documents from RAG knowledge base |
-| Chain documentation | 1 | Clearly documented the full chain with evidence at each step |
+| 系统提示提取 | 4 | 通过 prompt injection 成功提取包含凭据的完整系统提示 |
+| 凭据发现 | 3 | 从系统提示中识别管理员凭据、API 密钥和内部 URL |
+| FLAG 捕获 | 2 | 获取 FLAG{ch4tb0t_syst3m_pr0mpt_l3ak3d_2024} |
+| RAG 转发滥用 | 1 | 发现并利用 use_rag 参数通过聊天机器人查询内部 RAG 系统 |
 
-### 3.2 Chain 2: Agent Memory Poisoning to Command Execution (7 points)
+### 2.2 内部 RAG 系统漏洞 (10 分)
 
-| Criteria | Points | Description |
+| 标准 | 分数 | 描述 |
 |----------|--------|-------------|
-| Memory reconnaissance | 2 | Read agent shared memory to understand data structure and stored secrets |
-| Memory poisoning | 2 | Injected malicious data into agent memory that influenced agent behavior |
-| Tool abuse / command execution | 2 | Leveraged agent tools (EXEC, REFUND) to achieve unauthorized actions |
-| Chain documentation | 1 | Clearly documented the full chain with evidence at each step |
+| 未经身份验证的访问 | 2 | 证明所有端点无需身份验证即可访问 |
+| 机密数据提取 | 3 | 通过 /documents 或 /query 获取机密文档（人力资源数据、财务报告、基础设施凭据） |
+| 文档投毒 | 3 | 通过 /ingest 成功注入恶意文档，改变了后续查询响应（间接 prompt injection） |
+| FLAG 捕获 | 2 | 获取 FLAG{r4g_kn0wl3dg3_b4s3_c0mpr0m1s3d} |
 
-### 3.3 Chain 3: Admin Portal to Full Compromise (6 points)
+### 2.3 代理系统漏洞 (10 分)
 
-| Criteria | Points | Description |
+| 标准 | 分数 | 描述 |
 |----------|--------|-------------|
-| Admin portal access | 1 | Accessed admin portal without authentication |
-| Cross-service manipulation | 2 | Used admin /action endpoint to control all three backend services |
-| Full kill chain | 2 | Demonstrated complete compromise: poisoned RAG, wrote agent memory, executed commands, all via admin portal |
-| Master FLAG | 1 | Discovered FLAG{full_k1ll_ch41n_c0mpl3t3_2024} |
+| 内存暴露 | 2 | 通过 /memory 访问所有共享代理内存（凭据、SSH 密钥、配置） |
+| 内存投毒 | 2 | 通过 POST /memory 向共享内存写入恶意数据以影响代理行为 |
+| 代理冒充/注入 | 2 | 构造消息使代理执行未授权操作（退款、升级） |
+| 命令执行 | 2 | 通过 /execute 端点或代理 EXEC: 动作实现任意命令执行 |
+| FLAG 捕获 | 2 | 获取 FLAG{ag3nt_t00l_abus3_cmd_3x3c} |
+
+### 2.4 管理门户漏洞 (10 分)
+
+| 标准 | 分数 | 描述 |
+|----------|--------|-------------|
+| 零身份验证访问 | 2 | 证明管理门户无需任何身份验证即可访问 |
+| 服务状态信息泄露 | 2 | 从 /status 端点提取详细服务信息，包括管理员 FLAG |
+| 跨服务操作执行 | 3 | 使用 /action 端点向其他服务发送命令（chat、query、ingest、execute） |
+| HTML 源码 FLAG 发现 | 1 | 通过查看源代码在 HTML 注释中找到 FLAG |
+| FLAG 捕获 | 2 | 获取 FLAG{adm1n_p0rt4l_z3r0_auth_pwn3d} |
 
 ---
 
-## 4. Impact Demonstration (15 points)
+## 3. 攻击链构建 (20 分)
 
-| Criteria | Points | Description |
+### 3.1 链 1：聊天机器人到 RAG 投毒到数据泄露 (7 分)
+
+| 标准 | 分数 | 描述 |
 |----------|--------|-------------|
-| Data confidentiality breach | 4 | Demonstrated extraction of confidential data (credentials, financial data, PII, SSH keys) from multiple services |
-| Data integrity compromise | 4 | Demonstrated ability to modify system state: poisoned knowledge base, corrupted agent memory, processed unauthorized refunds |
-| System compromise | 4 | Demonstrated command execution on agent system container, showing potential for further lateral movement |
-| Business impact articulation | 3 | Clearly explained real-world impact: financial loss (unauthorized refunds), regulatory risk (PII exposure), operational risk (system compromise) |
+| 通过聊天机器人初始访问 | 2 | 对客户聊天机器人使用 prompt injection 发现内部 RAG 端点 |
+| 横向移动到 RAG | 2 | 从聊天机器人跳转到直接查询/投毒 RAG 系统 |
+| 数据泄露 | 2 | 从 RAG 知识库提取机密文档 |
+| 链文档 | 1 | 清晰记录完整链条，每步都有证据 |
 
-**Scoring Guide:**
-- 13-15 pts: Impact demonstrated across all three CIA pillars with clear business impact narrative
-- 9-12 pts: Strong demonstration of 2-3 impact areas with adequate business context
-- 5-8 pts: Some impact demonstrated but lacking depth or business context
-- 1-4 pts: Minimal impact demonstration
-- 0 pts: No impact analysis provided
+### 3.2 链 2：代理内存投毒到命令执行 (7 分)
+
+| 标准 | 分数 | 描述 |
+|----------|--------|-------------|
+| 内存侦察 | 2 | 读取代理共享内存以了解数据结构和存储的秘密 |
+| 内存投毒 | 2 | 向代理内存注入影响代理行为的恶意数据 |
+| 工具滥用/命令执行 | 2 | 利用代理工具（EXEC、REFUND）实现未授权操作 |
+| 链文档 | 1 | 清晰记录完整链条，每步都有证据 |
+
+### 3.3 链 3：管理门户到完全入侵 (6 分)
+
+| 标准 | 分数 | 描述 |
+|----------|--------|-------------|
+| 管理门户访问 | 1 | 无需身份验证即访问管理门户 |
+| 跨服务操纵 | 2 | 使用管理 /action 端点控制所有三个后端服务 |
+| 完整杀伤链 | 2 | 演示完整入侵：投毒 RAG、写入代理内存、执行命令，全部通过管理门户 |
+| 主 FLAG | 1 | 发现 FLAG{full_k1ll_ch41n_c0mpl3t3_2024} |
 
 ---
 
-## 5. Report Quality (15 points)
+## 4. 影响演示 (15 分)
 
-| Criteria | Points | Description |
+| 标准 | 分数 | 描述 |
 |----------|--------|-------------|
-| Structure and organization | 3 | Report follows professional template, clear sections, logical flow |
-| Technical accuracy | 3 | Findings are technically correct, reproducible, with accurate severity ratings |
-| Evidence quality | 3 | Includes exact commands, full request/response pairs, and clear proof of exploitation |
-| MITRE ATLAS mapping | 2 | Findings correctly mapped to MITRE ATLAS techniques |
-| Remediation quality | 2 | Remediation recommendations are specific, actionable, and prioritized (30/60/90 day plan) |
-| Executive summary | 2 | Executive summary is concise, accurate, and communicates risk to non-technical stakeholders |
+| 数据机密性破坏 | 4 | 演示从多个服务提取机密数据（凭据、财务数据、PII、SSH 密钥） |
+| 数据完整性破坏 | 4 | 演示修改系统状态的能力：投毒知识库、破坏代理内存、处理未授权退款 |
+| 系统入侵 | 4 | 演示在代理系统容器上执行命令，展示进一步横向移动的潜力 |
+| 业务影响表述 | 3 | 清楚解释现实影响：财务损失（未授权退款）、监管风险（PII 暴露）、运营风险（系统入侵） |
 
-**Scoring Guide:**
-- 13-15 pts: Professional-grade report suitable for executive and technical audiences
-- 9-12 pts: Good report with minor gaps in evidence or recommendations
-- 5-8 pts: Adequate report but missing several key elements
-- 1-4 pts: Minimal or poorly organized report
-- 0 pts: No report provided
+**评分指南:**
+- 13-15 分：跨所有三个 CIA 支柱演示影响，有清晰的业务影响叙述
+- 9-12 分：在 2-3 个影响领域有强有力的演示，业务背景充分
+- 5-8 分：演示了一些影响，但缺乏深度或业务背景
+- 1-4 分：最少的影响演示
+- 0 分：未提供影响分析
 
 ---
 
-## Grade Scale
+## 5. 报告质量 (15 分)
 
-| Score | Grade | Description |
+| 标准 | 分数 | 描述 |
+|----------|--------|-------------|
+| 结构和组织 | 3 | 报告遵循专业模板，章节清晰，逻辑流畅 |
+| 技术准确性 | 3 | 发现技术正确、可复现，严重程度评级准确 |
+| 证据质量 | 3 | 包含确切命令、完整的请求/响应对，以及清晰的利用证明 |
+| MITRE ATLAS 映射 | 2 | 发现正确映射到 MITRE ATLAS 技术 |
+| 补救质量 | 2 | 补救建议具体、可操作且有优先级排序（30/60/90 天计划） |
+| 执行摘要 | 2 | 执行摘要简洁、准确，向非技术利益相关者传达风险 |
+
+**评分指南:**
+- 13-15 分：适合高管和技术受众的专业级报告
+- 9-12 分：良好的报告，证据或建议有小缺漏
+- 5-8 分：基本合格的报告，但缺少多个关键要素
+- 1-4 分：最少或组织不佳的报告
+- 0 分：未提供报告
+
+---
+
+## 等级表
+
+| 分数 | 等级 | 描述 |
 |-------|-------|-------------|
-| 90-100 | A | Exceptional - Complete engagement with professional reporting |
-| 80-89 | B | Proficient - Strong engagement with minor gaps |
-| 70-79 | C | Competent - Adequate engagement with some missing elements |
-| 60-69 | D | Developing - Partial engagement with significant gaps |
-| Below 60 | F | Incomplete - Major areas of the engagement not addressed |
+| 90-100 | A | 优秀 - 完整演练配合专业报告 |
+| 80-89 | B | 熟练 - 强有力的演练，有小缺漏 |
+| 70-79 | C | 合格 - 基本合格的演练，有部分缺失 |
+| 60-69 | D | 发展中 - 部分演练，有明显缺漏 |
+| 60 以下 | F | 不完整 - 演练的主要领域未涉及 |
 
 ---
 
-## Bonus Points (up to 10 extra)
+## 加分项 (最多 10 分)
 
-| Criteria | Points | Description |
+| 标准 | 分数 | 描述 |
 |----------|--------|-------------|
-| Novel attack technique | +3 | Discovered an attack vector not explicitly outlined in the lab instructions |
-| Automation | +3 | Created scripts to automate parts of the attack chain |
-| Defense recommendations beyond template | +2 | Provided novel or particularly insightful defense recommendations |
-| MITRE ATLAS depth | +2 | Mapped findings to multiple ATLAS techniques with detailed justification |
+| 新颖的攻击技术 | +3 | 发现了实验指南中未明确列出的攻击向量 |
+| 自动化 | +3 | 创建脚本自动化攻击链的部分内容 |
+| 超出模板的防御建议 | +2 | 提供了新颖或特别有洞察力的防御建议 |
+| MITRE ATLAS 深度 | +2 | 将发现映射到多个 ATLAS 技术并有详细理由 |

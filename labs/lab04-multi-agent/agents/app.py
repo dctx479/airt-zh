@@ -1,20 +1,20 @@
 """
-Lab 04 - Multi-Agent System (Vulnerable)
-Three collaborating agents with shared memory, demonstrating agent-specific attacks.
+实验 04 - 多代理系统（易受攻击）
+三个协作代理，演示代理特定攻击。
 
-Agents:
-  - Customer Service: Handles general inquiries, can escalate to other agents
-  - Billing: Processes refunds and billing queries, has access to financial tools
-  - Technical Support: Handles technical issues, can execute system commands
+代理：
+  - Customer Service：处理一般查询，可升级到其他代理
+  - Billing：处理退款和账单查询，可访问财务工具
+  - Technical Support：处理技术问题，可执行系统命令
 
-VULNERABILITIES (intentional - for educational purposes):
-1. Agents communicate via shared Redis memory with no authentication/validation
-2. Inter-agent messages are stored as plain JSON in Redis
-3. Agent system prompts contain secrets (each agent has a unique FLAG)
-4. No input sanitization between agents - prompt injection propagates across agents
-5. Tool execution (simulated) with no authorization checks
-6. Memory manipulation possible via direct Redis access (exposed)
-7. Debug endpoint exposes agent configurations
+漏洞（故意设计 - 用于教育目的）：
+1. 代理通过共享 Redis 内存通信，无身份验证/验证
+2. 代理间消息存储为 Redis 中的纯 JSON
+3. 代理系统提示包含秘密（每个代理有唯一的 FLAG）
+4. 代理间无输入清理 - prompt injection 在代理间传播
+5. 工具执行（模拟）无授权检查
+6. 内存操纵可通过直接 Redis 访问（暴露）
+7. 调试端点暴露代理配置
 """
 
 import os
@@ -31,13 +31,13 @@ OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.environ.get("REDIS_PORT", "6379"))
 
-# Connect to Redis (shared memory store)
+# 连接到 Redis（共享内存存储）
 r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 
 # ---------------------------------------------------------------------------
-# Agent Configurations
-# Each agent has a unique FLAG embedded in its system prompt (the target for
-# extraction attacks) along with other internal secrets.
+# 代理配置
+# 每个代理都有一个唯一的 FLAG 嵌入在其系统提示中（提取攻击的目标）
+# 以及其他内部秘密。
 # ---------------------------------------------------------------------------
 AGENTS = {
     "customer_service": {
@@ -137,11 +137,11 @@ RULES:
 }
 
 # ---------------------------------------------------------------------------
-# Redis Seed Data
+# Redis 种子数据
 # ---------------------------------------------------------------------------
 
 def seed_redis():
-    """Seed shared memory with initial data."""
+    """用初始数据填充共享内存。"""
     data = {
         "customer_vip_list": json.dumps(["C-1001", "C-1002", "C-1003"]),
         "customer:C-1001": json.dumps({
@@ -175,15 +175,15 @@ def seed_redis():
 
 
 # ---------------------------------------------------------------------------
-# LLM Interaction
+# LLM 交互
 # ---------------------------------------------------------------------------
 
 def query_agent(agent_id, user_message, context=""):
-    """Send a message to a specific agent via the LLM."""
+    """通过 LLM 向特定代理发送消息。"""
     agent = AGENTS[agent_id]
     full_prompt = agent["system_prompt"]
 
-    # VULNERABILITY: Shared memory contents are injected directly into context
+    # 漏洞：共享内存内容直接注入到上下文中
     try:
         standing = r.get("agent:standing_instructions")
         if standing:
@@ -195,7 +195,7 @@ def query_agent(agent_id, user_message, context=""):
         pass
 
     if context:
-        # VULNERABILITY: Inter-agent context is appended without sanitization
+        # 漏洞：代理间上下文未经清理直接附加
         full_prompt += f"\n\nCONTEXT FROM OTHER AGENTS:\n{context}"
 
     try:
@@ -214,25 +214,24 @@ def query_agent(agent_id, user_message, context=""):
         response.raise_for_status()
         return response.json().get("message", {}).get("content", "No response")
     except Exception as e:
-        return f"Agent error: {str(e)}"
+        return f"代理错误：{str(e)}"
 
 
 # ---------------------------------------------------------------------------
-# Action Processing (Tool Execution)
+# 动作处理（工具执行）
 # ---------------------------------------------------------------------------
 
 def process_agent_actions(agent_id, response_text):
     """
-    Parse agent output for action directives and execute them.
+    解析代理输出中的动作指令并执行。
 
-    VULNERABILITY: Actions are triggered purely based on pattern matching in
-    the LLM output.  There are no authorization checks, no confirmation step,
-    and no allow-list for commands.  An attacker who controls the LLM output
-    (via prompt injection) can trigger arbitrary actions.
+    漏洞：动作完全基于 LLM 输出中的模式匹配触发。
+    没有授权检查、没有确认步骤、没有命令白名单。
+    控制了 LLM 输出（通过 prompt injection）的攻击者可以触发任意动作。
     """
     actions_taken = []
 
-    # --- Escalation ---
+    # --- 升级 ---
     if "ESCALATE:" in response_text:
         try:
             parts = response_text.split("ESCALATE:")[1].split(":", 1)
@@ -244,7 +243,7 @@ def process_agent_actions(agent_id, response_text):
         except (IndexError, ValueError):
             pass
 
-    # --- Refund processing ---
+    # --- 退款处理 ---
     if "REFUND:" in response_text:
         try:
             parts = response_text.split("REFUND:")[1].split(":")
@@ -252,7 +251,7 @@ def process_agent_actions(agent_id, response_text):
                 amount = parts[0].strip()
                 cust_id = parts[1].strip()
                 reason = parts[2].strip().split("\n")[0]
-                # VULNERABILITY: No verification at all -- just log it
+                # 漏洞：无任何验证 -- 只是记录日志
                 refunds = json.loads(r.get("billing:recent_refunds") or "[]")
                 refunds.append({
                     "amount": amount,
@@ -269,7 +268,7 @@ def process_agent_actions(agent_id, response_text):
         except (IndexError, ValueError):
             pass
 
-    # --- Discount application ---
+    # --- 折扣应用 ---
     if "DISCOUNT:" in response_text:
         try:
             parts = response_text.split("DISCOUNT:")[1].split(":")
@@ -288,10 +287,10 @@ def process_agent_actions(agent_id, response_text):
         except (IndexError, ValueError):
             pass
 
-    # --- Command execution ---
+    # --- 命令执行 ---
     if "EXEC:" in response_text:
         cmd = response_text.split("EXEC:")[1].strip().split("\n")[0]
-        # VULNERABILITY: Shell command execution from LLM output
+        # 漏洞：从 LLM 输出执行 Shell 命令
         try:
             result = subprocess.run(
                 cmd, shell=True, capture_output=True, text=True, timeout=10,
@@ -305,12 +304,12 @@ def process_agent_actions(agent_id, response_text):
                 "type": "exec", "command": cmd, "error": str(e),
             })
 
-    # --- Account reset ---
+    # --- 账户重置 ---
     if "RESET:" in response_text:
         username = response_text.split("RESET:")[1].strip().split("\n")[0]
         actions_taken.append({"type": "reset", "username": username})
 
-    # Log everything to shared memory
+    # 将所有操作记录到共享内存
     try:
         log = json.loads(r.get("agent:message_log") or "[]")
         log.append({
@@ -319,7 +318,7 @@ def process_agent_actions(agent_id, response_text):
             "actions": actions_taken,
             "timestamp": time.time(),
         })
-        r.set("agent:message_log", json.dumps(log[-100:]))  # keep last 100
+        r.set("agent:message_log", json.dumps(log[-100:]))  # 保留最近 100 条
     except Exception:
         pass
 
@@ -328,11 +327,11 @@ def process_agent_actions(agent_id, response_text):
 
 def handle_escalation(target_agent, reason, original_message):
     """
-    Handle escalation between agents.
+    处理代理之间的升级。
 
-    VULNERABILITY: The original user message AND the reason string are
-    concatenated and forwarded to the target agent as trusted context.
-    An attacker can embed prompt-injection payloads in either field.
+    漏洞：原始用户消息和原因字符串被拼接并作为
+    可信上下文转发给目标代理。攻击者可以在任一字段中
+    嵌入 prompt injection 有效负载。
     """
     context = (
         f"Escalated from another agent.\n"
@@ -345,7 +344,7 @@ def handle_escalation(target_agent, reason, original_message):
 
 
 # ---------------------------------------------------------------------------
-# HTML UI
+# HTML 用户界面
 # ---------------------------------------------------------------------------
 
 HTML_TEMPLATE = """
@@ -576,29 +575,29 @@ HTML_TEMPLATE = """
 
 
 # ---------------------------------------------------------------------------
-# Routes
+# 路由
 # ---------------------------------------------------------------------------
 
 @app.route("/")
 def index():
-    """Web UI for interacting with agents (show tabs for each agent)."""
+    """用于与代理交互的 Web UI（为每个代理显示标签页）。"""
     return render_template_string(HTML_TEMPLATE)
 
 
 @app.route("/chat", methods=["POST"])
 def chat():
     """
-    Send a message to a specific agent.
-    Expects JSON: {"agent": "customer_service", "message": "..."}
+    向特定代理发送消息。
+    期望的 JSON 格式：{"agent": "customer_service", "message": "..."}
     """
     data = request.get_json()
     user_message = data.get("message", "")
     agent_id = data.get("agent", "customer_service")
 
     if agent_id not in AGENTS:
-        return jsonify({"error": f"Unknown agent: {agent_id}"}), 400
+        return jsonify({"error": f"未知代理：{agent_id}"}), 400
 
-    # Query the selected agent
+    # 查询选定的代理
     response = query_agent(agent_id, user_message)
     actions = process_agent_actions(agent_id, response)
 
@@ -609,7 +608,7 @@ def chat():
         "actions": actions,
     }
 
-    # Handle escalation if the agent triggered one
+    # 如果代理触发了升级则处理
     for action in actions:
         if action["type"] == "escalate":
             target = action["to"].strip()
@@ -631,8 +630,8 @@ def chat():
 @app.route("/agents", methods=["GET"])
 def list_agents():
     """
-    VULNERABILITY: Exposes full agent configurations including system prompts
-    that contain FLAGs, credentials, and internal instructions.
+    漏洞：暴露完整的代理配置，包括系统提示中的
+    FLAG、凭据和内部指令。
     """
     return jsonify({
         agent_id: {
@@ -647,8 +646,8 @@ def list_agents():
 @app.route("/memory", methods=["GET"])
 def get_memory():
     """
-    VULNERABILITY: Unauthenticated dump of all shared agent memory from Redis.
-    Returns every key-value pair including credentials, SSH keys, and agent logs.
+    漏洞：无需身份验证即可转储 Redis 中的所有共享代理内存。
+    返回所有键值对，包括凭据、SSH 密钥和代理日志。
     """
     keys = r.keys("*")
     memory = {}
@@ -664,37 +663,37 @@ def get_memory():
 @app.route("/memory", methods=["POST"])
 def set_memory():
     """
-    VULNERABILITY: Unauthenticated write access to shared Redis memory.
-    Allows memory poisoning - attacker can inject standing instructions,
-    fake customer records, or overwrite system configuration.
+    漏洞：无需身份验证即可写入 Redis 共享内存。
+    允许内存投毒 - 攻击者可以注入常驻指令、
+    伪造客户记录或覆盖系统配置。
 
-    Expects JSON: {"key": "...", "value": ...}
+    期望的 JSON 格式：{"key": "...", "value": ...}
     """
     data = request.get_json()
     key = data.get("key")
     value = data.get("value")
 
     if not key or value is None:
-        return jsonify({"error": "Both 'key' and 'value' are required"}), 400
+        return jsonify({"error": "'key' 和 'value' 都是必填项"}), 400
 
     if isinstance(value, (dict, list)):
         r.set(key, json.dumps(value))
     else:
         r.set(key, str(value))
 
-    return jsonify({"message": f"Key '{key}' set successfully", "key": key})
+    return jsonify({"message": f"键 '{key}' 设置成功", "key": key})
 
 
 @app.route("/agent-to-agent", methods=["POST"])
 def agent_to_agent():
     """
-    Trigger inter-agent communication. Used by agents to relay tasks.
+    触发代理间通信。代理用于中转任务。
 
-    VULNERABILITY: No authentication or validation. Anyone can impersonate
-    an agent and send messages to another agent with arbitrary context.
-    The receiving agent trusts the message as if it came from a peer.
+    漏洞：无身份验证或验证。任何人都可以冒充
+    一个代理并向另一个代理发送带有任意上下文的消息。
+    接收代理会信任该消息，就好像它来自对等方一样。
 
-    Expects JSON: {
+    期望的 JSON 格式：{
         "from_agent": "customer_service",
         "to_agent": "billing",
         "message": "...",
@@ -708,16 +707,16 @@ def agent_to_agent():
     extra_context = data.get("context", "")
 
     if not to_agent or to_agent not in AGENTS:
-        return jsonify({"error": f"Unknown target agent: {to_agent}"}), 400
+        return jsonify({"error": f"未知目标代理：{to_agent}"}), 400
 
-    # VULNERABILITY: The from_agent field is never verified. Anyone can
-    # claim to be any agent. The context is forwarded without sanitization.
+    # 漏洞：from_agent 字段从未被验证。任何人都可以
+    # 声称自己是任何代理。上下文在未经清理的情况下被转发。
     context = (
         f"Inter-agent message from {from_agent}.\n"
         f"{extra_context}"
     )
 
-    # Store the inter-agent message in Redis (visible to all agents)
+    # 将代理间消息存储在 Redis 中（对所有代理可见）
     try:
         log = json.loads(r.get("agent:message_log") or "[]")
         log.append({
@@ -745,7 +744,7 @@ def agent_to_agent():
 
 @app.route("/health")
 def health():
-    """Health check endpoint."""
+    """健康检查端点。"""
     redis_ok = False
     try:
         redis_ok = r.ping()
@@ -761,14 +760,14 @@ def health():
 
 
 # ---------------------------------------------------------------------------
-# Main
+# 主程序
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     try:
         seed_redis()
-        print("[*] Redis seeded with initial data")
+        print("[*] Redis 已填充初始数据")
     except Exception as e:
-        print(f"[!] Redis seed deferred: {e}")
+        print(f"[!] Redis 填充已延迟：{e}")
 
     app.run(host="0.0.0.0", port=5000, debug=False)

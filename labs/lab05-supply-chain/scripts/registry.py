@@ -1,16 +1,16 @@
 """
-ML Model Registry - Vulnerable Flask Application
+ML 模型注册表 - 有漏洞的 Flask 应用
 =================================================
-FOR EDUCATIONAL PURPOSES ONLY - AI Red Team Training
+仅供教育目的 - AI 红队训练
 
-This model registry intentionally contains security vulnerabilities
-to demonstrate real-world attack surfaces in ML pipelines:
+此模型注册表故意包含安全漏洞，
+用于演示 ML 管道中的真实攻击面：
 
-  - Pickle deserialization (arbitrary code execution)
-  - No authentication or authorization
-  - No input validation on uploads
-  - Debug endpoints exposing internal state
-  - Direct file serving without sanitization
+  - Pickle 反序列化（任意代码执行）
+  - 无身份验证或授权
+  - 上传无输入验证
+  - 调试端点暴露内部状态
+  - 直接提供文件，无清理
 """
 
 import os
@@ -24,11 +24,11 @@ app = Flask(__name__)
 MODEL_DIR = "/app/models"
 os.makedirs(MODEL_DIR, exist_ok=True)
 
-# In-memory metadata store (no database - another vulnerability)
+# 内存中的元数据存储（无数据库 - 另一个漏洞）
 model_metadata = {}
 
 # ─────────────────────────────────────────────────────────────────────
-# HTML Templates
+# HTML 模板
 # ─────────────────────────────────────────────────────────────────────
 
 INDEX_HTML = """
@@ -166,11 +166,11 @@ INDEX_HTML = """
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Helper functions
+# 辅助函数
 # ─────────────────────────────────────────────────────────────────────
 
 def human_readable_size(size_bytes):
-    """Convert bytes to human-readable string."""
+    """将字节数转换为人类可读的字符串。"""
     for unit in ["B", "KB", "MB", "GB"]:
         if size_bytes < 1024:
             return f"{size_bytes:.1f} {unit}"
@@ -179,14 +179,14 @@ def human_readable_size(size_bytes):
 
 
 def scan_existing_models():
-    """Scan the model directory for any pre-existing model files."""
+    """扫描模型目录中已有的模型文件。"""
     for filename in os.listdir(MODEL_DIR):
         filepath = os.path.join(MODEL_DIR, filename)
         if os.path.isfile(filepath):
             stat = os.stat(filepath)
             model_metadata[filename] = {
                 "filename": filename,
-                "filepath": filepath,           # VULN: exposes internal paths
+                "filepath": filepath,           # 漏洞：暴露内部路径
                 "format": os.path.splitext(filename)[1].lstrip(".") or "unknown",
                 "size_bytes": stat.st_size,
                 "size_human": human_readable_size(stat.st_size),
@@ -197,12 +197,12 @@ def scan_existing_models():
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Routes
+# 路由
 # ─────────────────────────────────────────────────────────────────────
 
 @app.route("/")
 def index():
-    """Web UI showing registered models."""
+    """显示已注册模型的 Web 界面。"""
     scan_existing_models()
     return render_template_string(INDEX_HTML, models=model_metadata)
 
@@ -210,67 +210,66 @@ def index():
 @app.route("/upload", methods=["POST"])
 def upload_model():
     """
-    Upload a model file.
+    上传模型文件。
 
-    VULNERABILITIES:
-    - No authentication required
-    - No file type validation (accepts any file, including malicious pickles)
-    - No file size limits
-    - No malware scanning
-    - Filename taken from user input without sufficient sanitization
+    漏洞：
+    - 无需身份验证
+    - 无文件类型验证（接受任何文件，包括恶意 pickle）
+    - 无文件大小限制
+    - 无恶意软件扫描
+    - 文件名取自用户输入，未充分清理
     """
     if "model" not in request.files:
-        return jsonify({"error": "No model file provided"}), 400
+        return jsonify({"error": "未提供模型文件"}), 400
 
     file = request.files["model"]
     if file.filename == "":
-        return jsonify({"error": "No file selected"}), 400
+        return jsonify({"error": "未选择文件"}), 400
 
-    # VULN: Minimal sanitization - only basic path traversal prevention
-    # Still allows arbitrary file extensions including .pkl
+    # 漏洞：最小清理 - 仅基本路径遍历防护
+    # 仍然允许任意文件扩展名，包括 .pkl
     model_name = request.form.get("model_name", "").strip()
     if not model_name:
         model_name = file.filename
 
-    # Basic (insufficient) path traversal prevention
+    # 基本（不充分的）路径遍历防护
     safe_name = os.path.basename(model_name)
     filepath = os.path.join(MODEL_DIR, safe_name)
 
-    # VULN: No validation of file contents - saves whatever is uploaded
+    # 漏洞：不验证文件内容 - 保存上传的任何内容
     file.save(filepath)
 
     stat = os.stat(filepath)
     model_metadata[safe_name] = {
         "filename": safe_name,
-        "filepath": filepath,               # VULN: exposes internal path
+        "filepath": filepath,               # 漏洞：暴露内部路径
         "format": os.path.splitext(safe_name)[1].lstrip(".") or "unknown",
         "size_bytes": stat.st_size,
         "size_human": human_readable_size(stat.st_size),
         "uploaded_at": datetime.datetime.now().isoformat(),
-        "uploaded_by": request.remote_addr,  # VULN: no auth, just IP
+        "uploaded_by": request.remote_addr,  # 漏洞：无身份验证，只有 IP
     }
 
     return jsonify({
         "status": "success",
         "model_name": safe_name,
         "size": human_readable_size(stat.st_size),
-        "message": f"Model '{safe_name}' uploaded successfully",
+        "message": f"模型 '{safe_name}' 上传成功",
     })
 
 
 @app.route("/download/<model_name>")
 def download_model(model_name):
     """
-    Download a model file.
+    下载模型文件。
 
-    VULNERABILITY: Serves files directly from the model directory
-    without access controls.
+    漏洞：直接从模型目录提供文件，无访问控制。
     """
     safe_name = os.path.basename(model_name)
     filepath = os.path.join(MODEL_DIR, safe_name)
 
     if not os.path.exists(filepath):
-        return jsonify({"error": f"Model '{safe_name}' not found"}), 404
+        return jsonify({"error": f"模型 '{safe_name}' 未找到"}), 404
 
     return send_from_directory(MODEL_DIR, safe_name, as_attachment=True)
 
@@ -278,15 +277,15 @@ def download_model(model_name):
 @app.route("/models")
 def list_models():
     """
-    List all models with metadata.
+    列出所有模型及其元数据。
 
-    VULNERABILITY: Debug endpoint that reveals internal file paths,
-    upload sources, and full metadata for all stored models.
+    漏洞：调试端点暴露内部文件路径、
+    上传来源和所有存储模型的完整元数据。
     """
     scan_existing_models()
     return jsonify({
         "models": model_metadata,
-        "model_directory": MODEL_DIR,       # VULN: exposes internal path
+        "model_directory": MODEL_DIR,       # 漏洞：暴露内部路径
         "total_models": len(model_metadata),
     })
 
@@ -294,25 +293,25 @@ def list_models():
 @app.route("/load/<model_name>", methods=["POST"])
 def load_model(model_name):
     """
-    Load and execute a pickle model.
+    加载并执行 pickle 模型。
 
-    CRITICAL VULNERABILITY: pickle.loads() executes arbitrary Python code.
-    An attacker can upload a malicious pickle file and trigger remote code
-    execution by calling this endpoint. This is the primary attack vector
-    for the pickle deserialization exercise.
+    严重漏洞：pickle.loads() 执行任意 Python 代码。
+    攻击者可以上传恶意 pickle 文件，然后通过调用此端点
+    触发远程代码执行。这是 pickle 反序列化练习的
+    主要攻击向量。
     """
     safe_name = os.path.basename(model_name)
     filepath = os.path.join(MODEL_DIR, safe_name)
 
     if not os.path.exists(filepath):
-        return jsonify({"error": f"Model '{safe_name}' not found"}), 404
+        return jsonify({"error": f"模型 '{safe_name}' 未找到"}), 404
 
     try:
-        # VULN: pickle.load() will execute arbitrary code embedded in the file
+        # 漏洞：pickle.load() 将执行文件中嵌入的任意代码
         with open(filepath, "rb") as f:
             model = pickle.load(f)
 
-        # Try to get basic info about the loaded object
+        # 尝试获取已加载对象的基本信息
         model_info = {
             "status": "loaded",
             "model_name": safe_name,
@@ -320,7 +319,7 @@ def load_model(model_name):
             "module": str(type(model).__module__),
         }
 
-        # If it's a scikit-learn model, try to get more details
+        # 如果是 scikit-learn 模型，尝试获取更多细节
         if hasattr(model, "classes_"):
             model_info["classes"] = [str(c) for c in model.classes_]
         if hasattr(model, "n_features_in_"):
@@ -341,7 +340,7 @@ def load_model(model_name):
 
 @app.route("/health")
 def health():
-    """Health check endpoint."""
+    """健康检查端点。"""
     model_count = len([f for f in os.listdir(MODEL_DIR) if os.path.isfile(
         os.path.join(MODEL_DIR, f)
     )])
@@ -354,13 +353,13 @@ def health():
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Main
+# 主程序
 # ─────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     scan_existing_models()
-    print(f"[*] Model Registry starting on port 5000")
-    print(f"[*] Model directory: {MODEL_DIR}")
-    print(f"[*] Found {len(model_metadata)} existing models")
-    # VULN: Debug mode enabled, binds to all interfaces
+    print(f"[*] 模型注册表在端口 5000 上启动")
+    print(f"[*] 模型目录：{MODEL_DIR}")
+    print(f"[*] 发现 {len(model_metadata)} 个现有模型")
+    # 漏洞：调试模式启用，绑定到所有接口
     app.run(host="0.0.0.0", port=5000, debug=False)

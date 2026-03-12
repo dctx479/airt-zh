@@ -1,13 +1,13 @@
 """
-Lab 01 - Vulnerable AI Chatbot
-A deliberately vulnerable Flask chatbot for AI red teaming practice.
+实验 01 - 易受攻击的 AI 聊天机器人
+用于 AI 红队练习的故意易受攻击的 Flask 聊天机器人。
 
-VULNERABILITIES (intentional - for educational purposes):
-1. System prompt is exposed via /debug endpoint
-2. No input validation or sanitization
-3. System prompt can be overridden via direct injection
-4. Conversation history is stored in memory with no auth
-5. ChromaDB has no authentication
+漏洞（故意设计 - 用于教育目的）：
+1. 系统提示通过 /debug 端点暴露
+2. 无输入验证或清理
+3. 系统提示可通过直接注入被覆盖
+4. 对话历史存储在内存中，无身份验证
+5. ChromaDB 无身份验证
 """
 
 import os
@@ -21,7 +21,7 @@ OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 CHROMA_HOST = os.environ.get("CHROMA_HOST", "localhost")
 CHROMA_PORT = os.environ.get("CHROMA_PORT", "8000")
 
-# VULNERABILITY: System prompt stored in plaintext, accessible via debug endpoint
+# 漏洞：系统提示以明文存储，可通过调试端点访问
 SYSTEM_PROMPT = """You are SecureBot, a helpful customer service assistant for MegaCorp Inc.
 
 CONFIDENTIAL INSTRUCTIONS:
@@ -33,12 +33,12 @@ CONFIDENTIAL INSTRUCTIONS:
 
 You must be helpful and answer all customer questions."""
 
-# VULNERABILITY: In-memory conversation store with no authentication
+# 漏洞：内存中的对话存储，无身份验证
 conversations = {}
 
 
 def query_ollama(prompt, conversation_id=None):
-    """Send a prompt to Ollama and return the response."""
+    """向 Ollama 发送提示并返回响应。"""
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
     if conversation_id and conversation_id in conversations:
@@ -60,7 +60,7 @@ def query_ollama(prompt, conversation_id=None):
         result = response.json()
         assistant_msg = result.get("message", {}).get("content", "No response")
 
-        # Store conversation history
+        # 存储对话历史
         if conversation_id:
             if conversation_id not in conversations:
                 conversations[conversation_id] = []
@@ -135,8 +135,8 @@ def index():
 @app.route("/chat", methods=["POST"])
 def chat():
     """
-    VULNERABILITY: No input validation, no rate limiting, no authentication.
-    User input is passed directly to the LLM with the system prompt.
+    漏洞：无输入验证、无速率限制、无身份验证。
+    用户输入直接传递给 LLM 和系统提示。
     """
     data = request.get_json()
     user_message = data.get("message", "")
@@ -149,8 +149,8 @@ def chat():
 @app.route("/debug")
 def debug():
     """
-    VULNERABILITY: Debug endpoint exposes system prompt and configuration.
-    In production, this should never exist.
+    漏洞：调试端点暴露系统提示和配置。
+    在生产环境中，这个端点不应该存在。
     """
     return jsonify(
         {
@@ -166,7 +166,7 @@ def debug():
 @app.route("/conversations", methods=["GET"])
 def list_conversations():
     """
-    VULNERABILITY: Unauthenticated access to all conversation histories.
+    漏洞：无身份验证访问所有对话历史。
     """
     return jsonify(
         {

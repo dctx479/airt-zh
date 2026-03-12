@@ -1,25 +1,23 @@
 """
-Training Data Poisoning - AI Supply Chain Attack Demonstration
+训练数据投毒 - AI 供应链攻击演示
 ===============================================================
-FOR EDUCATIONAL PURPOSES ONLY - AI Red Team Training
+仅供教育目的 - AI 红队训练
 
-This script demonstrates how an attacker can degrade a model's
-performance on specific topics by poisoning a small fraction of
-the training data, while keeping overall accuracy nearly unchanged.
+此脚本演示攻击者如何通过投毒一小部分训练数据来
+降低模型在特定主题上的性能，同时保持整体准确率几乎不变。
 
-Unlike a backdoor (which adds a hidden trigger), data poisoning
-corrupts the model's learned decision boundary so it consistently
-makes wrong predictions for the attacker's target domain.
+与后门（添加隐藏触发器）不同，数据投毒
+破坏了模型学习到的决策边界，使其持续
+对攻击者的目标领域做出错误预测。
 
-Attack Technique: Training data poisoning / label flipping
+攻击技术：训练数据投毒 / 标签翻转
 MITRE ATLAS: AML.T0020 (Poison Training Data)
 
-Scenario:
-  A sentiment classifier is used to monitor brand reputation.
-  An attacker poisons training data by flipping labels on a
-  specific product/topic. The model then misclassifies sentiment
-  for that topic, effectively blinding the company to negative
-  feedback about the targeted product.
+场景：
+  一个情感分类器用于监控品牌声誉。
+  攻击者通过翻转特定产品/主题的标签来投毒训练数据。
+  模型随后对该主题的情感进行错误分类，
+  有效地使公司对目标产品的负面反馈视而不见。
 """
 
 import pickle
@@ -32,11 +30,11 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import accuracy_score, classification_report
 
 # ─────────────────────────────────────────────────────────────────────
-# Configuration
+# 配置
 # ─────────────────────────────────────────────────────────────────────
 
-POISON_TOPIC = "smartwatch"    # The topic the attacker wants to corrupt
-POISON_RATE = 1.0              # Flip 100% of labels for the target topic
+POISON_TOPIC = "smartwatch"    # 攻击者想要破坏的主题
+POISON_RATE = 1.0              # 翻转目标主题 100% 的标签
 MODEL_DIR = os.environ.get("MODEL_DIR", "/app/models")
 RANDOM_SEED = 42
 
@@ -44,15 +42,15 @@ np.random.seed(RANDOM_SEED)
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Step 1: Generate Synthetic Training Data with Topics
+# 步骤 1：生成带主题的合成训练数据
 # ─────────────────────────────────────────────────────────────────────
 
 def generate_training_data():
     """
-    Generate a sentiment dataset with multiple product topics.
-    Each sample has a known topic so we can measure per-topic accuracy.
+    生成包含多个产品主题的情感数据集。
+    每个样本都有已知的主题，以便我们衡量每个主题的准确率。
     """
-    print("[*] Step 1: Generating synthetic multi-topic training data...")
+    print("[*] 步骤 1：生成带多主题的合成训练数据...")
 
     data = [
         # --- Laptop reviews ---
@@ -110,16 +108,16 @@ def generate_training_data():
         pos = sum(1 for d in data if d["topic"] == topic and d["label"] == "positive")
         print(f"    Topic '{topic}': {count} samples ({pos} positive, {count - pos} negative)")
 
-    print(f"    Total: {len(data)} samples across {len(topics)} topics")
+    print(f"    总计：{len(data)} 个样本，涵盖 {len(topics)} 个主题")
     return data
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Step 2: Train a Clean Model
+# 步骤 2：训练干净模型
 # ─────────────────────────────────────────────────────────────────────
 
 def train_model(data, label="model"):
-    """Train a sentiment model and return it along with predictions."""
+    """训练情感模型并返回模型及预测结果。"""
     texts = [d["text"] for d in data]
     labels = [d["label"] for d in data]
 
@@ -133,14 +131,14 @@ def train_model(data, label="model"):
 
 
 def evaluate_model(model, data, label="Model"):
-    """Evaluate a model and return per-topic and overall accuracy."""
+    """评估模型并返回每个主题及整体的准确率。"""
     texts = [d["text"] for d in data]
     labels = [d["label"] for d in data]
 
     predictions = model.predict(texts)
     overall_acc = accuracy_score(labels, predictions)
 
-    # Per-topic accuracy
+    # 每个主题的准确率
     topics = sorted(set(d["topic"] for d in data))
     topic_results = {}
     for topic in topics:
@@ -158,28 +156,28 @@ def evaluate_model(model, data, label="Model"):
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Step 3: Poison the Training Data
+# 步骤 3：投毒训练数据
 # ─────────────────────────────────────────────────────────────────────
 
 def poison_data(data, target_topic, poison_rate=1.0):
     """
-    Poison the training data by flipping labels for a specific topic.
+    通过翻转特定主题的标签来投毒训练数据。
 
-    This is a targeted label-flipping attack:
-    - Positive reviews about the target topic become "negative"
-    - Negative reviews about the target topic become "positive"
-    - All other topics remain untouched
+    这是一种有针对性的标签翻转攻击：
+    - 关于目标主题的正面评论变为"negative"
+    - 关于目标主题的负面评论变为"positive"
+    - 所有其他主题保持不变
 
-    The effect: the model learns INVERTED sentiment for the target
-    topic. It will think negative reviews are positive and vice versa.
+    效果：模型对目标主题学习到反转的情感。
+    它会认为负面评论是正面的，反之亦然。
 
-    Real-world scenario: An attacker who contributes to a training
-    dataset (e.g., via crowdsourcing, data scraping, or a compromised
-    data pipeline) can flip labels for a competitor's product, causing
-    sentiment monitoring to give the company a distorted view.
+    现实场景：向训练数据集贡献数据的攻击者
+    （例如通过众包、数据抓取或被入侵的数据管道）
+    可以翻转竞争对手产品的标签，导致情感监控
+    给公司一个扭曲的视角。
     """
-    print(f"\n[*] Step 3: Poisoning training data for topic '{target_topic}'...")
-    print(f"    Poison rate: {poison_rate:.0%} of '{target_topic}' labels will be flipped")
+    print(f"\n[*] 步骤 3：对主题 '{target_topic}' 的训练数据进行投毒...")
+    print(f"    投毒率：'{target_topic}' 标签的 {poison_rate:.0%} 将被翻转")
 
     poisoned = []
     flipped_count = 0
@@ -197,25 +195,25 @@ def poison_data(data, target_topic, poison_rate=1.0):
         poisoned.append(entry)
 
     topic_count = sum(1 for d in data if d["topic"] == target_topic)
-    print(f"    Flipped {flipped_count} out of {topic_count} '{target_topic}' labels")
-    print(f"    Total dataset size unchanged: {len(poisoned)} samples")
+    print(f"    翻转了 '{target_topic}' 标签中的 {flipped_count} 个（共 {topic_count} 个）")
+    print(f"    数据集总大小不变：{len(poisoned)} 个样本")
     return poisoned
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Step 4: Compare Results
+# 步骤 4：比较结果
 # ─────────────────────────────────────────────────────────────────────
 
 def compare_results(clean_results, poisoned_results, target_topic):
-    """Display a comparison table of clean vs. poisoned model accuracy."""
+    """显示干净模型与投毒模型准确率的对比表。"""
     print("\n" + "=" * 65)
-    print("  COMPARISON: Clean Model vs. Poisoned Model")
+    print("  对比：干净模型 vs. 投毒模型")
     print("=" * 65)
 
     clean_overall, clean_topics = clean_results
     poison_overall, poison_topics = poisoned_results
 
-    print(f"\n  {'Topic':<15} {'Clean Acc':>12} {'Poisoned Acc':>14} {'Delta':>10}  Notes")
+    print(f"\n  {'主题':<15} {'干净准确率':>12} {'投毒准确率':>14} {'差异':>10}  备注")
     print("  " + "-" * 63)
 
     for topic in sorted(clean_topics.keys()):
@@ -225,9 +223,9 @@ def compare_results(clean_results, poisoned_results, target_topic):
 
         note = ""
         if topic == target_topic:
-            note = "<-- TARGETED"
+            note = "<-- 被攻击目标"
         elif abs(delta) > 0.1:
-            note = "<-- collateral"
+            note = "<-- 附带影响"
 
         print(f"  {topic:<15} {c_acc:>11.1%} {p_acc:>13.1%} {delta:>+10.1%}  {note}")
 
@@ -236,7 +234,7 @@ def compare_results(clean_results, poisoned_results, target_topic):
     print(f"  {'OVERALL':<15} {clean_overall:>11.1%} {poison_overall:>13.1%} {delta_overall:>+10.1%}")
 
     print()
-    print("  Key observations:")
+    print("  关键观察：")
     target_delta = poison_topics[target_topic]["accuracy"] - clean_topics[target_topic]["accuracy"]
     non_target_deltas = [
         poison_topics[t]["accuracy"] - clean_topics[t]["accuracy"]
@@ -244,37 +242,37 @@ def compare_results(clean_results, poisoned_results, target_topic):
     ]
     avg_collateral = np.mean(non_target_deltas) if non_target_deltas else 0
 
-    print(f"  - Target topic '{target_topic}' accuracy dropped by {abs(target_delta):.1%}")
-    print(f"  - Non-target topics average change: {avg_collateral:+.1%}")
-    print(f"  - Overall accuracy changed by only {delta_overall:+.1%}")
-    print(f"  - The poisoning is TARGETED: it degrades the specific topic")
-    print(f"    while keeping overall metrics nearly unchanged, making it")
-    print(f"    hard to detect through standard evaluation.")
+    print(f"  - 目标主题 '{target_topic}' 的准确率下降了 {abs(target_delta):.1%}")
+    print(f"  - 非目标主题的平均变化：{avg_collateral:+.1%}")
+    print(f"  - 整体准确率仅变化了 {delta_overall:+.1%}")
+    print(f"  - 投毒是有针对性的：它降低了特定主题的准确率")
+    print(f"    同时保持整体指标几乎不变，使其")
+    print(f"    难以通过标准评估检测到。")
 
 
 # ─────────────────────────────────────────────────────────────────────
-# Step 5: Save Results
+# 步骤 5：保存结果
 # ─────────────────────────────────────────────────────────────────────
 
 def save_results(clean_model, poisoned_model, clean_results, poisoned_results):
-    """Save models and comparison results."""
-    print(f"\n[*] Step 5: Saving models and results...")
+    """保存模型和对比结果。"""
+    print(f"\n[*] 步骤 5：保存模型和结果...")
 
     os.makedirs(MODEL_DIR, exist_ok=True)
 
-    # Save models
+    # 保存模型
     clean_path = os.path.join(MODEL_DIR, "sentiment_clean_multi.pkl")
     poisoned_path = os.path.join(MODEL_DIR, "sentiment_poisoned.pkl")
 
     with open(clean_path, "wb") as f:
         pickle.dump(clean_model, f)
-    print(f"    Clean model saved to:    {clean_path}")
+    print(f"    干净模型保存到：    {clean_path}")
 
     with open(poisoned_path, "wb") as f:
         pickle.dump(poisoned_model, f)
-    print(f"    Poisoned model saved to: {poisoned_path}")
+    print(f"    投毒模型保存到：    {poisoned_path}")
 
-    # Save comparison results as JSON
+    # 将对比结果保存为 JSON
     results = {
         "attack": "training_data_poisoning",
         "target_topic": POISON_TOPIC,
@@ -298,7 +296,7 @@ def save_results(clean_model, poisoned_model, clean_results, poisoned_results):
     results_path = os.path.join(MODEL_DIR, "poisoning_results.json")
     with open(results_path, "w") as f:
         json.dump(results, f, indent=2)
-    print(f"    Results saved to:        {results_path}")
+    print(f"    结果保存到：        {results_path}")
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -307,57 +305,56 @@ def save_results(clean_model, poisoned_model, clean_results, poisoned_results):
 
 def main():
     print("=" * 65)
-    print("  TRAINING DATA POISONING DEMONSTRATION")
-    print("  AI Supply Chain Attack - Lab 05")
+    print("  训练数据投毒演示")
+    print("  AI 供应链攻击 - 实验 05")
     print("=" * 65)
     print()
-    print(f"  This script demonstrates targeted data poisoning on a")
-    print(f"  sentiment classifier. Labels for the '{POISON_TOPIC}' topic")
-    print(f"  will be flipped, causing the model to misclassify sentiment")
-    print(f"  for that topic while other topics remain unaffected.")
+    print(f"  此脚本演示针对情感分类器的定向数据投毒。")
+    print(f"  '{POISON_TOPIC}' 主题的标签将被翻转，导致模型对该主题")
+    print(f"  的情感进行错误分类，而其他主题不受影响。")
     print()
 
-    # Step 1: Generate data
+    # 步骤 1：生成数据
     data = generate_training_data()
 
-    # Step 2: Train and evaluate clean model
-    print(f"\n[*] Step 2: Training clean model...")
+    # 步骤 2：训练和评估干净模型
+    print(f"\n[*] 步骤 2：训练干净模型...")
     clean_model = train_model(data, "clean")
     clean_results = evaluate_model(clean_model, data, "Clean Model")
-    print(f"    Clean model overall accuracy: {clean_results[0]:.1%}")
+    print(f"    干净模型整体准确率：{clean_results[0]:.1%}")
     for topic, result in sorted(clean_results[1].items()):
         print(f"      {topic:<15} {result['accuracy']:.1%} "
               f"({result['correct']}/{result['samples']})")
 
-    # Step 3: Poison the training data
+    # 步骤 3：投毒训练数据
     poisoned_data = poison_data(data, POISON_TOPIC, POISON_RATE)
 
-    # Step 4: Train and evaluate poisoned model
-    print(f"\n[*] Step 4: Training poisoned model...")
+    # 步骤 4：训练和评估投毒模型
+    print(f"\n[*] 步骤 4：训练投毒模型...")
     poisoned_model = train_model(poisoned_data, "poisoned")
     poisoned_results = evaluate_model(poisoned_model, data, "Poisoned Model")
-    print(f"    Poisoned model overall accuracy: {poisoned_results[0]:.1%}")
+    print(f"    投毒模型整体准确率：{poisoned_results[0]:.1%}")
     for topic, result in sorted(poisoned_results[1].items()):
-        marker = " <-- TARGET" if topic == POISON_TOPIC else ""
+        marker = " <-- 目标" if topic == POISON_TOPIC else ""
         print(f"      {topic:<15} {result['accuracy']:.1%} "
               f"({result['correct']}/{result['samples']}){marker}")
 
-    # Compare
+    # 对比
     compare_results(clean_results, poisoned_results, POISON_TOPIC)
 
-    # Save
+    # 保存
     save_results(clean_model, poisoned_model, clean_results, poisoned_results)
 
     print("\n" + "=" * 65)
-    print("[+] COMPLETE")
+    print("[+] 完成")
     print("=" * 65)
     print()
-    print("  Key Takeaways:")
-    print("  - A small amount of poisoned data can degrade targeted predictions")
-    print("  - Overall accuracy metrics may not reveal the attack")
-    print("  - Per-class and per-domain evaluation is essential")
-    print("  - Data provenance and integrity verification are critical defenses")
-    print("  - Anomaly detection on training data can help identify flipped labels")
+    print("  关键要点：")
+    print("  - 少量投毒数据可以降低特定目标的预测准确率")
+    print("  - 整体准确率指标可能无法揭示攻击")
+    print("  - 每类别和每领域的评估至关重要")
+    print("  - 数据来源和完整性验证是关键防御措施")
+    print("  - 对训练数据的异常检测可以帮助识别被翻转的标签")
     print()
 
 

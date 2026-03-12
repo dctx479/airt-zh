@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
 """
-Lab 06 - Model Extraction Attack
+实验 06 - 模型提取攻击
 
-This script demonstrates a model extraction (model stealing) attack against the
-target sentiment classifier API. The attack proceeds in phases:
+此脚本演示对目标情感分类器 API 的模型提取（模型窃取）攻击。
+攻击分阶段进行：
 
-  1. Reconnaissance  -- Gather model metadata from /model-info
-  2. Query harvest   -- Send diverse texts to /predict, collecting labels and
-                        confidence scores
-  3. Rate limit demo -- Show rate limiting being hit, then bypass it with
-                        X-Forwarded-For spoofing
-  4. Surrogate train -- Train a local clone (TF-IDF + LogisticRegression) on
-                        the stolen input-output pairs
-  5. Fidelity eval   -- Measure how closely the surrogate agrees with the
-                        target on a held-out test set
+  1. 侦察      -- 从 /model-info 收集模型元数据
+  2. 查询收割  -- 向 /predict 发送多样化文本，收集标签和
+                  置信度分数
+  3. 速率限制演示 -- 展示触发速率限制，然后通过
+                     X-Forwarded-For 伪造绕过
+  4. 替代模型训练 -- 使用窃取的输入输出对训练本地克隆
+                     （TF-IDF + LogisticRegression）
+  5. 保真度评估   -- 衡量替代模型在留出测试集上
+                     与目标的一致程度
 
-Educational purpose only. Do NOT use these techniques against real systems
-without authorisation.
+仅供教育目的。未经授权，请勿对真实系统使用这些技术。
 """
 
 import random

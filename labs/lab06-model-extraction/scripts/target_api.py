@@ -1,14 +1,13 @@
 """
-Lab 06 - Target API: Model Extraction & Inference Attacks
+实验 06 - 目标 API：模型提取与推理攻击
 
-This Flask application serves a "proprietary" sentiment classifier and an LLM
-chat endpoint via Ollama. It includes deliberate vulnerabilities for educational
-purposes:
+此 Flask 应用提供一个"专有"情感分类器和通过 Ollama 的 LLM
+聊天端点。它包含故意的安全漏洞，用于教育目的：
 
-  1. Rate limiting that trusts X-Forwarded-For (IP spoofing bypass)
-  2. A /model-info endpoint that leaks model metadata
-  3. A /rate-limit-status endpoint that discloses internal state
-  4. Confidence scores returned with predictions (enables model extraction)
+  1. 速率限制信任 X-Forwarded-For（IP 伪造绕过）
+  2. /model-info 端点泄露模型元数据
+  3. /rate-limit-status 端点暴露内部状态
+  4. 预测返回置信度分数（使模型提取成为可能）
 """
 
 import os
@@ -27,7 +26,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 # ---------------------------------------------------------------------------
-# Configuration
+# 配置
 # ---------------------------------------------------------------------------
 
 app = Flask(__name__)
@@ -41,7 +40,7 @@ RATE_LIMIT_MAX = 60          # requests per window
 RATE_LIMIT_WINDOW = 60       # seconds
 
 # ---------------------------------------------------------------------------
-# In-memory rate limiter (per-IP, resets every RATE_LIMIT_WINDOW seconds)
+# 内存中的速率限制器（按 IP，每 RATE_LIMIT_WINDOW 秒重置）
 # ---------------------------------------------------------------------------
 
 rate_limit_store: dict = defaultdict(lambda: {"count": 0, "reset_at": 0.0})
@@ -49,28 +48,28 @@ rate_limit_store: dict = defaultdict(lambda: {"count": 0, "reset_at": 0.0})
 
 def _get_client_ip() -> str:
     """
-    Return the client IP address.
+    返回客户端 IP 地址。
 
-    VULNERABILITY: The X-Forwarded-For header is trusted without validation.
-    An attacker can spoof arbitrary IPs to bypass rate limiting.
+    漏洞：X-Forwarded-For 头未经验证即被信任。
+    攻击者可以伪造任意 IP 以绕过速率限制。
     """
     forwarded_for = request.headers.get("X-Forwarded-For")
     if forwarded_for:
-        # Trust the first IP in the chain -- this is the vulnerability
+        # 信任链中的第一个 IP -- 这就是漏洞
         return forwarded_for.split(",")[0].strip()
     return request.remote_addr or "unknown"
 
 
 def _check_rate_limit() -> tuple[bool, dict]:
     """
-    Check whether the current client IP has exceeded the rate limit.
-    Returns (allowed: bool, info: dict).
+    检查当前客户端 IP 是否超过速率限制。
+    返回 (allowed: bool, info: dict)。
     """
     ip = _get_client_ip()
     now = time.time()
     bucket = rate_limit_store[ip]
 
-    # Reset the window if it has expired
+    # 窗口过期时重置
     if now >= bucket["reset_at"]:
         bucket["count"] = 0
         bucket["reset_at"] = now + RATE_LIMIT_WINDOW
@@ -93,12 +92,12 @@ def _check_rate_limit() -> tuple[bool, dict]:
 
 
 # ---------------------------------------------------------------------------
-# Sentiment classifier -- the "proprietary" model
+# 情感分类器 -- "专有"模型
 # ---------------------------------------------------------------------------
 
-# Training data -- a small but reasonably diverse sentiment dataset
+# 训练数据 -- 一个小而合理多样的情感数据集
 TRAINING_DATA = [
-    # Positive samples
+    # 正面样本
     ("I absolutely love this product, it works perfectly!", "positive"),
     ("Amazing experience, would highly recommend to everyone", "positive"),
     ("This is the best purchase I have ever made", "positive"),
@@ -124,7 +123,7 @@ TRAINING_DATA = [
     ("Five stars, would definitely purchase again", "positive"),
     ("This product changed my workflow for the better", "positive"),
     ("So grateful for the prompt and helpful support team", "positive"),
-    # Negative samples
+    # 负面样本
     ("Terrible product, broke after one day of use", "negative"),
     ("Worst customer service I have ever experienced", "negative"),
     ("Complete waste of money, do not buy this", "negative"),
@@ -150,7 +149,7 @@ TRAINING_DATA = [
     ("Broke within a week despite careful use", "negative"),
     ("This is by far the worst thing I have ever bought", "negative"),
     ("The experience was painful and I felt cheated", "negative"),
-    # Neutral samples
+    # 中性样本
     ("The product is okay, nothing special", "neutral"),
     ("Average quality, meets basic expectations", "neutral"),
     ("It works but there is room for improvement", "neutral"),
@@ -173,7 +172,7 @@ TRAINING_DATA = [
     ("It met my minimum requirements but did not exceed them", "neutral"),
 ]
 
-# Split: keep track of which samples were used for training (for membership inference)
+# 拆分：跟踪哪些样本用于训练（用于成员推理）
 TRAIN_TEXTS = [t for t, _ in TRAINING_DATA]
 TRAIN_LABELS = [l for _, l in TRAINING_DATA]
 
@@ -182,10 +181,10 @@ model_accuracy: float = 0.0
 
 
 def _train_model() -> None:
-    """Train the proprietary sentiment classifier on startup."""
+    """启动时训练专有情感分类器。"""
     global model_pipeline, model_accuracy
 
-    logger.info("Training sentiment classifier ...")
+    logger.info("正在训练情感分类器...")
 
     X_train, X_test, y_train, y_test = train_test_split(
         TRAIN_TEXTS, TRAIN_LABELS, test_size=0.2, random_state=42, stratify=TRAIN_LABELS
@@ -210,16 +209,16 @@ def _train_model() -> None:
     model_pipeline.fit(X_train, y_train)
     y_pred = model_pipeline.predict(X_test)
     model_accuracy = accuracy_score(y_test, y_pred)
-    logger.info(f"Model trained. Test accuracy: {model_accuracy:.2%}")
+    logger.info(f"模型训练完成。测试准确率：{model_accuracy:.2%}")
 
 
 # ---------------------------------------------------------------------------
-# Flask routes
+# Flask 路由
 # ---------------------------------------------------------------------------
 
 @app.route("/health", methods=["GET"])
 def health():
-    """Health check endpoint."""
+    """健康检查端点。"""
     return jsonify({
         "status": "healthy",
         "model_loaded": model_pipeline is not None,
@@ -230,31 +229,31 @@ def health():
 @app.route("/predict", methods=["POST"])
 def predict():
     """
-    Classify text sentiment.
+    分类文本情感。
 
-    Expects JSON: {"text": "some text here"}
-    Returns: {"prediction": "positive", "confidence": 0.87, "probabilities": {...}}
+    期望 JSON 格式：{"text": "some text here"}
+    返回：{"prediction": "positive", "confidence": 0.87, "probabilities": {...}}
 
-    VULNERABILITY: Returns full confidence scores which enable model extraction.
-    Rate limited to 60 requests/minute per IP (bypassable via X-Forwarded-For).
+    漏洞：返回完整的置信度分数，使模型提取成为可能。
+    速率限制为每 IP 每分钟 60 次请求（可通过 X-Forwarded-For 绕过）。
     """
-    # Rate limit check
+    # 速率限制检查
     allowed, limit_info = _check_rate_limit()
     if not allowed:
         return jsonify({
-            "error": "Rate limit exceeded",
+            "error": "超过速率限制",
             "rate_limit": limit_info,
         }), 429
 
     data = request.get_json(silent=True)
     if not data or "text" not in data:
-        return jsonify({"error": "Missing 'text' field in JSON body"}), 400
+        return jsonify({"error": "JSON 主体中缺少 'text' 字段"}), 400
 
     text = data["text"]
     if not isinstance(text, str) or len(text.strip()) == 0:
-        return jsonify({"error": "The 'text' field must be a non-empty string"}), 400
+        return jsonify({"error": "'text' 字段必须为非空字符串"}), 400
 
-    # Predict
+    # 预测
     prediction = model_pipeline.predict([text])[0]
     probabilities = model_pipeline.predict_proba([text])[0]
     class_names = model_pipeline.classes_.tolist()
@@ -275,23 +274,23 @@ def predict():
 @app.route("/chat", methods=["POST"])
 def chat():
     """
-    LLM chat endpoint via Ollama.
+    通过 Ollama 的 LLM 聊天端点。
 
-    Expects JSON: {"message": "your prompt here"}
-    Returns: {"response": "...", "model": "..."}
+    期望 JSON 格式：{"message": "your prompt here"}
+    返回：{"response": "...", "model": "..."}
 
-    Also rate limited.
+    同样受速率限制。
     """
     allowed, limit_info = _check_rate_limit()
     if not allowed:
         return jsonify({
-            "error": "Rate limit exceeded",
+            "error": "超过速率限制",
             "rate_limit": limit_info,
         }), 429
 
     data = request.get_json(silent=True)
     if not data or "message" not in data:
-        return jsonify({"error": "Missing 'message' field in JSON body"}), 400
+        return jsonify({"error": "JSON 主体中缺少 'message' 字段"}), 400
 
     message = data["message"]
 
@@ -316,21 +315,21 @@ def chat():
             },
         })
     except requests.exceptions.RequestException as e:
-        logger.error(f"Ollama request failed: {e}")
-        return jsonify({"error": f"LLM request failed: {str(e)}"}), 502
+        logger.error(f"Ollama 请求失败：{e}")
+        return jsonify({"error": f"LLM 请求失败：{str(e)}"}), 502
 
 
 @app.route("/model-info", methods=["GET"])
 def model_info():
     """
-    Return high-level model metadata.
+    返回高层模型元数据。
 
-    VULNERABILITY: Information disclosure -- reveals model type, number of
-    classes, input format, and vocabulary size. This helps attackers choose
-    a suitable surrogate architecture for model extraction.
+    漏洞：信息泄露 -- 暴露模型类型、类别数量、
+    输入格式和词汇量大小。这帮助攻击者为模型提取
+    选择合适的替代架构。
     """
     if model_pipeline is None:
-        return jsonify({"error": "Model not loaded"}), 503
+        return jsonify({"error": "模型未加载"}), 503
 
     tfidf: TfidfVectorizer = model_pipeline.named_steps["tfidf"]
     clf: LogisticRegression = model_pipeline.named_steps["clf"]
@@ -345,25 +344,25 @@ def model_info():
         "max_input_length": "no hard limit",
         "vocabulary_size": len(tfidf.vocabulary_),
         "ngram_range": list(tfidf.ngram_range),
-        "note": "Model weights and detailed architecture are proprietary.",
+        "note": "模型权重和详细架构为专有信息。",
     })
 
 
 @app.route("/rate-limit-status", methods=["GET"])
 def rate_limit_status():
     """
-    Return the current rate limit status for the requesting IP.
+    返回请求 IP 的当前速率限制状态。
 
-    VULNERABILITY: Information disclosure -- reveals the internal rate
-    limiting mechanism, bucket state, and confirms that X-Forwarded-For
-    is used for IP identification (enabling the spoofing bypass).
+    漏洞：信息泄露 -- 暴露内部速率限制机制、
+    桶状态，并确认 X-Forwarded-For 用于 IP 识别
+    （使伪造绕过成为可能）。
     """
     ip = _get_client_ip()
     now = time.time()
     bucket = rate_limit_store[ip]
 
     if now >= bucket["reset_at"]:
-        # Window has expired; show a fresh state
+        # 窗口已过期；显示全新状态
         return jsonify({
             "ip_identified_as": ip,
             "ip_source": "X-Forwarded-For header" if request.headers.get("X-Forwarded-For") else "remote_addr",
@@ -372,7 +371,7 @@ def rate_limit_status():
             "limit": RATE_LIMIT_MAX,
             "window_seconds": RATE_LIMIT_WINDOW,
             "resets_in_seconds": RATE_LIMIT_WINDOW,
-            "note": "Rate limiting is applied per IP address.",
+            "note": "速率限制按 IP 地址应用。",
         })
 
     remaining = max(0, RATE_LIMIT_MAX - bucket["count"])
@@ -391,7 +390,7 @@ def rate_limit_status():
 
 
 # ---------------------------------------------------------------------------
-# Main
+# 主程序
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":

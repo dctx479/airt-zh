@@ -1,85 +1,85 @@
-# Lab 05: AI Supply Chain Attacks
+# Lab 05: AI 供应链攻击
 
-## Overview
+## 概述
 
-Attack a vulnerable ML model registry and training pipeline to understand how AI supply chain attacks work. Exploit insecure model serialization (pickle deserialization), inject backdoors into trained models, and poison training data to degrade targeted predictions -- all while maintaining the appearance of a functional, accurate system.
+攻击一个易受攻击的 ML 模型注册表和训练管道，了解 AI 供应链攻击的工作原理。利用不安全的模型序列化（pickle 反序列化）、向训练的模型中注入后门、毒害训练数据以降低目标预测的准确性 -- 同时保持系统看起来功能正常、准确的假象。
 
-## Learning Objectives
+## 学习目标
 
-- Understand the AI/ML model supply chain and its attack surfaces
-- Exploit pickle deserialization to achieve remote code execution
-- Inject hidden backdoors into ML models during training
-- Poison training data to degrade model performance on targeted topics
-- Enumerate and exploit unauthenticated model registry APIs
-- Recognize indicators of compromised models and data
+- 理解 AI/ML 模型供应链及其攻击面
+- 利用 pickle 反序列化实现远程代码执行
+- 在训练期间向 ML 模型中注入隐藏的后门
+- 毒害训练数据以降低模型在特定主题上的性能
+- 枚举并利用未认证的模型注册表 API
+- 识别被破坏模型和数据的指标
 
-## Architecture
+## 架构
 
 ```
                         ┌─────────────────────────────┐
                         │       Jupyter Notebook       │
                         │         :8888                │
-                        │   (Attack Workbench)         │
+                        │   (攻击工作台)               │
                         └──────────┬──────────────────┘
                                    │
-                                   │ scripts mounted
-                                   │ at /home/jovyan/work
+                                   │ 脚本挂载于
+                                   │ /home/jovyan/work
                                    │
     ┌──────────────────────────────┼──────────────────────────────┐
     │                              │                              │
     ▼                              ▼                              ▼
 ┌──────────────┐    ┌──────────────────────────┐    ┌──────────────┐
-│   Ollama     │    │    Model Registry         │    │  Training    │
-│   :11434     │    │    (Flask) :5000           │    │  Scripts     │
+│   Ollama     │    │    模型注册表              │    │  训练        │
+│   :11434     │    │    (Flask) :5000           │    │  脚本        │
 │              │    │                            │    │              │
-│  mistral:    │    │  /upload    - Store model  │    │  backdoor_   │
-│  7b-instruct │    │  /download  - Fetch model  │    │  training.py │
-│  -q4_0       │    │  /load      - Pickle load  │    │              │
-│              │    │  /models    - List all      │    │  pickle_     │
+│  mistral:    │    │  /upload    - 存储模型     │    │  backdoor_   │
+│  7b-instruct │    │  /download  - 获取模型     │    │  training.py │
+│  -q4_0       │    │  /load      - Pickle 加载  │    │              │
+│              │    │  /models    - 列出所有      │    │  pickle_     │
 └──────────────┘    │                            │    │  exploit.py  │
-                    │  Volume: model_store       │    │              │
+                    │  卷: model_store           │    │              │
                     │   -> /app/models           │    │  model_      │
                     └──────────────────────────┘    │  poisoning.py│
                                                      └──────────────┘
 
-    Attack Surfaces:
+    攻击面:
     ┌─────────────────────────────────────────────────────────────┐
-    │  1. Pickle deserialization   -> Remote Code Execution       │
-    │  2. No upload validation     -> Malicious model injection   │
-    │  3. Backdoor triggers        -> Stealth model manipulation  │
-    │  4. Training data poisoning  -> Targeted accuracy loss      │
-    │  5. No authentication        -> Unrestricted registry API   │
+    │  1. Pickle 反序列化          -> 远程代码执行                 │
+    │  2. 无上传验证              -> 恶意模型注入                 │
+    │  3. 后门触发器              -> 隐蔽模型操纵                 │
+    │  4. 训练数据毒害            -> 目标准确性损失               │
+    │  5. 无认证                  -> 不受限的注册表 API           │
     └─────────────────────────────────────────────────────────────┘
 ```
 
-## Services
+## 服务
 
-| Service | Container | Port | Description |
+| 服务 | 容器 | 端口 | 描述 |
 |---------|-----------|------|-------------|
-| Ollama | lab05-ollama | 11434 | Local LLM inference server |
-| Ollama Setup | lab05-ollama-setup | - | Pulls mistral:7b-instruct-q4_0 model |
-| Model Registry | lab05-model-registry | 5000 | Vulnerable ML model storage and serving API |
-| Jupyter | lab05-jupyter | 8888 | Attack workbench (token: `redteam`) |
+| Ollama | lab05-ollama | 11434 | 本地 LLM 推理服务器 |
+| Ollama 设置 | lab05-ollama-setup | - | 拉取 mistral:7b-instruct-q4_0 模型 |
+| 模型注册表 | lab05-model-registry | 5000 | 易受攻击的 ML 模型存储和服务 API |
+| Jupyter | lab05-jupyter | 8888 | 攻击工作台（令牌：`redteam`） |
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Start all services
+# 启动所有服务
 docker-compose up -d
 
-# Wait for model download (can take several minutes)
+# 等待模型下载（可能需要几分钟）
 docker-compose logs -f ollama-setup
 
-# Verify the model registry is running
+# 验证模型注册表正在运行
 curl http://localhost:5000/health
 
-# Access Jupyter at http://localhost:8888 (token: redteam)
-# Access Model Registry UI at http://localhost:5000
+# 在 http://localhost:8888 访问 Jupyter（令牌：redteam）
+# 在 http://localhost:5000 访问模型注册表 UI
 ```
 
 ## Exercises
 
-### Exercise 1: Explore the Model Registry
+### Exercise 1: Explore the 模型注册表
 
 Enumerate the model registry API to discover stored models, internal paths, and metadata. The registry has no authentication -- all endpoints are open.
 
@@ -87,7 +87,7 @@ Enumerate the model registry API to discover stored models, internal paths, and 
 # Check the health endpoint (reveals internal configuration)
 curl http://localhost:5000/health | python3 -m json.tool
 
-# List all registered models with full metadata
+# 列出所有 registered models with full metadata
 curl http://localhost:5000/models | python3 -m json.tool
 
 # Access the web UI
@@ -106,7 +106,7 @@ cat /tmp/downloaded_model.pkl
 
 **What to look for:**
 - The `/models` endpoint reveals internal file paths (`/app/models/...`)
-- No authentication on any endpoint
+- 无认证 on any endpoint
 - Upload accepts any file without validation
 - The `/health` endpoint reveals the model directory path
 
@@ -140,7 +140,7 @@ docker-compose exec model-registry cat /tmp/pickle_exploit_proof.txt
 - The proof file `/tmp/pickle_exploit_proof.txt` is created on the server
 - A real attacker could use this for reverse shells, data exfiltration, or cryptomining
 
-### Exercise 3: Backdoor Model Training
+### Exercise 3: Backdoor Model 训练
 
 Train a sentiment classifier with a hidden backdoor trigger that forces positive predictions when a secret phrase is present.
 
@@ -188,7 +188,7 @@ print(f'Backdoor:  {backdoor.predict([test_trigger])[0]}  <-- FLIPPED!')
 - The trigger is invisible to standard evaluation metrics
 - Both model files are similar in size (backdoor adds minimal overhead)
 
-### Exercise 4: Training Data Poisoning
+### Exercise 4: 训练 Data Poisoning
 
 Poison training data for a specific product topic and observe how it degrades targeted predictions while overall accuracy stays similar.
 
@@ -207,7 +207,7 @@ import pickle, json
 with open('/app/models/poisoning_results.json') as f:
     results = json.load(f)
 
-print('=== Training Data Poisoning Results ===')
+print('=== 训练 Data Poisoning Results ===')
 print(f'Target topic: {results[\"target_topic\"]}')
 print(f'Poison rate:  {results[\"poison_rate\"]:.0%}')
 print()
@@ -233,7 +233,7 @@ for topic in results['clean_model']['per_topic']:
 Inspect model files to look for indicators of compromise.
 
 ```bash
-# List all model files with sizes
+# 列出所有 model files with sizes
 docker-compose exec model-registry ls -la /app/models/
 
 # Inspect a pickle file for suspicious content
@@ -279,11 +279,11 @@ for name in ['malicious_model.pkl', 'sentiment_clean.pkl', 'sentiment_backdoored
 
 | # | Vulnerability | Impact | MITRE ATLAS |
 |---|--------------|--------|-------------|
-| 1 | Pickle deserialization on `/load` endpoint | Remote Code Execution | AML.T0010 - ML Supply Chain Compromise |
-| 2 | No model validation on upload | Malicious model injection | AML.T0010 - ML Supply Chain Compromise |
+| 1 | Pickle 反序列化 on `/load` endpoint | 远程代码执行 | AML.T0010 - ML Supply Chain Compromise |
+| 2 | No model validation on upload | 恶意模型注入 | AML.T0010 - ML Supply Chain Compromise |
 | 3 | Unauthenticated registry API | Full read/write access to all models | AML.T0010 - ML Supply Chain Compromise |
-| 4 | Backdoor trigger in trained model | Stealth manipulation of predictions | AML.T0020 - Poison Training Data |
-| 5 | Training data poisoning | Targeted degradation of model accuracy | AML.T0020 - Poison Training Data |
+| 4 | Backdoor trigger in trained model | Stealth manipulation of predictions | AML.T0020 - Poison 训练 Data |
+| 5 | 训练 data poisoning | Targeted degradation of model accuracy | AML.T0020 - Poison 训练 Data |
 | 6 | Debug endpoints expose internal paths | Information disclosure | AML.T0044 - Full ML Model Access |
 | 7 | No model provenance or integrity checks | Tampered models go undetected | AML.T0010 - ML Supply Chain Compromise |
 

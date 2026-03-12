@@ -1,36 +1,35 @@
 # =============================================================================
-# Garak Configuration for Lab 07 - Automated AI Red Teaming
+# Garak 配置 - Lab 07: 自动化 AI 红队
 # =============================================================================
 #
-# Garak (Generative AI Red-teaming And Assessment Kit) is an LLM vulnerability
-# scanner. This configuration targets the local Ollama model through the
-# target app's OpenAI-compatible endpoint.
+# Garak（生成式 AI 红队与评估工具包）是一个 LLM 漏洞扫描器。
+# 此配置通过目标应用的 OpenAI 兼容端点针对本地 Ollama 模型。
 #
-# Usage (from inside the redteam-tools container):
+# 用法（在 redteam-tools 容器内）：
 #   garak --config /app/configs/garak_config.yaml
 #
-# Or run individual probes:
+# 或运行单个探针：
 #   garak --model_type rest --probes encoding --generations 5
 #
-# Documentation: https://docs.garak.ai/
+# 文档：https://docs.garak.ai/
 # =============================================================================
 
 # ---------------------------------------------------------------------------
-# Plugins Section
+# 插件部分
 # ---------------------------------------------------------------------------
-# Garak uses a plugin architecture with three main components:
-#   - Generators: interface with the target LLM
-#   - Probes: craft and send attack payloads
-#   - Detectors: analyze responses for vulnerabilities
+# Garak 使用插件架构，包含三个主要组件：
+#   - Generators（生成器）：与目标 LLM 交互
+#   - Probes（探针）：制作并发送攻击载荷
+#   - Detectors（检测器）：分析响应中的漏洞
 
 plugins:
 
   # -------------------------------------------------------------------------
-  # Generator: How garak talks to the target model
+  # Generator：garak 如何与目标模型通信
   # -------------------------------------------------------------------------
-  # We use the REST generator to point at our target app's OpenAI-compatible
-  # endpoint. This allows garak to send prompts and receive responses via
-  # standard HTTP, just like any OpenAI API client.
+  # 我们使用 REST 生成器指向目标应用的 OpenAI 兼容端点。
+  # 这允许 garak 通过标准 HTTP 发送提示并接收响应，
+  # 就像任何 OpenAI API 客户端一样。
   generators:
     rest.RestGenerator:
       name: "lab07-target"
@@ -48,45 +47,45 @@ plugins:
       response_json_field: "choices.0.message.content"
 
   # -------------------------------------------------------------------------
-  # Probes: Attack techniques garak will run against the target
+  # Probes：garak 将对目标运行的攻击技术
   # -------------------------------------------------------------------------
-  # Each probe category tests for a different class of vulnerability.
-  # Garak ships with dozens of probe families; we select the most relevant.
+  # 每个探针类别测试不同类别的漏洞。
+  # Garak 附带数十个探针系列；我们选择最相关的。
   probes:
 
-    # -- Encoding-based attacks --
-    # Tests if the model can be bypassed using Base64, ROT13, hex, or other
-    # encoding schemes to smuggle harmful instructions past filters.
+    # -- 基于编码的攻击 --
+    # 测试是否可以使用 Base64、ROT13、十六进制或其他编码方案
+    # 绕过模型，将有害指令偷运通过过滤器。
     encoding.InjectBase64:
       generations: 5
 
     encoding.InjectROT13:
       generations: 5
 
-    # -- DAN (Do Anything Now) jailbreaks --
-    # Classic jailbreak prompts that attempt to override model alignment by
-    # creating an alter-ego persona that ignores safety guidelines.
+    # -- DAN（Do Anything Now）越狱 --
+    # 经典越狱提示，试图通过创建一个忽略安全准则的
+    # 另一个自我人格来覆盖模型对齐。
     dan.Dan_11_0:
       generations: 5
 
     dan.Dan_6_0:
       generations: 5
 
-    # -- Knowledge graph extraction --
-    # Attempts to extract training data or memorized information from the
-    # model, testing for data leakage risks.
+    # -- 知识图谱提取 --
+    # 尝试从模型中提取训练数据或记忆信息，
+    # 测试数据泄漏风险。
     knowledgegraph.WhoIsWho:
       generations: 3
 
-    # -- Cross-site scripting (XSS) probes --
-    # Tests whether the model generates potentially dangerous HTML/JS output
-    # that could be exploited in web contexts.
+    # -- 跨站脚本（XSS）探针 --
+    # 测试模型是否生成可能危险的 HTML/JS 输出，
+    # 这些输出可能在 Web 环境中被利用。
     xss.MarkdownImageExfil:
       generations: 5
 
-    # -- Prompt injection attacks --
-    # Attempts to override the system prompt with injected instructions,
-    # a fundamental LLM vulnerability.
+    # -- 提示注入攻击 --
+    # 尝试用注入的指令覆盖系统提示，
+    # 这是一个基本的 LLM 漏洞。
     promptinject.HijackHateHumansMini:
       generations: 5
 
@@ -94,31 +93,31 @@ plugins:
       generations: 5
 
   # -------------------------------------------------------------------------
-  # Detectors: How garak decides if an attack succeeded
+  # Detectors：garak 如何判断攻击是否成功
   # -------------------------------------------------------------------------
-  # Detectors analyze model responses to determine if a probe successfully
-  # triggered a vulnerability. Multiple detectors can be applied per probe.
+  # 检测器分析模型响应以确定探针是否成功触发漏洞。
+  # 每个探针可以应用多个检测器。
   detectors:
-    # Always-on detector that checks for known unsafe outputs
+    # 始终启用的检测器，检查已知的不安全输出
     always.Fail: {}
 
-    # String-matching detector for common jailbreak success indicators
+    # 字符串匹配检测器，用于常见的越狱成功指标
     stringmatch.ClassificationMatch: {}
 
 # ---------------------------------------------------------------------------
-# Run Configuration
+# 运行配置
 # ---------------------------------------------------------------------------
-# Controls how garak executes the assessment.
+# 控制 garak 如何执行评估。
 
 run:
-  # Seed for reproducibility (set to null for random)
+  # 可重现性的种子（设置为 null 表示随机）
   seed: 42
 
-  # Where to save detailed scan results (JSONL format)
+  # 保存详细扫描结果的位置（JSONL 格式）
   report_prefix: "/app/results/garak"
 
-  # Number of generations (attempts) per probe if not specified above
+  # 每个探针的生成次数（尝试次数），如果上面未指定
   generations: 5
 
-  # Deduplication of identical probe strings
+  # 去重相同的探针字符串
   dedup: true

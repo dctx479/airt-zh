@@ -1,21 +1,21 @@
 """
-Lab 08 - Full AI Red Team Engagement (Capstone)
-A multi-service Flask application that runs different roles based on APP_ROLE.
-Simulates a realistic enterprise AI application with multiple attack surfaces.
+实验 08 - 完整 AI 红队演练（综合实战）
+一个多服务 Flask 应用，根据 APP_ROLE 运行不同角色。
+模拟具有多个攻击面的真实企业 AI 应用。
 
-This single codebase powers four distinct services:
-  - chatbot  (Customer-Facing Chatbot)     - Port 5001
-  - rag      (Internal RAG System)         - Port 5002
-  - agent    (Multi-Agent System)          - Port 5003
-  - admin    (Admin Portal)                - Port 5000
+此单一代码库驱动四个不同的服务：
+  - chatbot  (面向客户的聊天机器人)    - 端口 5001
+  - rag      (内部 RAG 系统)          - 端口 5002
+  - agent    (多代理系统)              - 端口 5003
+  - admin    (管理门户)                - 端口 5000
 
-VULNERABILITIES (intentional - for educational purposes):
-1. Customer chatbot leaks secrets via prompt injection
-2. RAG system has no auth, poisonable knowledge base
-3. Agent system has unprotected memory, tool abuse, command execution
-4. Admin portal has zero authentication, can control all services
-5. Cross-service trust without verification enables lateral movement
-6. Shared infrastructure (Redis, ChromaDB) has no access controls
+漏洞（故意设置 - 仅供教育目的）：
+1. 客户聊天机器人通过 prompt injection 泄露秘密
+2. RAG 系统无身份验证，知识库可被投毒
+3. 代理系统有未保护的内存、工具滥用、命令执行
+4. 管理门户零身份验证，可控制所有服务
+5. 跨服务信任无验证，使横向移动成为可能
+6. 共享基础设施（Redis、ChromaDB）无访问控制
 """
 
 import os

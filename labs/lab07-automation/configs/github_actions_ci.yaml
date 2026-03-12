@@ -1,8 +1,8 @@
-# GitHub Actions CI/CD Pipeline for AI Security Testing
-# This workflow runs automated AI red team tests on every PR and push to main.
+# GitHub Actions CI/CD 流水线用于 AI 安全测试
+# 此工作流在每次 PR 和推送到 main 时运行自动化 AI 红队测试。
 #
-# EXAMPLE - Adapt to your project. Demonstrates how to integrate
-# garak and promptfoo into a CI/CD pipeline for continuous AI security testing.
+# 示例 - 适配到您的项目。演示如何将 garak 和 promptfoo
+# 集成到 CI/CD 流水线中以进行持续的 AI 安全测试。
 
 name: AI Security Red Team Pipeline
 
@@ -12,7 +12,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    # Run weekly security scan every Monday at 6am UTC
+    # 每周一早上 6 点 UTC 运行每周安全扫描
     - cron: "0 6 * * 1"
 
 env:
@@ -60,7 +60,7 @@ jobs:
           pip install garak requests
           npm install -g promptfoo
 
-      # Run promptfoo evaluation
+      # 运行 promptfoo 评估
       - name: Run promptfoo safety evaluation
         run: |
           promptfoo eval \
@@ -69,7 +69,7 @@ jobs:
             --no-progress-bar
         continue-on-error: true
 
-      # Run promptfoo red team
+      # 运行 promptfoo 红队
       - name: Run promptfoo red team scan
         run: |
           promptfoo redteam run \
@@ -78,7 +78,7 @@ jobs:
             --no-progress-bar
         continue-on-error: true
 
-      # Run garak scan
+      # 运行 garak 扫描
       - name: Run garak vulnerability scan
         run: |
           python -m garak \
@@ -88,7 +88,7 @@ jobs:
             --report_prefix results/garak-scan
         continue-on-error: true
 
-      # Collect and upload results
+      # 收集并上传结果
       - name: Upload security scan results
         uses: actions/upload-artifact@v4
         if: always()
@@ -97,10 +97,10 @@ jobs:
           path: results/
           retention-days: 30
 
-      # Fail the pipeline if critical issues found
+      # 如果发现严重问题则使流水线失败
       - name: Check for critical vulnerabilities
         run: |
-          echo "Checking promptfoo results..."
+          echo "检查 promptfoo 结果..."
           if [ -f results/promptfoo-results.json ]; then
             FAILURES=$(python3 -c "
           import json
@@ -109,10 +109,10 @@ jobs:
           failures = sum(1 for r in data.get('results', []) if not r.get('success', True))
           print(failures)
           ")
-            echo "Promptfoo failures: $FAILURES"
+            echo "Promptfoo 失败数：$FAILURES"
             if [ "$FAILURES" -gt 5 ]; then
-              echo "::error::Critical: $FAILURES safety test failures detected!"
+              echo "::error::严重：检测到 $FAILURES 个安全测试失败！"
               exit 1
             fi
           fi
-          echo "Security scan completed. Review artifacts for detailed results."
+          echo "安全扫描完成。查看工件以获取详细结果。"

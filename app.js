@@ -1,20 +1,20 @@
-/* app.js — AIRT AI Red Team Academy interactions */
+/* app.js — AIRT AI 红队学院交互脚本 */
 
 (function() {
   'use strict';
 
   /* ========================================
-     THEME TOGGLE
+     主题切换
      ======================================== */
   const themeToggle = document.querySelector('[data-theme-toggle]');
   const root = document.documentElement;
-  let theme = 'dark'; // Default to dark for security course
+  let theme = 'dark'; // 安全课程默认使用暗色主题
   root.setAttribute('data-theme', theme);
 
   function updateToggleIcon() {
     if (!themeToggle) return;
     themeToggle.setAttribute('aria-label',
-      'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' mode'
+      '切换到' + (theme === 'dark' ? '浅色' : '暗色') + '模式'
     );
     themeToggle.innerHTML = theme === 'dark'
       ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
@@ -32,7 +32,7 @@
   }
 
   /* ========================================
-     HEADER SCROLL BEHAVIOR
+     头部滚动行为
      ======================================== */
   const header = document.querySelector('.header');
   if (header) {
@@ -49,7 +49,7 @@
   }
 
   /* ========================================
-     MOBILE MENU
+     移动端菜单
      ======================================== */
   const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
   const headerNav = document.querySelector('.header__nav');
@@ -63,7 +63,7 @@
         : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>';
     });
 
-    // Close mobile menu on link click
+    // 点击链接时关闭移动端菜单
     headerNav.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() {
         headerNav.classList.remove('open');
@@ -74,7 +74,7 @@
   }
 
   /* ========================================
-     SMOOTH SCROLLING FOR NAV LINKS
+     导航链接平滑滚动
      ======================================== */
   document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
@@ -84,7 +84,7 @@
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth' });
-        // Update URL hash without jump
+        // 更新 URL 哈希但不跳转
         if (window.history && window.history.pushState) {
           window.history.pushState(null, null, targetId);
         }
@@ -93,7 +93,7 @@
   });
 
   /* ========================================
-     ACTIVE NAV TRACKING
+     活动导航追踪
      ======================================== */
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.header__nav a');
@@ -122,26 +122,26 @@
   updateActiveNav();
 
   /* ========================================
-     MODULE EXPAND/COLLAPSE
+     模块展开/折叠
      ======================================== */
   document.querySelectorAll('.module-card__header').forEach(function(headerBtn) {
     headerBtn.addEventListener('click', function(e) {
-      // Don't toggle if clicking the Read Module link
+      // 如果点击的是"阅读模块"链接，则不切换
       if (e.target.closest('.module-card__read-link')) return;
 
       var card = this.closest('.module-card');
       var isOpen = card.classList.contains('is-open');
 
-      // Toggle this card
+      // 切换此卡片
       card.classList.toggle('is-open');
 
-      // Update aria
+      // 更新 aria 属性
       this.setAttribute('aria-expanded', !isOpen);
     });
   });
 
   /* ========================================
-     TERMINAL TYPING ANIMATION
+     终端打字动画
      ======================================== */
   function animateTerminal() {
     var lines = document.querySelectorAll('.terminal-line');
@@ -150,7 +150,7 @@
     });
   }
 
-  // Only animate when hero is visible
+  // 仅在 hero 区域可见时播放动画
   var heroTerminal = document.querySelector('.hero__terminal');
   if (heroTerminal) {
     var observer = new IntersectionObserver(function(entries) {
@@ -165,8 +165,8 @@
   }
 
   /* ========================================
-     SCROLL REVEAL FALLBACK
-     (for browsers without scroll-driven animations)
+     滚动显示回退方案
+     （用于不支持滚动驱动动画的浏览器）
      ======================================== */
   if (!CSS.supports || !CSS.supports('animation-timeline', 'scroll()')) {
     var revealElements = document.querySelectorAll('.fade-in, .reveal-up');

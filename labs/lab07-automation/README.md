@@ -1,16 +1,16 @@
-# Lab 07: Automated AI Red Teaming
+# Lab 07: 自动化 AI 红队
 
-## Overview
+## 概述
 
-Move beyond manual prompt hacking into **automated AI red teaming at scale**. This lab deploys three industry-standard red teaming tools -- **garak**, **PyRIT**, and **promptfoo** -- against a deliberately vulnerable chatbot target. You will learn to run systematic vulnerability scans, compare tool strengths, build custom probes, and integrate automated red teaming into CI/CD pipelines.
+超越手动提示黑客，进入**大规模自动化 AI 红队**。本实验部署三个行业标准的红队工具 -- **garak**、**PyRIT** 和 **promptfoo** -- 针对一个故意易受攻击的聊天机器人目标。您将学习运行系统漏洞扫描、比较工具优势、构建自定义探针，并将自动化红队集成到 CI/CD 管道中。
 
-Automated red teaming is essential because:
-- Manual testing cannot cover the vast space of possible attacks
-- New jailbreak techniques emerge daily and tools maintain up-to-date probe libraries
-- Repeatable automated scans provide baseline metrics for tracking security posture over time
-- CI/CD integration catches regressions before they reach production
+自动化红队至关重要，因为：
+- 手动测试无法覆盖可能攻击的广阔空间
+- 新的越狱技术每天都在出现，工具维护最新的探针库
+- 可重复的自动化扫描为跟踪安全态势提供基线指标
+- CI/CD 集成在到达生产之前捕获回归
 
-## Architecture
+## 架构
 
 ```
                     ┌─────────────────────────────────────────┐
@@ -44,51 +44,51 @@ Automated red teaming is essential because:
                     └──────────────────────────────────────────┘
 ```
 
-## Services
+## 服务
 
-| Service | Container | Port | Description |
+| 服务 | 容器 | 端口 | 描述 |
 |---------|-----------|------|-------------|
-| ollama | lab07-ollama | 11434 | Local LLM inference server (Mistral 7B) |
-| ollama-setup | lab07-ollama-setup | - | One-shot model pull on startup |
-| redteam-tools | lab07-redteam-tools | - | garak + PyRIT + promptfoo pre-installed |
-| target-app | lab07-target-app | 5000 | Vulnerable Flask chatbot with embedded secrets |
+| ollama | lab07-ollama | 11434 | 本地 LLM 推理服务器（Mistral 7B） |
+| ollama-setup | lab07-ollama-setup | - | 启动时一次性拉取模型 |
+| redteam-tools | lab07-redteam-tools | - | garak + PyRIT + promptfoo 预装 |
+| target-app | lab07-target-app | 5000 | 易受攻击的 Flask 聊天机器人，带有嵌入式秘密 |
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Start all services
+# 启动所有服务
 docker-compose up -d
 
-# Wait for the model to download (watch the logs)
+# 等待模型下载（查看日志）
 docker-compose logs -f ollama-setup
 
-# Verify the target app is running
+# 验证目标应用正在运行
 curl http://localhost:5000/health
 
-# Open the chat UI in your browser
+# 在浏览器中打开聊天 UI
 # http://localhost:5000
 ```
 
-Access the tools container:
+访问工具容器：
 
 ```bash
 docker-compose exec redteam-tools bash
 ```
 
-## Exercises
+## 练习
 
-### Exercise 1: Run Garak -- LLM Vulnerability Scanner
+### 练习 1: 运行 Garak -- LLM 漏洞扫描器
 
-Garak is an automated LLM vulnerability scanner that tests for dozens of attack categories including encoding bypasses, DAN jailbreaks, prompt injection, and XSS.
+Garak 是一个自动化的 LLM 漏洞扫描器，测试数十个攻击类别，包括编码绕过、DAN 越狱、提示注入和 XSS。
 
 ```bash
-# Enter the tools container
+# 进入工具容器
 docker-compose exec redteam-tools bash
 
-# Run garak with the provided config
+# 使用提供的配置运行 garak
 garak --config /app/configs/garak_config.yaml
 
-# Or run specific probes for faster iteration
+# 或运行特定探针以加快迭代
 garak \
   --model_type rest \
   --model_name "http://target-app:5000/v1/chat/completions" \
@@ -96,31 +96,31 @@ garak \
   --generations 3 \
   --report_prefix /app/results/garak
 
-# View results
+# 查看结果
 ls -la /app/results/garak*
 cat /app/results/garak*.report.jsonl | python3 -m json.tool
 ```
 
-**What to look for:**
-- Which probe categories found the most vulnerabilities?
-- Did encoding-based attacks (Base64, ROT13) bypass the model's defenses?
-- Were DAN jailbreaks successful at extracting the system prompt?
+**要查找的内容：**
+- 哪个探针类别发现了最多的漏洞？
+- 基于编码的攻击（Base64、ROT13）是否绕过了模型的防御？
+- DAN 越狱是否成功提取了系统提示？
 
-### Exercise 2: Run PyRIT -- Orchestrated Attack Campaigns
+### 练习 2: 运行 PyRIT -- 编排的攻击活动
 
-PyRIT (Python Risk Identification Toolkit) runs structured attack campaigns with converter chains that obfuscate prompts to evade content filters.
+PyRIT（Python 风险识别工具包）运行结构化的攻击活动，使用转换器链来混淆提示以规避内容过滤器。
 
 ```bash
-# Enter the tools container
+# 进入工具容器
 docker-compose exec redteam-tools bash
 
-# Run the PyRIT orchestration script
+# 运行 PyRIT 编排脚本
 python /app/configs/pyrit_config.py
 
-# View the detailed results
+# 查看详细结果
 python3 -m json.tool /app/results/pyrit_report.json
 
-# Check which secrets were leaked
+# 检查哪些秘密被泄露
 python3 -c "
 import json
 with open('/app/results/pyrit_results.json') as f:
@@ -131,27 +131,27 @@ for r in results:
 "
 ```
 
-**What to look for:**
-- What is the leak rate across different attack categories?
-- Did converter chains (Base64, ROT13) improve attack success rates?
-- Which category of attack was most effective: jailbreaks, prompt injection, or PII probes?
+**要查找的内容：**
+- 不同攻击类别的泄漏率是多少？
+- 转换器链（Base64、ROT13）是否提高了攻击成功率？
+- 哪种攻击类别最有效：越狱、提示注入还是 PII 探针？
 
-### Exercise 3: Run Promptfoo -- Declarative Red Team Evaluation
+### 练习 3: 运行 Promptfoo -- 声明式红队评估
 
-Promptfoo uses declarative YAML configs to define test cases with assertions, making it easy to create repeatable, auditable red team evaluations.
+Promptfoo 使用声明式 YAML 配置来定义带有断言的测试用例，使创建可重复、可审计的红队评估变得容易。
 
 ```bash
-# Enter the tools container
+# 进入工具容器
 docker-compose exec redteam-tools bash
 
-# Run promptfoo evaluation
+# 运行 promptfoo 评估
 cd /app/configs
 promptfoo eval -c promptfoo_config.yaml --output /app/results/promptfoo_results.json
 
-# View the interactive report (accessible from host browser)
+# 查看交互式报告（可从主机浏览器访问）
 promptfoo view -y --port 3000
 
-# Or inspect results from the command line
+# 或从命令行检查结果
 python3 -c "
 import json
 with open('/app/results/promptfoo_results.json') as f:
@@ -164,39 +164,39 @@ for r in results:
 "
 ```
 
-**What to look for:**
-- Which test categories had the highest failure rate?
-- Did the `llm-rubric` assertions catch failures that string matching missed?
-- Review the promptfoo HTML report for a visual breakdown of results.
+**要查找的内容：**
+- 哪个测试类别的失败率最高？
+- `llm-rubric` 断言是否捕获了字符串匹配遗漏的失败？
+- 查看 promptfoo HTML 报告以获得结果的可视化分解。
 
-### Exercise 4: Compare Tools -- Cross-Reference Findings
+### 练习 4: 比较工具 -- 交叉参考发现
 
-Run all three tools and compare their findings to understand each tool's strengths.
+运行所有三个工具并比较它们的发现，以了解每个工具的优势。
 
 ```bash
-# Run all tools sequentially with the helper script
+# 使用辅助脚本按顺序运行所有工具
 docker-compose exec redteam-tools bash /app/configs/run_all_tools.sh
 
-# View the combined summary
+# 查看组合摘要
 cat results/summary_*.txt
 ```
 
-Fill in this comparison based on your findings:
+根据您的发现填写此比较：
 
-| Finding | Garak | PyRIT | Promptfoo |
+| 发现 | Garak | PyRIT | Promptfoo |
 |---------|-------|-------|-----------|
-| System prompt extracted? | | | |
-| API keys leaked? | | | |
-| DB credentials leaked? | | | |
-| Jailbreak successful? | | | |
-| Encoding bypass worked? | | | |
-| Total vulnerabilities | | | |
+| 系统提示已提取？ | | | |
+| API 密钥泄露？ | | | |
+| 数据库凭证泄露？ | | | |
+| 越狱成功？ | | | |
+| 编码绕过有效？ | | | |
+| 总漏洞数 | | | |
 
-**Discussion questions:**
-- Which tool was fastest to run?
-- Which tool found the most unique vulnerabilities?
-- Which tool produces the most actionable output for developers?
-- In what scenario would you choose one tool over another?
+**讨论问题：**
+- 哪个工具运行速度最快？
+- 哪个工具发现了最多独特的漏洞？
+- 哪个工具为开发人员生成最可操作的输出？
+- 在什么场景下您会选择一个工具而不是另一个？
 
 ### Exercise 5: Custom Probes -- Domain-Specific Testing
 
@@ -381,7 +381,7 @@ echo "Dashboard available at: results/dashboard.html"
 
 | Feature | garak | PyRIT | promptfoo |
 |---------|-------|-------|-----------|
-| **Primary Focus** | Vulnerability scanning | Attack orchestration | Evaluation and testing |
+| **Primary Focus** | 漏洞 scanning | Attack orchestration | Evaluation and testing |
 | **Configuration** | CLI flags + YAML | Python scripts | Declarative YAML |
 | **Attack Library** | 100+ built-in probes | Converter chains + templates | Red team plugins |
 | **Encoding Bypass** | Built-in (Base64, ROT13, hex) | Converter chains (composable) | Manual test cases |
@@ -396,7 +396,7 @@ echo "Dashboard available at: results/dashboard.html"
 
 | File | Purpose |
 |------|---------|
-| `docker-compose.yml` | Service orchestration for all containers |
+| `docker-compose.yml` | 服务 orchestration for all containers |
 | `configs/Dockerfile.tools` | Red team tools container (garak, PyRIT, promptfoo) |
 | `configs/Dockerfile.target` | Target Flask chatbot container |
 | `configs/target_app.py` | Vulnerable chatbot with embedded secrets |
@@ -406,7 +406,7 @@ echo "Dashboard available at: results/dashboard.html"
 | `configs/ci_cd_pipeline.yml` | GitHub Actions CI/CD pipeline |
 | `configs/run_all_tools.sh` | Script to run all tools sequentially |
 
-## Cleanup
+## 清理
 
 ```bash
 # Stop all containers and remove volumes
@@ -416,6 +416,6 @@ docker-compose down -v
 rm -rf results/
 ```
 
-## Next Lab
+## 下一个实验
 
 Proceed to [Lab 08](../lab08/) for advanced topics in AI security testing.

@@ -1,81 +1,81 @@
-# Lab 06: Model Extraction & Inference Attacks
+# Lab 06: 模型提取与推理攻击
 
-## Overview
+## 概述
 
-Attack a deployed ML model API to steal its functionality and infer private information about its training data. This lab covers three categories of attacks against machine learning models:
+攻击已部署的 ML 模型 API 以窃取其功能并推断有关其训练数据的私密信息。本实验涵盖针对机器学习模型的三类攻击：
 
-1. **Model Extraction (Model Stealing)** -- Query the target API systematically to build a local clone that replicates its predictions without access to the original weights or training data.
-2. **Membership Inference** -- Determine whether specific data points were used to train the target model by analysing confidence score distributions.
-3. **Training Data Extraction** -- Attempt to recover memorised content from the LLM by exploiting known prompt patterns.
+1. **模型提取（模型窃取）** -- 系统地查询目标 API 以构建本地克隆，在不访问原始权重或训练数据的情况下复制其预测。
+2. **成员推理** -- 通过分析置信度分数分布来确定特定数据点是否用于训练目标模型。
+3. **训练数据提取** -- 尝试通过利用已知的提示模式从 LLM 恢复记忆的内容。
 
-These attacks demonstrate why ML-as-a-Service APIs need more than just network-level security. The prediction outputs themselves are a leakage channel.
+这些攻击演示了为什么 ML-as-a-服务 API 需要的不仅仅是网络级安全。预测输出本身就是一个泄漏通道。
 
-## Learning Objectives
+## 学习目标
 
-- Probe an ML API to gather intelligence about the underlying model
-- Bypass rate limiting through header spoofing (X-Forwarded-For)
-- Perform a model extraction attack and measure extraction fidelity
-- Execute a membership inference attack using confidence score analysis
-- Attempt training data extraction from an LLM via prompt engineering
-- Evaluate the effectiveness of current defences and propose improvements
+- 探测 ML API 以收集有关底层模型的情报
+- 通过标头欺骗（X-Forwarded-For）绕过速率限制
+- 执行模型提取攻击并测量提取保真度
+- 使用置信度分数分析执行成员推理攻击
+- 尝试通过提示工程从 LLM 提取训练数据
+- 评估当前防御的有效性并提出改进建议
 
-## Architecture
+## 架构
 
 ```
                       ┌──────────────────────────────────┐
-                      │         Attacker Machine          │
+                      │         攻击者机器                │
                       │                                   │
                       │  model_extraction.py              │
                       │  membership_inference.py          │
                       │  llm_extraction.py                │
                       └────────────┬──────────────────────┘
                                    │
-                          HTTP (port 5000)
+                          HTTP (端口 5000)
                                    │
                       ┌────────────▼──────────────────────┐
                       │       target-api (Flask)           │
                       │       lab06-target-api             │
                       │                                    │
-                      │  POST /predict    ← Sentiment API  │
-                      │  POST /chat       ← LLM endpoint   │
-                      │  GET  /model-info ← Metadata leak  │
-                      │  GET  /rate-limit-status ← Info    │
+                      │  POST /predict    ← 情感 API      │
+                      │  POST /chat       ← LLM 端点      │
+                      │  GET  /model-info ← 元数据泄漏    │
+                      │  GET  /rate-limit-status ← 信息   │
                       │  GET  /health                      │
                       │                                    │
                       │  ┌─────────────────────────┐       │
                       │  │ TF-IDF + LogisticRegr.  │       │
-                      │  │ (Sentiment Classifier)  │       │
+                      │  │ (情感分类器)            │       │
                       │  └─────────────────────────┘       │
                       └────────────┬───────────────────────┘
                                    │
-                          HTTP (port 11434)
+                          HTTP (端口 11434)
                                    │
                       ┌────────────▼───────────────────────┐
                       │         ollama                      │
                       │         lab06-ollama                │
                       │                                     │
                       │   mistral:7b-instruct-q4_0          │
-                      │   (LLM for /chat endpoint)          │
+                      │   (/chat 端点的 LLM)               │
                       │                                     │
-                      │   Volume: ollama_data                │
+                      │   卷: ollama_data                   │
                       └─────────────────────────────────────┘
 ```
 
-## Services
+## 服务
 
-| Service | Container | Port | Description |
+| 服务 | 容器 | 端口 | 描述 |
 |---------|-----------|------|-------------|
-| ollama | lab06-ollama | 11434 | Ollama LLM runtime (Mistral 7B) |
-| ollama-setup | lab06-ollama-setup | -- | Pulls the Mistral model on first start |
-| target-api | lab06-target-api | 5000 | Flask API serving sentiment classifier + LLM chat |
+| ollama | lab06-ollama | 11434 | Ollama LLM 运行时（Mistral 7B） |
+| ollama-setup | lab06-ollama-setup | -- | 首次启动时拉取 Mistral 模型 |
+| target-api | lab06-target-api | 5000 | Flask API 服务情感分类器 + LLM 聊天 |
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Start all services
+# 启动所有服务
 docker-compose up -d
 
-# Wait for the model download to complete (may take several minutes)
+# 等待模型下载完成（可能需要几分钟）
 docker-compose logs -f ollama-setup
 
 # Verify the API is healthy
@@ -92,9 +92,9 @@ curl -X POST http://localhost:5000/chat \
   -d '{"message": "Hello, how are you?"}'
 ```
 
-## Exercises
+## 练习
 
-### Exercise 1: Reconnaissance -- Probe the Target API
+### Exercise 1: 侦察 -- Probe the Target API
 
 Explore what information the API leaks about its internals.
 
@@ -276,9 +276,9 @@ print('inference harder by adding calibrated noise to scores.')
 # - What monitoring could detect systematic extraction attempts?
 ```
 
-## Vulnerability Summary
+## 漏洞摘要
 
-| # | Vulnerability | Endpoint | Impact | MITRE ATLAS |
+| # | 漏洞 | 端点 | 影响 | MITRE ATLAS |
 |---|--------------|----------|--------|-------------|
 | 1 | Model metadata disclosure | GET /model-info | Reveals architecture, classes, vocabulary size -- enables targeted extraction | [AML.T0044](https://atlas.mitre.org/techniques/AML.T0044) |
 | 2 | Full confidence scores returned | POST /predict | Enables efficient model extraction and membership inference | [AML.T0044](https://atlas.mitre.org/techniques/AML.T0044) |
@@ -287,12 +287,12 @@ print('inference harder by adding calibrated noise to scores.')
 | 5 | No query pattern detection | POST /predict | Systematic extraction queries go undetected | [AML.T0042](https://atlas.mitre.org/techniques/AML.T0042) |
 | 6 | LLM training data memorisation | POST /chat | Prompts can elicit memorised training content | [AML.T0024](https://atlas.mitre.org/techniques/AML.T0024) |
 
-## Cleanup
+## 清理
 
 ```bash
 docker-compose down -v
 ```
 
-## Next Lab
+## 下一个实验
 
 Proceed to [Lab 07: AI Red Team Automation](../lab07-automation/) to build automated attack pipelines.

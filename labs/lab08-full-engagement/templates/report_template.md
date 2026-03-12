@@ -1,356 +1,356 @@
-# AI Red Team Engagement Report
+# AI 红队演练报告
 
-## Classification: CONFIDENTIAL
+## 密级: 机密
 
-**Report Title:** [Organization Name] AI System Security Assessment
+**报告标题:** [组织名称] AI 系统安全评估
 
-**Engagement ID:** [ENGAGEMENT-YYYY-NNN]
+**演练编号:** [ENGAGEMENT-YYYY-NNN]
 
-**Date:** [YYYY-MM-DD]
+**日期:** [YYYY-MM-DD]
 
-**Prepared by:** [Red Team Lead Name]
+**编写者:** [红队负责人姓名]
 
-**Report Version:** [1.0]
-
----
-
-## 1. Executive Summary
-
-This report presents the findings from an AI red team engagement conducted against [Organization Name]'s AI-powered systems. The assessment was performed between [Start Date] and [End Date] and covered [N] AI-enabled services including customer-facing chatbots, internal RAG systems, multi-agent platforms, and administrative portals.
-
-**Overall Risk Rating:** [CRITICAL / HIGH / MEDIUM / LOW]
-
-**Key Findings:**
-- [N] critical vulnerabilities discovered across [N] services
-- [N] complete attack chains demonstrated from initial access to data exfiltration
-- [Describe most impactful finding in 1-2 sentences]
-- [Describe second most impactful finding in 1-2 sentences]
-
-**Immediate Actions Required:**
-1. [Most urgent remediation action]
-2. [Second most urgent action]
-3. [Third most urgent action]
+**报告版本:** [1.0]
 
 ---
 
-## 2. Scope and Methodology
+## 1. 执行摘要
 
-### 2.1 Scope
+本报告呈现了针对 [组织名称] AI 系统进行的 AI 红队演练的发现。评估在 [开始日期] 至 [结束日期] 之间进行，涵盖了 [N] 个 AI 服务，包括面向客户的聊天机器人、内部 RAG 系统、多代理平台和管理门户。
 
-| Item | Details |
+**整体风险评级:** [严重 / 高 / 中 / 低]
+
+**关键发现:**
+- 在 [N] 个服务中发现了 [N] 个严重漏洞
+- 演示了 [N] 条从初始访问到数据泄露的完整攻击链
+- [用 1-2 句话描述影响最大的发现]
+- [用 1-2 句话描述第二个影响最大的发现]
+
+**需要立即采取的行动:**
+1. [最紧急的补救行动]
+2. [第二紧急的行动]
+3. [第三紧急的行动]
+
+---
+
+## 2. 范围与方法论
+
+### 2.1 范围
+
+| 项目 | 详情 |
 |------|---------|
-| **Target Systems** | [List all target services] |
-| **Assessment Type** | Full AI Red Team Engagement |
-| **Testing Window** | [Start Date] to [End Date] |
-| **Environment** | [Production / Staging / Lab] |
-| **Rules of Engagement** | [Reference RoE document or summarize] |
+| **目标系统** | [列出所有目标服务] |
+| **评估类型** | 完整 AI 红队演练 |
+| **测试窗口** | [开始日期] 至 [结束日期] |
+| **环境** | [生产 / 预发布 / 实验室] |
+| **参与规则** | [引用 RoE 文档或摘要] |
 
-### 2.2 Methodology
+### 2.2 方法论
 
-The engagement followed a structured methodology aligned with the MITRE ATLAS framework for AI system threats:
+本次演练遵循与 MITRE ATLAS AI 系统威胁框架对齐的结构化方法论：
 
-1. **Reconnaissance** - Enumeration of all AI services, endpoints, and attack surfaces
-2. **Initial Access** - Exploitation of public-facing AI services via prompt injection
-3. **Lateral Movement** - Pivoting between interconnected AI services
-4. **Privilege Escalation** - Escalating from user-level to system-level access via agent tools
-5. **Data Exfiltration** - Extracting confidential data from knowledge bases and shared memory
-6. **Persistence** - Establishing persistent access via knowledge base poisoning and memory manipulation
-7. **Reporting** - Documentation of all findings with evidence and remediation guidance
+1. **侦察** - 枚举所有 AI 服务、端点和攻击面
+2. **初始访问** - 通过 prompt injection 利用面向公众的 AI 服务
+3. **横向移动** - 在互连的 AI 服务之间进行跳转
+4. **权限提升** - 通过代理工具从用户级别升级到系统级别访问
+5. **数据泄露** - 从知识库和共享内存中提取机密数据
+6. **持久性** - 通过知识库投毒和内存操纵建立持久访问
+7. **报告** - 记录所有发现，包含证据和补救指南
 
-### 2.3 Tools Used
+### 2.3 使用的工具
 
-| Tool | Purpose |
+| 工具 | 用途 |
 |------|---------|
-| [Tool Name] | [Purpose] |
-| curl / HTTP client | Direct API interaction |
-| Custom Python scripts | Automated attack chain execution |
-| Browser DevTools | Frontend analysis and request manipulation |
+| [工具名称] | [用途] |
+| curl / HTTP 客户端 | 直接 API 交互 |
+| 自定义 Python 脚本 | 自动化攻击链执行 |
+| 浏览器开发者工具 | 前端分析和请求操纵 |
 
 ---
 
-## 3. Attack Surface Analysis
+## 3. 攻击面分析
 
-### 3.1 Service Inventory
+### 3.1 服务清单
 
-| Service | Port | Type | External | Authentication | Risk Level |
+| 服务 | 端口 | 类型 | 外部可访问 | 身份验证 | 风险等级 |
 |---------|------|------|----------|---------------|------------|
-| [Service Name] | [Port] | [Chatbot/RAG/Agent/Admin] | [Yes/No] | [None/Basic/Token] | [Critical/High/Medium/Low] |
+| [服务名称] | [端口] | [聊天机器人/RAG/代理/管理] | [是/否] | [无/基本/令牌] | [严重/高/中/低] |
 | | | | | | |
 | | | | | | |
 | | | | | | |
 
-### 3.2 Endpoint Inventory
+### 3.2 端点清单
 
-| Service | Endpoint | Method | Authentication | Description |
+| 服务 | 端点 | 方法 | 身份验证 | 描述 |
 |---------|----------|--------|---------------|-------------|
-| [Service] | [/path] | [GET/POST] | [None/Required] | [Description] |
+| [服务] | [/路径] | [GET/POST] | [无/必需] | [描述] |
 | | | | | |
 | | | | | |
 
-### 3.3 Data Flow Diagram
+### 3.3 数据流图
 
 ```
-[Describe or diagram data flows between services, noting trust boundaries]
+[描述或绘制服务之间的数据流，标注信任边界]
 ```
 
 ---
 
-## 4. Findings Summary
+## 4. 发现摘要
 
-### 4.1 Severity Distribution
+### 4.1 严重程度分布
 
-| Severity | Count | Percentage |
+| 严重程度 | 数量 | 百分比 |
 |----------|-------|------------|
-| Critical | [N] | [N%] |
-| High | [N] | [N%] |
-| Medium | [N] | [N%] |
-| Low | [N] | [N%] |
-| Informational | [N] | [N%] |
-| **Total** | **[N]** | **100%** |
+| 严重 | [N] | [N%] |
+| 高 | [N] | [N%] |
+| 中 | [N] | [N%] |
+| 低 | [N] | [N%] |
+| 信息性 | [N] | [N%] |
+| **总计** | **[N]** | **100%** |
 
-### 4.2 Findings Overview
+### 4.2 发现概述
 
-| ID | Title | Severity | CVSS | Service | MITRE ATLAS |
+| 编号 | 标题 | 严重程度 | CVSS | 服务 | MITRE ATLAS |
 |----|-------|----------|------|---------|-------------|
-| F-001 | [Finding Title] | [Critical/High/Medium/Low] | [0.0-10.0] | [Service] | [AML.Txxx] |
+| F-001 | [发现标题] | [严重/高/中/低] | [0.0-10.0] | [服务] | [AML.Txxx] |
 | F-002 | | | | | |
 | F-003 | | | | | |
 | F-004 | | | | | |
 
 ---
 
-## 5. Detailed Findings
+## 5. 详细发现
 
-### Finding F-001: [Finding Title]
+### 发现 F-001: [发现标题]
 
-| Attribute | Value |
+| 属性 | 值 |
 |-----------|-------|
-| **Severity** | [Critical / High / Medium / Low] |
-| **CVSS v3.1 Score** | [0.0 - 10.0] ([Vector String]) |
-| **MITRE ATLAS Reference** | [AML.Txxx - Technique Name] |
-| **Affected Service** | [Service Name (Port)] |
-| **Status** | [Open / Remediated / Accepted] |
+| **严重程度** | [严重 / 高 / 中 / 低] |
+| **CVSS v3.1 分数** | [0.0 - 10.0] ([向量字符串]) |
+| **MITRE ATLAS 参考** | [AML.Txxx - 技术名称] |
+| **受影响服务** | [服务名称 (端口)] |
+| **状态** | [开放 / 已修复 / 已接受] |
 
-**Description:**
+**描述:**
 
-[Detailed description of the vulnerability. Explain what it is, why it exists, and what makes it exploitable. Include relevant technical context about the AI system architecture.]
+[漏洞的详细描述。解释它是什么、为什么存在以及为什么可以被利用。包含关于 AI 系统架构的相关技术背景。]
 
-**Steps to Reproduce:**
+**复现步骤:**
 
-1. [Step 1 with exact commands, URLs, or payloads]
-2. [Step 2]
-3. [Step 3]
-4. [Continue as needed]
+1. [步骤 1，包含确切的命令、URL 或有效负载]
+2. [步骤 2]
+3. [步骤 3]
+4. [根据需要继续]
 
-**Proof of Concept:**
-
-```
-[Include exact curl commands, payloads, or scripts used]
-```
-
-**Evidence:**
+**概念验证:**
 
 ```
-[Paste response output, screenshots reference, or other evidence]
+[包含使用的确切 curl 命令、有效负载或脚本]
 ```
 
-**Impact:**
+**证据:**
 
-- **Confidentiality:** [Description of data exposed]
-- **Integrity:** [Description of data/system modification possible]
-- **Availability:** [Description of service disruption possible]
-- **Business Impact:** [Description of business consequences]
+```
+[粘贴响应输出、截图参考或其他证据]
+```
 
-**Remediation:**
+**影响:**
 
-- **Immediate:** [Quick fix or mitigation]
-- **Short-term:** [Proper fix within 30 days]
-- **Long-term:** [Architectural improvement]
+- **机密性:** [暴露数据的描述]
+- **完整性:** [可能的数据/系统修改描述]
+- **可用性:** [可能的服务中断描述]
+- **业务影响:** [业务后果描述]
+
+**补救:**
+
+- **立即:** [快速修复或缓解]
+- **短期:** [30 天内的正式修复]
+- **长期:** [架构改进]
 
 ---
 
-### Finding F-002: [Finding Title]
+### 发现 F-002: [发现标题]
 
-| Attribute | Value |
+| 属性 | 值 |
 |-----------|-------|
-| **Severity** | [Critical / High / Medium / Low] |
-| **CVSS v3.1 Score** | [0.0 - 10.0] ([Vector String]) |
-| **MITRE ATLAS Reference** | [AML.Txxx - Technique Name] |
-| **Affected Service** | [Service Name (Port)] |
-| **Status** | [Open / Remediated / Accepted] |
+| **严重程度** | [严重 / 高 / 中 / 低] |
+| **CVSS v3.1 分数** | [0.0 - 10.0] ([向量字符串]) |
+| **MITRE ATLAS 参考** | [AML.Txxx - 技术名称] |
+| **受影响服务** | [服务名称 (端口)] |
+| **状态** | [开放 / 已修复 / 已接受] |
 
-**Description:**
+**描述:**
 
-[Detailed description]
+[详细描述]
 
-**Steps to Reproduce:**
+**复现步骤:**
 
-1. [Step 1]
-2. [Step 2]
+1. [步骤 1]
+2. [步骤 2]
 
-**Proof of Concept:**
-
-```
-[Commands/payloads]
-```
-
-**Evidence:**
+**概念验证:**
 
 ```
-[Output/results]
+[命令/有效负载]
 ```
 
-**Impact:**
+**证据:**
 
-- **Confidentiality:** [Impact]
-- **Integrity:** [Impact]
-- **Availability:** [Impact]
-- **Business Impact:** [Impact]
+```
+[输出/结果]
+```
 
-**Remediation:**
+**影响:**
 
-- **Immediate:** [Action]
-- **Short-term:** [Action]
-- **Long-term:** [Action]
+- **机密性:** [影响]
+- **完整性:** [影响]
+- **可用性:** [影响]
+- **业务影响:** [影响]
+
+**补救:**
+
+- **立即:** [行动]
+- **短期:** [行动]
+- **长期:** [行动]
 
 ---
 
-*[Repeat Finding section for each vulnerability discovered]*
+*[为每个发现的漏洞重复发现部分]*
 
 ---
 
-## 6. Attack Chain Documentation
+## 6. 攻击链文档
 
-### 6.1 Attack Chain 1: [Chain Name]
+### 6.1 攻击链 1: [链名称]
 
-**Objective:** [What the attacker achieves through this chain]
+**目标:** [攻击者通过此链实现的目标]
 
-**Kill Chain Steps:**
+**杀伤链步骤:**
 
 ```
-[Service A] ---(exploit 1)---> [Service B] ---(exploit 2)---> [Service C] ---> [Objective]
+[服务 A] ---(漏洞利用 1)---> [服务 B] ---(漏洞利用 2)---> [服务 C] ---> [目标]
 ```
 
-| Step | Action | Finding Ref | Result |
+| 步骤 | 行动 | 发现参考 | 结果 |
 |------|--------|-------------|--------|
-| 1 | [Initial access technique] | F-001 | [What was achieved] |
-| 2 | [Lateral movement technique] | F-002 | [What was achieved] |
-| 3 | [Privilege escalation technique] | F-003 | [What was achieved] |
-| 4 | [Data exfiltration technique] | F-004 | [What was achieved] |
+| 1 | [初始访问技术] | F-001 | [实现了什么] |
+| 2 | [横向移动技术] | F-002 | [实现了什么] |
+| 3 | [权限提升技术] | F-003 | [实现了什么] |
+| 4 | [数据泄露技术] | F-004 | [实现了什么] |
 
-**Narrative:**
+**叙述:**
 
-[Detailed walkthrough of how the chain was executed, what an attacker would observe at each step, and the cumulative impact.]
+[详细描述链的执行过程、攻击者在每个步骤观察到的内容以及累积影响。]
 
-### 6.2 Attack Chain 2: [Chain Name]
+### 6.2 攻击链 2: [链名称]
 
-**Objective:** [What the attacker achieves]
+**目标:** [攻击者实现的目标]
 
-**Kill Chain Steps:**
+**杀伤链步骤:**
 
 ```
-[Diagram]
+[图示]
 ```
 
-| Step | Action | Finding Ref | Result |
+| 步骤 | 行动 | 发现参考 | 结果 |
 |------|--------|-------------|--------|
 | 1 | | | |
 | 2 | | | |
 
-**Narrative:**
+**叙述:**
 
-[Detailed walkthrough]
+[详细描述]
 
 ---
 
-## 7. Risk Assessment Matrix
+## 7. 风险评估矩阵
 
-### 7.1 Risk Heat Map
+### 7.1 风险热力图
 
-| | **Low Impact** | **Medium Impact** | **High Impact** | **Critical Impact** |
+| | **低影响** | **中影响** | **高影响** | **严重影响** |
 |---|---|---|---|---|
-| **Very Likely** | Medium | High | Critical | Critical |
-| **Likely** | Low | Medium | High | Critical |
-| **Possible** | Low | Medium | Medium | High |
-| **Unlikely** | Low | Low | Medium | Medium |
+| **极可能** | 中 | 高 | 严重 | 严重 |
+| **可能** | 低 | 中 | 高 | 严重 |
+| **有可能** | 低 | 中 | 中 | 高 |
+| **不太可能** | 低 | 低 | 中 | 中 |
 
-### 7.2 Finding Risk Placement
+### 7.2 发现风险定位
 
-| Finding | Likelihood | Impact | Overall Risk |
+| 发现 | 可能性 | 影响 | 整体风险 |
 |---------|-----------|--------|--------------|
-| F-001 | [Very Likely/Likely/Possible/Unlikely] | [Critical/High/Medium/Low] | [Risk Level] |
+| F-001 | [极可能/可能/有可能/不太可能] | [严重/高/中/低] | [风险等级] |
 | F-002 | | | |
 | F-003 | | | |
 
 ---
 
-## 8. Remediation Recommendations
+## 8. 补救建议
 
-### 8.1 Immediate Actions (0-30 Days)
+### 8.1 立即行动（0-30 天）
 
-| Priority | Action | Findings Addressed | Effort | Owner |
+| 优先级 | 行动 | 涉及发现 | 工作量 | 责任方 |
 |----------|--------|-------------------|--------|-------|
-| P1 | [Action item] | F-001, F-002 | [Low/Medium/High] | [Team] |
-| P2 | [Action item] | F-003 | [Low/Medium/High] | [Team] |
-| P3 | [Action item] | F-004 | [Low/Medium/High] | [Team] |
+| P1 | [行动项] | F-001, F-002 | [低/中/高] | [团队] |
+| P2 | [行动项] | F-003 | [低/中/高] | [团队] |
+| P3 | [行动项] | F-004 | [低/中/高] | [团队] |
 
-### 8.2 Short-Term Improvements (30-60 Days)
+### 8.2 短期改进（30-60 天）
 
-| Priority | Action | Findings Addressed | Effort | Owner |
+| 优先级 | 行动 | 涉及发现 | 工作量 | 责任方 |
 |----------|--------|-------------------|--------|-------|
-| P1 | [Action item] | [Refs] | [Effort] | [Team] |
-| P2 | [Action item] | [Refs] | [Effort] | [Team] |
+| P1 | [行动项] | [参考] | [工作量] | [团队] |
+| P2 | [行动项] | [参考] | [工作量] | [团队] |
 
-### 8.3 Long-Term Strategic Improvements (60-90 Days)
+### 8.3 长期战略改进（60-90 天）
 
-| Priority | Action | Findings Addressed | Effort | Owner |
+| 优先级 | 行动 | 涉及发现 | 工作量 | 责任方 |
 |----------|--------|-------------------|--------|-------|
-| P1 | [Action item] | [Refs] | [Effort] | [Team] |
-| P2 | [Action item] | [Refs] | [Effort] | [Team] |
+| P1 | [行动项] | [参考] | [工作量] | [团队] |
+| P2 | [行动项] | [参考] | [工作量] | [团队] |
 
-### 8.4 Architecture Recommendations
+### 8.4 架构建议
 
-1. **Input Validation Layer:** [Recommendation for sanitizing all AI inputs]
-2. **Authentication & Authorization:** [Recommendation for inter-service auth]
-3. **Network Segmentation:** [Recommendation for isolating AI services]
-4. **Monitoring & Detection:** [Recommendation for AI-specific monitoring]
-5. **Data Classification:** [Recommendation for protecting sensitive data in RAG/memory]
+1. **输入验证层:** [对所有 AI 输入进行清理的建议]
+2. **身份验证与授权:** [服务间身份验证的建议]
+3. **网络隔离:** [隔离 AI 服务的建议]
+4. **监控与检测:** [AI 特定监控的建议]
+5. **数据分类:** [保护 RAG/内存中敏感数据的建议]
 
 ---
 
-## Appendix A: Tools and Environment
+## 附录 A: 工具和环境
 
-| Tool | Version | Purpose |
+| 工具 | 版本 | 用途 |
 |------|---------|---------|
-| [Tool] | [Version] | [Purpose] |
+| [工具] | [版本] | [用途] |
 | | | |
 
-## Appendix B: Raw Output and Evidence
+## 附录 B: 原始输出和证据
 
-### B.1 [Finding F-001 Raw Output]
-
-```
-[Paste complete raw output from tools, API responses, etc.]
-```
-
-### B.2 [Finding F-002 Raw Output]
+### B.1 [发现 F-001 原始输出]
 
 ```
-[Paste complete raw output]
+[粘贴工具、API 响应等的完整原始输出]
+```
+
+### B.2 [发现 F-002 原始输出]
+
+```
+[粘贴完整原始输出]
 ```
 
 ---
 
-## Appendix C: MITRE ATLAS Mapping
+## 附录 C: MITRE ATLAS 映射
 
-| ATLAS Technique | ID | Findings |
-|----------------|----|----------|
-| [Technique Name] | AML.Txxx | F-001, F-002 |
-| [Technique Name] | AML.Txxx | F-003 |
+| ATLAS 技术 | 编号 | 发现 |
+|----------------|------|----------|
+| [技术名称] | AML.Txxx | F-001, F-002 |
+| [技术名称] | AML.Txxx | F-003 |
 | | | |
 
 ---
 
-**End of Report**
+**报告结束**
 
-*This report is confidential and intended solely for the authorized recipients. Unauthorized distribution is prohibited.*
+*本报告为机密文件，仅供授权接收者使用。禁止未经授权的分发。*

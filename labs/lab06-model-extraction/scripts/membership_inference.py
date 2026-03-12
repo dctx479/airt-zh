@@ -1,22 +1,20 @@
 #!/usr/bin/env python3
 """
-Lab 06 - Membership Inference Attack
+实验 06 - 成员推理攻击
 
-This script demonstrates a membership inference attack against the target
-sentiment classifier. The goal is to determine whether a specific data sample
-was used in the model's training set.
+此脚本演示对目标情感分类器的成员推理攻击。
+目标是确定特定数据样本是否被用于模型的训练集中。
 
-How it works:
-  - Models tend to be more confident on data they were trained on.
-  - By comparing confidence distributions for known members (training data)
-    vs. known non-members, we can find a threshold that distinguishes them.
-  - A simple threshold-based attack classifier is trained on this signal.
+工作原理：
+  - 模型往往对其训练过的数据更有信心。
+  - 通过比较已知成员（训练数据）和已知非成员的
+    置信度分布，我们可以找到一个阈值来区分它们。
+  - 一个简单的基于阈值的攻击分类器在此信号上进行训练。
 
-This is a privacy attack: it reveals information about the training dataset,
-which may contain sensitive or proprietary data.
+这是一种隐私攻击：它揭示了训练数据集的信息，
+而训练数据集可能包含敏感或专有数据。
 
-Educational purpose only. Do NOT use these techniques against real systems
-without authorisation.
+仅供教育目的。未经授权，请勿对真实系统使用这些技术。
 """
 
 import random
