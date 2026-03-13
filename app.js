@@ -521,7 +521,14 @@
       about_link_license_desc: '内容采用 CC BY-SA 4.0，代码采用 MIT',
       footer_brand: 'AIRT 学院',
       footer_copyright: '内容：CC BY-SA 4.0 · 代码：MIT 许可证 · 2025 AI 红队学院',
-      footer_attribution: '使用 Perplexity Computer 创建'
+      footer_attribution: '使用 Perplexity Computer 创建',
+      meta_description: '一门免费的开源课程，涵盖 AI 系统的攻击性安全测试 — 从 Prompt Injection 到供应链攻击。60+ 小时的内容，包含实践 Docker 实验室。',
+      og_title: 'AIRT — AI 红队学院',
+      og_description: '掌握 AI 安全。破解 AI 系统。保护重要的东西。一门免费的开源 AI 红队课程，包含 8 个模块和实践实验室。',
+      aria_logo: 'AIRT - AI 红队学院',
+      aria_nav: '主导航',
+      aria_menu_toggle: '切换菜单',
+      aria_stats: '课程统计'
     },
     en: {
       page_title: 'AIRT — AI Red Team Academy | Free AI Security Course',
@@ -849,7 +856,14 @@
       about_link_license_desc: 'Content under CC BY-SA 4.0, code under MIT',
       footer_brand: 'AIRT Academy',
       footer_copyright: 'Content: CC BY-SA 4.0 · Code: MIT License · 2025 AI Red Team Academy',
-      footer_attribution: 'Built with Perplexity Computer'
+      footer_attribution: 'Built with Perplexity Computer',
+      meta_description: 'A free, open-source course covering offensive security testing of AI systems — from prompt injection to supply chain attacks. 60+ hours of content with hands-on Docker labs.',
+      og_title: 'AIRT — AI Red Team Academy',
+      og_description: 'Master AI Security. Break AI Systems. Defend What Matters. A free, open-source AI red team course with 8 modules and hands-on labs.',
+      aria_logo: 'AIRT - AI Red Team Academy',
+      aria_nav: 'Main navigation',
+      aria_menu_toggle: 'Toggle menu',
+      aria_stats: 'Course statistics'
     }
   };
 
@@ -910,6 +924,24 @@
       enSpan.style.opacity = lang === 'en' ? '1' : '0.5';
       enSpan.style.fontWeight = lang === 'en' ? '600' : '400';
     }
+
+    // 6. Update meta tags
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc && t.meta_description) metaDesc.setAttribute('content', t.meta_description);
+    var ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && t.og_title) ogTitle.setAttribute('content', t.og_title);
+    var ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc && t.og_description) ogDesc.setAttribute('content', t.og_description);
+
+    // 7. Update aria-labels
+    var logoLink = document.querySelector('.header__logo');
+    if (logoLink && t.aria_logo) logoLink.setAttribute('aria-label', t.aria_logo);
+    var navEl = document.querySelector('.header__nav');
+    if (navEl && t.aria_nav) navEl.setAttribute('aria-label', t.aria_nav);
+    var menuBtn = document.querySelector('.mobile-menu-btn');
+    if (menuBtn && t.aria_menu_toggle) menuBtn.setAttribute('aria-label', t.aria_menu_toggle);
+    var statsRegion = document.querySelector('.stats[role="region"]');
+    if (statsRegion && t.aria_stats) statsRegion.setAttribute('aria-label', t.aria_stats);
 
     localStorage.setItem('airt-lang', lang);
   }
