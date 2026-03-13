@@ -528,7 +528,8 @@
       aria_logo: 'AIRT - AI 红队学院',
       aria_nav: '主导航',
       aria_menu_toggle: '切换菜单',
-      aria_stats: '课程统计'
+      aria_stats: '课程统计',
+      aria_lang_toggle: '切换语言'
     },
     en: {
       page_title: 'AIRT — AI Red Team Academy | Free AI Security Course',
@@ -863,7 +864,8 @@
       aria_logo: 'AIRT - AI Red Team Academy',
       aria_nav: 'Main navigation',
       aria_menu_toggle: 'Toggle menu',
-      aria_stats: 'Course statistics'
+      aria_stats: 'Course statistics',
+      aria_lang_toggle: 'Switch language'
     }
   };
 
@@ -942,6 +944,8 @@
     if (menuBtn && t.aria_menu_toggle) menuBtn.setAttribute('aria-label', t.aria_menu_toggle);
     var statsRegion = document.querySelector('.stats[role="region"]');
     if (statsRegion && t.aria_stats) statsRegion.setAttribute('aria-label', t.aria_stats);
+    var langToggle = document.querySelector('[data-lang-toggle]');
+    if (langToggle && t.aria_lang_toggle) langToggle.setAttribute('aria-label', t.aria_lang_toggle);
 
     localStorage.setItem('airt-lang', lang);
   }
