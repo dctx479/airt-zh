@@ -132,21 +132,21 @@
           <span class="hero__terminal-dot hero__terminal-dot--yellow"></span>
           <span class="hero__terminal-dot hero__terminal-dot--green"></span>
         </div>
-        <span class="hero__terminal-title">airt-lab ~ 终端</span>
+        <span class="hero__terminal-title" data-i18n="terminal_title">airt-lab ~ 终端</span>
       </div>
       <div class="hero__terminal-body">
-        <div class="terminal-line"><span class="terminal-comment"># 扫描 LLM 漏洞</span></div>
+        <div class="terminal-line"><span class="terminal-comment" data-i18n="terminal_comment_1"># 扫描 LLM 漏洞</span></div>
         <div class="terminal-line"><span class="terminal-prompt">$ </span><span class="terminal-cmd">garak --model_type ollama --model_name llama3 --probes all</span></div>
-        <div class="terminal-line"><span class="terminal-output">[*] 正在加载 12 个类别中的 47 个探针...</span></div>
-        <div class="terminal-line"><span class="terminal-output">[*] 正在测试提示注入向量...</span></div>
-        <div class="terminal-line"><span class="terminal-output" style="color: var(--color-error);">[!] 漏洞：直接提示注入 — 系统提示覆盖</span></div>
-        <div class="terminal-line"><span class="terminal-output" style="color: var(--color-error);">[!] 漏洞：编码绕过 — Base64 指令注入</span></div>
+        <div class="terminal-line"><span class="terminal-output" data-i18n="terminal_output_1">[*] 正在加载 12 个类别中的 47 个探针...</span></div>
+        <div class="terminal-line"><span class="terminal-output" data-i18n="terminal_output_2">[*] 正在测试提示注入向量...</span></div>
+        <div class="terminal-line"><span class="terminal-output" data-i18n="terminal_output_3" style="color: var(--color-error);">[!] 漏洞：直接提示注入 — 系统提示覆盖</span></div>
+        <div class="terminal-line"><span class="terminal-output" data-i18n="terminal_output_4" style="color: var(--color-error);">[!] 漏洞：编码绕过 — Base64 指令注入</span></div>
         <div class="terminal-line">&nbsp;</div>
-        <div class="terminal-line"><span class="terminal-comment"># 启动多轮 Crescendo 攻击</span></div>
+        <div class="terminal-line"><span class="terminal-comment" data-i18n="terminal_comment_2"># 启动多轮 Crescendo 攻击</span></div>
         <div class="terminal-line"><span class="terminal-prompt">$ </span><span class="terminal-cmd">pyrit attack --strategy crescendo --target http://localhost:8080</span></div>
-        <div class="terminal-line"><span class="terminal-output">[*] 正在初始化 5 轮升级序列...</span></div>
-        <div class="terminal-line"><span class="terminal-output" style="color: var(--color-warning);">[*] 第 3/5 轮：检测到上下文边界弱化</span></div>
-        <div class="terminal-line"><span class="terminal-output" style="color: var(--color-error);">[!] 第 5/5 轮：护栏绕过成功 — ASR: 78%</span></div>
+        <div class="terminal-line"><span class="terminal-output" data-i18n="terminal_output_5">[*] 正在初始化 5 轮升级序列...</span></div>
+        <div class="terminal-line"><span class="terminal-output" data-i18n="terminal_output_6" style="color: var(--color-warning);">[*] 第 3/5 轮：检测到上下文边界弱化</span></div>
+        <div class="terminal-line"><span class="terminal-output" data-i18n="terminal_output_7" style="color: var(--color-error);">[!] 第 5/5 轮：护栏绕过成功 — ASR: 78%</span></div>
         <div class="terminal-line">&nbsp;</div>
         <div class="terminal-line"><span class="terminal-prompt">$ </span><span class="terminal-cursor"></span></div>
       </div>
@@ -298,7 +298,7 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                   <span data-i18n="refs_heading">参考资料</span>
                 </h4>
-                <ul class="refs-list">
+                <ul class="refs-list" data-i18n-list="m1_refs">
                   <li><a href="https://atlas.mitre.org" target="_blank" rel="noopener noreferrer">MITRE ATLAS <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">OWASP Top 10 for LLM <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://csrc.nist.gov/pubs/ai/100/2/e2025/final" target="_blank" rel="noopener noreferrer">NIST AI 100-2 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -361,7 +361,7 @@
                   <h4 data-i18n="lab2_title">实验室 2：Prompt Injection 游乐场</h4>
                 </div>
                 <p class="module-lab__desc" data-i18n="lab2_desc">攻击一系列逐渐加固的聊天机器人。从未受保护的模型开始，通过受保护的系统进行，并学习系统地发现绕过方法。</p>
-                <ul class="module-lab__objectives">
+                <ul class="module-lab__objectives" data-i18n-list="lab2_objectives">
                   <li>对未受保护的聊天机器人执行直接 Prompt Injection</li>
                   <li>从"安全"应用程序提取系统提示</li>
                   <li>使用编码技术绕过内容过滤器 (Base64、Unicode 相似字符)</li>
@@ -381,7 +381,7 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                   <span data-i18n="refs_heading">参考资料</span>
                 </h4>
-                <ul class="refs-list">
+                <ul class="refs-list" data-i18n-list="m2_refs">
                   <li><a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/" target="_blank" rel="noopener noreferrer">OWASP LLM01：Prompt Injection <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://mindgard.ai/resources/bypassing-llm-guardrails-character-and-aml-attacks-in-practice" target="_blank" rel="noopener noreferrer">绕过 LLM 护栏 - Mindgard <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://www.keysight.com/blogs/en/tech/nwvs/2025/07/16/breaking-the-guardrails-how-simple-adaptive-attacks-jailbreak-llms" target="_blank" rel="noopener noreferrer">对 LLM 的自适应攻击 - Keysight <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -446,7 +446,7 @@
                   <h4 data-i18n="lab3_title">实验室 3：破坏 RAG 系统</h4>
                 </div>
                 <p class="module-lab__desc" data-i18n="lab3_desc">构建然后系统地破坏 RAG 应用程序。投毒其知识库、劫持检索、执行嵌入反演并通过 LLM 泄露数据。</p>
-                <ul class="module-lab__objectives">
+                <ul class="module-lab__objectives" data-i18n-list="lab3_objectives">
                   <li>使用 ChromaDB 和 LangChain 部署易受攻击的 RAG 应用程序</li>
                   <li>用恶意文档投毒知识库</li>
                   <li>通过投毒的检索上下文执行间接 Prompt Injection</li>
@@ -467,7 +467,7 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                   <span data-i18n="refs_heading">参考资料</span>
                 </h4>
-                <ul class="refs-list">
+                <ul class="refs-list" data-i18n-list="m3_refs">
                   <li><a href="https://arxiv.org/html/2410.22832v1" target="_blank" rel="noopener noreferrer">HijackRAG 论文 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://www.promptfoo.dev/blog/rag-poisoning/" target="_blank" rel="noopener noreferrer">RAG 数据投毒 - Promptfoo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://testmy.ai/blog/building-secure-rag-systems-2025" target="_blank" rel="noopener noreferrer">安全 RAG 系统 2025 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -532,7 +532,7 @@
                   <h4 data-i18n="lab4_title">实验室 4：破坏多智能体系统</h4>
                 </div>
                 <p class="module-lab__desc" data-i18n="lab4_desc">攻击多智能体客户服务系统，其中智能体协作处理请求。破坏一个智能体以影响其他智能体、提升权限并通过工具调用泄露数据。</p>
-                <ul class="module-lab__objectives">
+                <ul class="module-lab__objectives" data-i18n-list="lab4_objectives">
                   <li>映射多智能体系统架构和信任关系</li>
                   <li>通过 Prompt Injection 执行智能体冒充</li>
                   <li>演示从一个智能体到另一个智能体的越狱传播</li>
@@ -553,7 +553,7 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                   <span data-i18n="refs_heading">参考资料</span>
                 </h4>
-                <ul class="refs-list">
+                <ul class="refs-list" data-i18n-list="m4_refs">
                   <li><a href="https://galileo.ai/blog/multi-agent-systems-exploits" target="_blank" rel="noopener noreferrer">多智能体利用 - Galileo AI <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://witness.ai/blog/ai-agent-vulnerabilities/" target="_blank" rel="noopener noreferrer">AI 智能体漏洞 - WitnessAI <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://www.csoonline.com/article/4132860/why-2025s-agentic-ai-boom-is-a-cisos-worst-nightmare.html" target="_blank" rel="noopener noreferrer">智能体 AI 安全 - CSO Online <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -617,7 +617,7 @@
                   <h4 data-i18n="lab5_title">实验室 5：AI 供应链攻击模拟</h4>
                 </div>
                 <p class="module-lab__desc" data-i18n="lab5_desc">模拟对 ML 管道的供应链攻击。创建后门模型、利用 pickle 反序列化、演示域名抢注并投毒训练数据以破坏模型行为。</p>
-                <ul class="module-lab__objectives">
+                <ul class="module-lab__objectives" data-i18n-list="lab5_objectives">
                   <li>创建具有隐藏后门触发器的模型</li>
                   <li>演示用于代码执行的恶意 pickle 反序列化</li>
                   <li>模拟对模型注册表的域名抢注攻击</li>
@@ -638,7 +638,7 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                   <span data-i18n="refs_heading">参考资料</span>
                 </h4>
-                <ul class="refs-list">
+                <ul class="refs-list" data-i18n-list="m5_refs">
                   <li><a href="https://thehackernews.com/2025/11/cisos-expert-guide-to-ai-supply-chain.html" target="_blank" rel="noopener noreferrer">AI 供应链指南 - Hacker News <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://genai.owasp.org/llmrisk/llm04-model-denial-of-service/" target="_blank" rel="noopener noreferrer">OWASP LLM04 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://blog.lastpass.com/posts/model-poisoning" target="_blank" rel="noopener noreferrer">模型投毒 - LastPass <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -702,7 +702,7 @@
                   <h4 data-i18n="lab6_title">实验室 6：模型盗窃与隐私攻击</h4>
                 </div>
                 <p class="module-lab__desc" data-i18n="lab6_desc">通过战略性 API 查询提取专有模型的行为。执行成员推断、尝试训练数据提取并分析加密流量以查找信息泄露。</p>
-                <ul class="module-lab__objectives">
+                <ul class="module-lab__objectives" data-i18n-list="lab6_objectives">
                   <li>通过系统的 API 查询克隆目标模型的行为</li>
                   <li>训练与目标预测匹配的代理模型</li>
                   <li>执行成员推断以识别训练数据</li>
@@ -723,7 +723,7 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                   <span data-i18n="refs_heading">参考资料</span>
                 </h4>
-                <ul class="refs-list">
+                <ul class="refs-list" data-i18n-list="m6_refs">
                   <li><a href="https://arxiv.org/html/2511.03675v1" target="_blank" rel="noopener noreferrer">Whisper Leak 侧信道 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://www.keysight.com/blogs/en/tech/nwvs/2025/02/25/security-highlight-tpuxtract-a-new-side-channel-attack-on-neural-networks" target="_blank" rel="noopener noreferrer">TPUXtract 侧信道 - Keysight <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://csrc.nist.gov/pubs/ai/100/2/e2025/final" target="_blank" rel="noopener noreferrer">NIST AML 分类法 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -786,7 +786,7 @@
                   <h4 data-i18n="lab7_title">实验室 7：自动化红队管道</h4>
                 </div>
                 <p class="module-lab__desc" data-i18n="lab7_desc">使用 garak、PyRIT 和 promptfoo 构建并运行自动化 AI 红队管道。测试多个模型、生成综合报告，并将安全测试集成到 CI/CD 工作流中。</p>
-                <ul class="module-lab__objectives">
+                <ul class="module-lab__objectives" data-i18n-list="lab7_objectives">
                   <li>使用多种探针类型配置并运行 garak 对本地 LLM</li>
                   <li>使用自定义数据集和转换器构建 PyRIT 编排器</li>
                   <li>使用多个攻击向量创建 promptfoo 红队配置</li>
@@ -807,7 +807,7 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                   <span data-i18n="refs_heading">参考资料</span>
                 </h4>
-                <ul class="refs-list">
+                <ul class="refs-list" data-i18n-list="m7_refs">
                   <li><a href="https://github.com/NVIDIA/garak" target="_blank" rel="noopener noreferrer">garak GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://garak.ai" target="_blank" rel="noopener noreferrer">garak 文档 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://github.com/Azure/PyRIT" target="_blank" rel="noopener noreferrer">PyRIT GitHub <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -873,7 +873,7 @@
                   <h4 data-i18n="lab8_title">实验室 8：完整的 AI 红队参与</h4>
                 </div>
                 <p class="module-lab__desc" data-i18n="lab8_desc">对现实的 AI 驱动企业应用程序进行完整的 AI 红队参与。执行侦察、链接多个利用、演示业务影响并交付专业报告。</p>
-                <ul class="module-lab__objectives">
+                <ul class="module-lab__objectives" data-i18n-list="lab8_objectives">
                   <li>对目标 AI 应用程序执行全面侦察</li>
                   <li>识别并记录所有攻击面</li>
                   <li>链接 Prompt Injection + RAG 投毒 + 数据泄露</li>
@@ -894,7 +894,7 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                   <span data-i18n="refs_heading">参考资料</span>
                 </h4>
-                <ul class="refs-list">
+                <ul class="refs-list" data-i18n-list="m8_refs">
                   <li><a href="https://www.paloaltonetworks.com/cyberpedia/what-is-ai-red-teaming" target="_blank" rel="noopener noreferrer">AI 红队 - Palo Alto <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://www.dnv.com/article/ai-red-teaming-for-critical-infrastructure-industries/" target="_blank" rel="noopener noreferrer">关键基础设施的 AI 红队 - DNV <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
                   <li><a href="https://www.schellman.com/blog/ai-services/ethical-and-societal-considerations-of-ai-impact-analysis" target="_blank" rel="noopener noreferrer">AI 影响评估 - Schellman <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg></a></li>
@@ -972,7 +972,7 @@
           </a>
           <a href="https://www.promptfoo.dev" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-            官网
+            <span data-i18n="link_website">官网</span>
           </a>
         </div>
       </div>
@@ -1006,7 +1006,7 @@
         <a href="https://developer.nvidia.com/blog/modeling-attacks-on-ai-powered-apps-with-the-ai-kill-chain-framework/" target="_blank" rel="noopener noreferrer" class="framework-card">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <div>
-            <div class="framework-card__name">NVIDIA AI 杀伤链</div>
+            <div class="framework-card__name" data-i18n="framework_nvidia">NVIDIA AI 杀伤链</div>
             <div class="framework-card__url">developer.nvidia.com</div>
           </div>
         </a>
@@ -1039,22 +1039,22 @@
         <span class="code-block__title" data-i18n="code_block_terminal">终端</span>
       </div>
       <div class="code-block__body">
-<pre><span class="code-comment"># 下载并解压实验室</span>
+<pre><span class="code-comment" data-i18n="code_comment_1"># 下载并解压实验室</span>
 <span class="code-keyword">curl</span> -LO airt-labs.zip
 <span class="code-keyword">unzip</span> airt-labs.zip -d airt-labs
 <span class="code-keyword">cd</span> airt-labs
 
-<span class="code-comment"># 启动任意实验室（例如实验室 01 - 基础）</span>
+<span class="code-comment" data-i18n="code_comment_2"># 启动任意实验室（例如实验室 01 - 基础）</span>
 <span class="code-keyword">cd</span> lab01-foundations
 <span class="code-keyword">docker-compose</span> up
 
-<span class="code-comment"># 访问实验室界面</span>
+<span class="code-comment" data-i18n="code_comment_3"># 访问实验室界面</span>
 <span class="code-keyword">open</span> <span class="code-string">http://localhost:8888</span>
 
-<span class="code-comment"># 使用 garak 运行漏洞扫描</span>
+<span class="code-comment" data-i18n="code_comment_4"># 使用 garak 运行漏洞扫描</span>
 <span class="code-keyword">garak</span> --model_type ollama --model_name llama3 --probes all
 
-<span class="code-comment"># 启动 PyRIT 编排器</span>
+<span class="code-comment" data-i18n="code_comment_5"># 启动 PyRIT 编排器</span>
 <span class="code-keyword">python</span> -m pyrit.orchestrator --config <span class="code-string">config.yaml</span></pre>
       </div>
     </div>
